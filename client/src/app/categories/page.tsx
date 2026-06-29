@@ -60,6 +60,7 @@ export default function CategoriesPage() {
                         src={cat.image}
                         alt={cat.name}
                         fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white text-xxs font-button font-bold text-primary-DEFAULT shadow-xs">

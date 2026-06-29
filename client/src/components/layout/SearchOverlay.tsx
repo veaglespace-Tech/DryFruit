@@ -27,19 +27,25 @@ export default function SearchOverlay() {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       // GSAP animate open
-      gsap.fromTo(overlayRef.current,
-        { opacity: 0, backdropFilter: 'blur(0px)' },
-        { opacity: 1, backdropFilter: 'blur(12px)', duration: 0.35, ease: 'power2.out' }
-      );
-      gsap.fromTo('.search-content',
-        { scale: 0.95, y: -20, opacity: 0 },
-        { scale: 1, y: 0, opacity: 1, duration: 0.4, delay: 0.1, ease: 'back.out(1.5)' }
-      );
+      if (overlayRef.current) {
+        gsap.fromTo(overlayRef.current,
+          { opacity: 0, backdropFilter: 'blur(0px)' },
+          { opacity: 1, backdropFilter: 'blur(12px)', duration: 0.35, ease: 'power2.out' }
+        );
+        const searchContent = overlayRef.current.querySelector('.search-content');
+        if (searchContent) {
+          gsap.fromTo(searchContent,
+            { scale: 0.95, y: -20, opacity: 0 },
+            { scale: 1, y: 0, opacity: 1, duration: 0.4, delay: 0.1, ease: 'back.out(1.5)' }
+          );
+        }
+      }
       setTimeout(() => inputRef.current?.focus(), 150);
     } else {
       document.body.style.overflow = '';
     }
   }, [isOpen]);
+
 
   const handleClose = () => {
     gsap.to(overlayRef.current, {

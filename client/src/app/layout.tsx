@@ -95,7 +95,6 @@ export default function RootLayout({
       </head>
       <body
         className={`${playfairDisplay.variable} ${poppins.variable} ${inter.variable} antialiased`}
-        style={{ backgroundColor: '#FFFDF8', color: '#2D2D2D' }}
       >
         <ReduxProvider>
           {children}

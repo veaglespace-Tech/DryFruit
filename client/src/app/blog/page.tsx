@@ -83,7 +83,10 @@ export default function BlogPage() {
                       src={post.image}
                       alt={post.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      priority={post.id === 1}
+                      loading={post.id === 1 ? 'eager' : 'lazy'}
                     />
                     <span className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-full bg-white/95 text-xxs font-button font-bold text-primary-DEFAULT shadow-sm flex items-center gap-1">
                       <BookOpen size={10} className="text-accent-DEFAULT" />

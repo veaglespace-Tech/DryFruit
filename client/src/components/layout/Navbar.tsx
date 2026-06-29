@@ -83,10 +83,12 @@ export default function Navbar() {
 
   // GSAP entrance
   useGSAP(() => {
+    if (!navRef.current) return;
     gsap.fromTo(navRef.current, { y: -80, opacity: 0 }, {
       y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2
     });
-  });
+  }, { scope: navRef });
+
 
   // Mobile menu animation
   useEffect(() => {

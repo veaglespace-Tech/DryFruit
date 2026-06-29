@@ -117,9 +117,10 @@ export default function HeroSection() {
           src="/images/hero/hero-bg.png"
           alt="Premium Dry Fruits Collection"
           fill
+          sizes="100vw"
           className="object-cover"
           priority
-          quality={90}
+          loading="eager"
         />
         {/* Multi-layer Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#3D1F0E]/90 via-[#6B3E26]/70 to-[#A97142]/40" />
