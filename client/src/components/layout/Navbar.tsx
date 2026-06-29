@@ -1,0 +1,373 @@
+'use client';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import {
+  Search, ShoppingBag, Heart, Phone, MessageCircle,
+  Menu, X, ChevronDown, Leaf, User
+} from 'lucide-react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { toggleCart } from '@/store/slices/cartSlice';
+import { toggleMobileNav, setMobileNavOpen, setSearchOpen } from '@/store/slices/uiSlice';
+
+import { selectCartCount } from '@/store/slices/cartSlice';
+
+gsap.registerPlugin(useGSAP);
+
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  {
+    label: 'Products', href: '/products',
+    submenu: [
+      { label: 'All Products', href: '/products' },
+      { label: 'Almonds', href: '/products?category=almonds' },
+      { label: 'Cashews', href: '/products?category=cashews' },
+      { label: 'Pistachios', href: '/products?category=pistachios' },
+      { label: 'Walnuts', href: '/products?category=walnuts' },
+      { label: 'Dates', href: '/products?category=dates' },
+      { label: 'Mixed Nuts', href: '/products?category=mixed-nuts' },
+    ],
+  },
+  { label: 'Categories', href: '/categories' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+];
+
+export default function Navbar() {
+  const pathname = usePathname();
+  const dispatch = useAppDispatch();
+  const cartCount = useAppSelector(selectCartCount);
+  const isMobileNavOpen = useAppSelector((state) => state.ui.isMobileNavOpen);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [user, setUser] = useState<{ name: string } | null>(null);
+
+  useEffect(() => {
+    const userData = localStorage.getItem('nutriroots_user');
+    if (userData) setUser(JSON.parse(userData));
+  }, []);
+
+  const navRef = useRef<HTMLElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+  const isHidden = useRef(false);
+
+  // Scroll behavior
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 50);
+
+      // Hide navbar on scroll down, show on scroll up
+      if (currentScrollY > 200) {
+        if (currentScrollY > lastScrollY.current && !isHidden.current) {
+          gsap.to(navRef.current, { y: '-100%', duration: 0.3, ease: 'power2.in' });
+          isHidden.current = true;
+        } else if (currentScrollY < lastScrollY.current && isHidden.current) {
+          gsap.to(navRef.current, { y: '0%', duration: 0.4, ease: 'power2.out' });
+          isHidden.current = false;
+        }
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // GSAP entrance
+  useGSAP(() => {
+    gsap.fromTo(navRef.current, { y: -80, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2
+    });
+  });
+
+  // Mobile menu animation
+  useEffect(() => {
+    if (!mobileMenuRef.current) return;
+    if (isMobileNavOpen) {
+      gsap.fromTo(mobileMenuRef.current,
+        { x: '100%', opacity: 0 },
+        { x: '0%', opacity: 1, duration: 0.4, ease: 'power3.out' }
+      );
+      document.body.style.overflow = 'hidden';
+    } else {
+      gsap.to(mobileMenuRef.current, { x: '100%', opacity: 0, duration: 0.3, ease: 'power3.in' });
+      document.body.style.overflow = '';
+    }
+  }, [isMobileNavOpen]);
+
+  const isActive = (href: string) => pathname === href || (href !== '/' && pathname.startsWith(href));
+
+  return (
+    <>
+      <nav
+        ref={navRef}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+          isScrolled
+            ? 'navbar-glass shadow-luxury'
+            : 'bg-transparent'
+        }`}
+        style={{ top: '36px' }}
+      >
+        <div className="container-luxury">
+          <div className="flex items-center justify-between h-20">
+
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group" aria-label="NutriRoots Home">
+              <div className="w-10 h-10 rounded-full bg-luxury-gradient flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-shadow">
+                <Leaf size={20} className="text-white" />
+              </div>
+              <div>
+                <span
+                  className="font-heading text-2xl font-bold leading-none"
+                  style={{ color: isScrolled ? '#6B3E26' : '#fff' }}
+                >
+                  NutriRoots
+                </span>
+                <p className="text-xs font-body" style={{ color: isScrolled ? '#A97142' : 'rgba(255,255,255,0.8)' }}>
+                  Nature&apos;s Premium Store
+                </p>
+              </div>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <ul className="hidden lg:flex items-center gap-1">
+              {navLinks.map((link) => (
+                <li key={link.label} className="relative group">
+                  {link.submenu ? (
+                    <button
+                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 ${
+                        isActive(link.href)
+                          ? 'text-accent-DEFAULT'
+                          : isScrolled
+                          ? 'text-text-DEFAULT hover:text-primary-DEFAULT'
+                          : 'text-white/90 hover:text-white'
+                      }`}
+                      onMouseEnter={() => setActiveDropdown(link.label)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                      aria-expanded={activeDropdown === link.label}
+                    >
+                      {link.label}
+                      <ChevronDown size={14} className={`transition-transform ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className={`flex items-center px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 animated-underline ${
+                        isActive(link.href)
+                          ? 'text-accent-DEFAULT font-semibold'
+                          : isScrolled
+                          ? 'text-text-DEFAULT hover:text-primary-DEFAULT'
+                          : 'text-white/90 hover:text-white'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  )}
+
+                  {/* Dropdown */}
+                  {link.submenu && (
+                    <div
+                      className={`absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-luxury-lg border border-border-DEFAULT overflow-hidden transition-all duration-200 ${
+                        activeDropdown === link.label ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible translate-y-2'
+                      }`}
+                      onMouseEnter={() => setActiveDropdown(link.label)}
+                      onMouseLeave={() => setActiveDropdown(null)}
+                    >
+                      {link.submenu.map((sub) => (
+                        <Link
+                          key={sub.label}
+                          href={sub.href}
+                          className="flex items-center gap-2 px-4 py-3 text-sm font-body text-text-DEFAULT hover:bg-background hover:text-primary-DEFAULT transition-colors border-b border-border-light last:border-b-0"
+                        >
+                          <Leaf size={12} className="text-accent-DEFAULT" />
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Search */}
+              <button
+                onClick={() => dispatch(setSearchOpen(true))}
+                className={`p-2 rounded-full transition-all duration-200 ${
+                  isScrolled ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
+                }`}
+                aria-label="Search"
+              >
+                <Search size={20} />
+              </button>
+
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/919876543210"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:flex items-center gap-1 p-2 rounded-full transition-all duration-200 text-green-600 hover:bg-green-50"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={20} />
+              </a>
+
+              {/* Wishlist */}
+              <Link
+                href="/wishlist"
+                className={`p-2 rounded-full transition-all duration-200 ${
+                  isScrolled ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
+                }`}
+                aria-label="Wishlist"
+              >
+                <Heart size={20} />
+              </Link>
+
+              {/* Cart */}
+              <button
+                onClick={() => dispatch(toggleCart())}
+                className="relative p-2 rounded-full transition-all duration-200 bg-primary-DEFAULT text-white hover:bg-secondary-DEFAULT shadow-luxury"
+                aria-label={`Cart (${cartCount} items)`}
+              >
+                <ShoppingBag size={20} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent-DEFAULT text-white text-xs font-bold rounded-full flex items-center justify-center font-button">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
+              </button>
+
+              {/* User Account */}
+              {user ? (
+                <Link
+                  href="/user/dashboard"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
+                  style={{
+                    color: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.9)',
+                    borderColor: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.4)',
+                  }}
+                >
+                  <div className="w-5 h-5 rounded-full bg-accent-DEFAULT text-white flex items-center justify-center text-[10px] font-bold">
+                    {user.name[0].toUpperCase()}
+                  </div>
+                  <span>Dashboard</span>
+                </Link>
+              ) : (
+                <Link
+                  href="/user/login"
+                  className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
+                  style={{
+                    color: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.9)',
+                    borderColor: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.4)',
+                  }}
+                >
+                  <User size={14} />
+                  <span>Sign In</span>
+                </Link>
+              )}
+
+
+              {/* Mobile Hamburger */}
+              <button
+                onClick={() => dispatch(toggleMobileNav())}
+                className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
+                  isScrolled ? 'text-text-DEFAULT hover:bg-background' : 'text-white hover:bg-white/10'
+                }`}
+                aria-label={isMobileNavOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMobileNavOpen}
+              >
+                {isMobileNavOpen ? <X size={22} /> : <Menu size={22} />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        ref={mobileMenuRef}
+        className={`fixed inset-0 z-30 bg-white flex flex-col ${isMobileNavOpen ? '' : 'pointer-events-none'}`}
+        style={{ paddingTop: '110px', transform: 'translateX(100%)' }}
+      >
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          {/* Brand */}
+          <div className="flex items-center gap-3 mb-8 pb-6 border-b border-border-DEFAULT">
+            <div className="w-12 h-12 rounded-full bg-luxury-gradient flex items-center justify-center">
+              <Leaf size={24} className="text-white" />
+            </div>
+            <div>
+              <p className="font-heading text-xl font-bold text-primary-DEFAULT">NutriRoots</p>
+              <p className="text-xs text-text-muted font-body">Nature&apos;s Premium Store</p>
+            </div>
+          </div>
+
+          {/* Nav Links */}
+          <ul className="space-y-1">
+            {navLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-body transition-all ${
+                    isActive(link.href)
+                      ? 'bg-primary-50 text-primary-DEFAULT font-semibold'
+                      : 'text-text-DEFAULT hover:bg-background hover:text-primary-DEFAULT'
+                  }`}
+                  onClick={() => dispatch(setMobileNavOpen(false))}
+                >
+                  {link.label}
+                  {link.submenu && <ChevronDown size={16} />}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Contact Actions */}
+          <div className="mt-8 pt-6 border-t border-border-DEFAULT space-y-3">
+            <a
+              href="https://wa.me/919876543210"
+              className="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 rounded-xl font-body font-medium"
+              target="_blank" rel="noopener noreferrer"
+            >
+              <MessageCircle size={20} />
+              WhatsApp Us
+            </a>
+            <a
+              href="tel:+919876543210"
+              className="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-DEFAULT rounded-xl font-body font-medium"
+            >
+              <Phone size={20} />
+              +91 98765 43210
+            </a>
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 px-4 py-3 border border-border-DEFAULT text-text-muted rounded-xl font-body text-sm"
+              onClick={() => dispatch(setMobileNavOpen(false))}
+            >
+              <User size={18} />
+              Admin Login
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile overlay backdrop */}
+      {isMobileNavOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-20 lg:hidden"
+          onClick={() => dispatch(setMobileNavOpen(false))}
+        />
+      )}
+    </>
+  );
+}
+
+
