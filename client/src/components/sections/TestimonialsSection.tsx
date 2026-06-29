@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
@@ -103,6 +103,14 @@ export default function TestimonialsSection() {
     });
   };
 
+  // Autoplay testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      goTo(activeIndex + 1);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [activeIndex]);
+
   const active = testimonials[activeIndex];
 
   return (
@@ -116,17 +124,17 @@ export default function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 mb-4">
-            <span className="text-accent-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">Customer Love</span>
+            <span className="text-accent text-xs font-button font-semibold uppercase tracking-widest">Customer Love</span>
           </div>
           <h2
             ref={titleRef as any}
-            className="font-heading text-white mb-4"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700 }}
+            className="font-heading mb-4"
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, color: '#ffffff' }}
           >
             What Our Customers Say
           </h2>
           <div className="section-divider mx-auto" style={{ background: 'linear-gradient(90deg, #D4A95A, #A97142)' }} />
-          <p className="text-white/60 max-w-2xl mx-auto mt-4 font-body">
+          <p className="text-white/90 max-w-2xl mx-auto mt-4 font-body">
             Thousands of happy customers trust NutriRoots for their daily nutritional needs. Here are some of their stories.
           </p>
         </div>
@@ -157,13 +165,13 @@ export default function TestimonialsSection() {
                 </div>
                 <div>
                   <p className="font-heading text-white font-semibold text-lg">{active.name}</p>
-                  <p className="text-white/60 text-sm font-body">{active.designation}</p>
+                  <p className="text-white/85 text-sm font-body">{active.designation}</p>
                   <p className="text-accent-DEFAULT text-xs font-body">{active.location}</p>
                 </div>
               </div>
               <div className="px-4 py-2 rounded-full border border-accent-DEFAULT/40 bg-accent-DEFAULT/10">
                 <p className="text-xs font-button font-semibold text-accent-DEFAULT">Verified Purchase</p>
-                <p className="text-xs text-white/50 font-body">{active.product}</p>
+                <p className="text-xs text-white/80 font-body">{active.product}</p>
               </div>
             </div>
           </div>
@@ -186,7 +194,7 @@ export default function TestimonialsSection() {
                 key={i}
                 onClick={() => goTo(i)}
                 className="w-2.5 h-2.5 rounded-full transition-all duration-300"
-                style={{ background: i === activeIndex ? '#D4A95A' : 'rgba(255,255,255,0.3)', transform: i === activeIndex ? 'scale(1.4)' : 'scale(1)' }}
+                style={{ background: i === activeIndex ? '#D4A95A' : 'rgba(255,255,255,0.5)', transform: i === activeIndex ? 'scale(1.4)' : 'scale(1)' }}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
             ))}
@@ -199,24 +207,6 @@ export default function TestimonialsSection() {
           >
             <ChevronRight size={20} />
           </button>
-        </div>
-
-        {/* Mini Cards Preview */}
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mt-10">
-          {testimonials.map((t, i) => (
-            <button
-              key={t.id}
-              onClick={() => goTo(i)}
-              className={`testimonial-card p-3 rounded-xl border text-left transition-all duration-300 ${
-                i === activeIndex
-                  ? 'border-accent-DEFAULT bg-accent-DEFAULT/20'
-                  : 'border-white/10 bg-white/5 hover:border-white/30'
-              }`}
-            >
-              <p className="text-white text-xs font-body font-semibold truncate">{t.name}</p>
-              <p className="text-white/40 text-xs font-body truncate">{t.location}</p>
-            </button>
-          ))}
         </div>
       </div>
     </section>

@@ -175,7 +175,7 @@ export default function ProductCard({ product }: { product: ProductCardProps }) 
               <Star
                 key={i}
                 size={12}
-                className={i < Math.round(product.rating) ? 'fill-current' : 'opacity-30'}
+                className={i < Math.round(product.rating) ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}
               />
             ))}
           </div>

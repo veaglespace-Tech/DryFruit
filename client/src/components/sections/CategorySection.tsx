@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -8,10 +8,11 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useSplitText, useStagger } from '@/lib/gsap';
+import { publicApi } from '@/lib/api';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const categories = [
+const STATIC_CATEGORIES = [
   { name: 'Almonds', slug: 'almonds', description: 'Rich in Vitamin E & Protein', image: '/images/categories/almonds.png', count: '12 Products', color: '#F0DCCC' },
   { name: 'Cashews', slug: 'cashews', description: 'Creamy & Buttery Perfection', image: '/images/categories/cashews.png', count: '8 Products', color: '#F4E4CE' },
   { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant & Naturally Roasted', image: '/images/categories/pistachios.png', count: '6 Products', color: '#E8F5E9' },
@@ -26,6 +27,33 @@ export default function CategorySection() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useSplitText({ delay: 0.1 });
   const gridRef = useStagger('.category-card', { stagger: 0.08 });
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await publicApi.getCategories();
+        if (res.data && res.data.length > 0) {
+          const colors = ['#F0DCCC', '#F4E4CE', '#E8F5E9', '#FBF4EC', '#FFF3E0', '#FCE4EC', '#F3E5F5', '#FCE4EC'];
+          const formatted = res.data.map((cat: any, index: number) => ({
+            name: cat.name,
+            slug: cat.slug,
+            description: cat.description || 'Premium handpicked collection',
+            image: cat.image || `/images/categories/${cat.slug}.png`,
+            count: cat.product_count !== undefined ? `${cat.product_count} Products` : 'View Products',
+            color: colors[index % colors.length]
+          }));
+          setCategories(formatted);
+        } else {
+          setCategories(STATIC_CATEGORIES);
+        }
+      } catch (err) {
+        console.error('Failed to load categories, using fallback:', err);
+        setCategories(STATIC_CATEGORIES);
+      }
+    };
+    loadCategories();
+  }, []);
 
   return (
     <section ref={sectionRef} className="section-padding bg-background">

@@ -47,11 +47,18 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [user, setUser] = useState<{ name: string } | null>(null);
+  const [admin, setAdmin] = useState<{ name: string } | null>(null);
 
   useEffect(() => {
     const userData = localStorage.getItem('nutriroots_user');
     if (userData) setUser(JSON.parse(userData));
+
+    const adminData = localStorage.getItem('nutriroots_admin');
+    if (adminData) setAdmin(JSON.parse(adminData));
   }, []);
+
+  const isDarkHeader = pathname === '/' && !isScrolled;
+
 
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -129,11 +136,11 @@ export default function Navbar() {
               <div>
                 <span
                   className="font-heading text-2xl font-bold leading-none"
-                  style={{ color: isScrolled ? '#6B3E26' : '#fff' }}
+                  style={{ color: !isDarkHeader ? '#3D2314' : '#fff' }}
                 >
                   NutriRoots
                 </span>
-                <p className="text-xs font-body" style={{ color: isScrolled ? '#A97142' : 'rgba(255,255,255,0.8)' }}>
+                <p className="text-xs font-body" style={{ color: !isDarkHeader ? '#A97142' : 'rgba(255,255,255,0.8)' }}>
                   Nature&apos;s Premium Store
                 </p>
               </div>
@@ -145,13 +152,14 @@ export default function Navbar() {
                 <li key={link.label} className="relative group">
                   {link.submenu ? (
                     <button
-                      className={`flex items-center gap-1 px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 ${
-                        isActive(link.href)
-                          ? 'text-accent-DEFAULT'
-                          : isScrolled
-                          ? 'text-text-DEFAULT hover:text-primary-DEFAULT'
-                          : 'text-white/90 hover:text-white'
-                      }`}
+                      className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200"
+                      style={{
+                        color: isActive(link.href)
+                          ? '#D4A95A'
+                          : !isDarkHeader
+                          ? '#3D2314'
+                          : 'rgba(255, 255, 255, 0.95)'
+                      }}
                       onMouseEnter={() => setActiveDropdown(link.label)}
                       onMouseLeave={() => setActiveDropdown(null)}
                       aria-expanded={activeDropdown === link.label}
@@ -162,13 +170,14 @@ export default function Navbar() {
                   ) : (
                     <Link
                       href={link.href}
-                      className={`flex items-center px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 animated-underline ${
-                        isActive(link.href)
-                          ? 'text-accent-DEFAULT font-semibold'
-                          : isScrolled
-                          ? 'text-text-DEFAULT hover:text-primary-DEFAULT'
-                          : 'text-white/90 hover:text-white'
-                      }`}
+                      className="flex items-center px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 animated-underline"
+                      style={{
+                        color: isActive(link.href)
+                          ? '#D4A95A'
+                          : !isDarkHeader
+                          ? '#3D2314'
+                          : 'rgba(255, 255, 255, 0.95)'
+                      }}
                     >
                       {link.label}
                     </Link>
@@ -205,7 +214,7 @@ export default function Navbar() {
               <button
                 onClick={() => dispatch(setSearchOpen(true))}
                 className={`p-2 rounded-full transition-all duration-200 ${
-                  isScrolled ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
+                  !isDarkHeader ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
                 }`}
                 aria-label="Search"
               >
@@ -227,7 +236,7 @@ export default function Navbar() {
               <Link
                 href="/wishlist"
                 className={`p-2 rounded-full transition-all duration-200 ${
-                  isScrolled ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
+                  !isDarkHeader ? 'text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background' : 'text-white/80 hover:text-white'
                 }`}
                 aria-label="Wishlist"
               >
@@ -237,7 +246,7 @@ export default function Navbar() {
               {/* Cart */}
               <button
                 onClick={() => dispatch(toggleCart())}
-                className="relative p-2 rounded-full transition-all duration-200 bg-primary-DEFAULT text-white hover:bg-secondary-DEFAULT shadow-luxury"
+                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent-DEFAULT shadow-luxury"
                 aria-label={`Cart (${cartCount} items)`}
               >
                 <ShoppingBag size={20} />
@@ -248,14 +257,28 @@ export default function Navbar() {
                 )}
               </button>
 
-              {/* User Account */}
-              {user ? (
+              {/* User / Admin Account */}
+              {admin ? (
+                <Link
+                  href="/admin/dashboard"
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
+                  style={{
+                    color: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.9)',
+                    borderColor: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.4)',
+                  }}
+                >
+                  <div className="w-5 h-5 rounded-full bg-[#3D2314] text-white flex items-center justify-center text-[10px] font-bold">
+                    A
+                  </div>
+                  <span>Admin Panel</span>
+                </Link>
+              ) : user ? (
                 <Link
                   href="/user/dashboard"
                   className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
                   style={{
-                    color: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.9)',
-                    borderColor: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.4)',
+                    color: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.9)',
+                    borderColor: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.4)',
                   }}
                 >
                   <div className="w-5 h-5 rounded-full bg-accent-DEFAULT text-white flex items-center justify-center text-[10px] font-bold">
@@ -268,8 +291,8 @@ export default function Navbar() {
                   href="/user/login"
                   className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
                   style={{
-                    color: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.9)',
-                    borderColor: isScrolled ? '#6B3E26' : 'rgba(255,255,255,0.4)',
+                    color: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.9)',
+                    borderColor: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.4)',
                   }}
                 >
                   <User size={14} />
@@ -282,7 +305,7 @@ export default function Navbar() {
               <button
                 onClick={() => dispatch(toggleMobileNav())}
                 className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
-                  isScrolled ? 'text-text-DEFAULT hover:bg-background' : 'text-white hover:bg-white/10'
+                  !isDarkHeader ? 'text-text-DEFAULT hover:bg-background' : 'text-white hover:bg-white/10'
                 }`}
                 aria-label={isMobileNavOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMobileNavOpen}
@@ -320,8 +343,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-body transition-all ${
                     isActive(link.href)
-                      ? 'bg-primary-50 text-primary-DEFAULT font-semibold'
-                      : 'text-text-DEFAULT hover:bg-background hover:text-primary-DEFAULT'
+                      ? 'bg-orange-50 text-[#3D2314] font-semibold'
+                      : 'text-text-DEFAULT hover:bg-background hover:text-[#3D2314]'
                   }`}
                   onClick={() => dispatch(setMobileNavOpen(false))}
                 >

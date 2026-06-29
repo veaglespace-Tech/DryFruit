@@ -16,19 +16,22 @@ const seed = async () => {
 
   // Create Categories
   const categories = [
-    { name: 'Almonds', slug: 'almonds', description: 'Premium California and Indian almonds, packed with nutrients', sort_order: 1 },
-    { name: 'Cashews', slug: 'cashews', description: 'Creamy, buttery cashews from the finest orchards', sort_order: 2 },
-    { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant green pistachios, naturally shelled and roasted', sort_order: 3 },
-    { name: 'Walnuts', slug: 'walnuts', description: 'Brain-healthy walnuts, rich in Omega-3 fatty acids', sort_order: 4 },
-    { name: 'Dates', slug: 'dates', description: 'Premium Medjool and Ajwa dates, nature\'s candy', sort_order: 5 },
-    { name: 'Raisins', slug: 'raisins', description: 'Golden and black raisins, naturally sun-dried', sort_order: 6 },
-    { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated premium nut blends for every occasion', sort_order: 7 },
-    { name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant-rich dried cranberries, blueberries, and goji berries', sort_order: 8 },
+    { name: 'Almonds', slug: 'almonds', description: 'Premium California and Indian almonds, packed with nutrients', image: '/images/categories/almonds.png', sort_order: 1 },
+    { name: 'Cashews', slug: 'cashews', description: 'Creamy, buttery cashews from the finest orchards', image: '/images/categories/cashews.png', sort_order: 2 },
+    { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant green pistachios, naturally shelled and roasted', image: '/images/categories/pistachios.png', sort_order: 3 },
+    { name: 'Walnuts', slug: 'walnuts', description: 'Brain-healthy walnuts, rich in Omega-3 fatty acids', image: '/images/categories/walnuts.png', sort_order: 4 },
+    { name: 'Dates', slug: 'dates', description: 'Premium Medjool and Ajwa dates, nature\'s candy', image: '/images/categories/dates.png', sort_order: 5 },
+    { name: 'Raisins', slug: 'raisins', description: 'Golden and black raisins, naturally sun-dried', image: '/images/categories/raisins.png', sort_order: 6 },
+    { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated premium nut blends for every occasion', image: '/images/categories/mixed-nuts.png', sort_order: 7 },
+    { name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant-rich dried cranberries, blueberries, and goji berries', image: '/images/categories/dried-berries.png', sort_order: 8 },
   ];
 
   const createdCategories = {};
   for (const cat of categories) {
     const [c] = await Category.findOrCreate({ where: { slug: cat.slug }, defaults: cat });
+    // Update the image path in case it exists but was seeded without it
+    c.image = cat.image;
+    await c.save();
     createdCategories[cat.slug] = c.id;
   }
   console.log('✅ Categories created');
@@ -42,6 +45,7 @@ const seed = async () => {
       description: 'Our premium California almonds are sourced directly from sun-drenched orchards in the San Joaquin Valley. Each almond is carefully selected, cleaned, and packed to preserve its natural goodness. Rich in Vitamin E, magnesium, and healthy fats.',
       price: 599, original_price: 799, discount_percent: 25, weight: '500g',
       sku: 'ALM-CA-500', stock: 100, rating: 4.8, review_count: 247,
+      thumbnail: '/images/categories/almonds.png',
       is_featured: true, is_best_seller: true,
       benefits: ['Rich in Vitamin E', 'High in Protein', 'Boosts Heart Health', 'Great for Skin'],
       nutrition_facts: { calories: 579, protein: '21g', fat: '50g', carbs: '22g', fiber: '12g', sugar: '4g' },
@@ -56,6 +60,7 @@ const seed = async () => {
       description: 'Our W240 grade cashews are among the finest in the world. Sourced from the Konkan coast of India, these large whole cashews have a buttery, creamy flavor that is simply unmatched. Perfect for snacking, cooking, or gifting.',
       price: 799, original_price: 999, discount_percent: 20, weight: '500g',
       sku: 'CSH-W240-500', stock: 85, rating: 4.9, review_count: 189,
+      thumbnail: '/images/categories/cashews.png',
       is_featured: true, is_best_seller: true,
       benefits: ['Rich in Zinc', 'Boosts Immunity', 'Heart Healthy', 'High in Iron'],
       nutrition_facts: { calories: 553, protein: '18g', fat: '44g', carbs: '30g', fiber: '3g', sugar: '6g' },
@@ -70,6 +75,7 @@ const seed = async () => {
       description: 'Our Iranian pistachios are grown in the Rafsanjan region, home to the world\'s finest pistachio orchards. Each pistachio is carefully roasted to bring out its natural flavors while preserving all nutrients.',
       price: 1199, original_price: 1499, discount_percent: 20, weight: '500g',
       sku: 'PST-IRN-500', stock: 60, rating: 4.7, review_count: 142,
+      thumbnail: '/images/categories/pistachios.png',
       is_featured: true, is_best_seller: false,
       benefits: ['Rich in Antioxidants', 'Boosts Eye Health', 'Weight Management', 'High in Fiber'],
       nutrition_facts: { calories: 562, protein: '20g', fat: '45g', carbs: '28g', fiber: '10g', sugar: '8g' },
@@ -84,6 +90,7 @@ const seed = async () => {
       description: 'Sourced from the pristine valleys of Kashmir, these walnut kernels are harvested at peak ripeness. Their rich, buttery flavor and high Omega-3 content make them a superfood staple.',
       price: 699, original_price: 899, discount_percent: 22, weight: '500g',
       sku: 'WLN-KSH-500', stock: 75, rating: 4.8, review_count: 201,
+      thumbnail: '/images/categories/walnuts.png',
       is_featured: true, is_best_seller: true,
       benefits: ['Brain Health', 'Rich in Omega-3', 'Anti-inflammatory', 'Heart Protective'],
       nutrition_facts: { calories: 654, protein: '15g', fat: '65g', carbs: '14g', fiber: '7g', sugar: '3g' },
@@ -98,6 +105,7 @@ const seed = async () => {
       description: 'Known as the "King of Dates", our Medjool dates are prized for their large size, soft texture, and caramel-like sweetness. Sourced from premier date farms, they are a natural source of energy and minerals.',
       price: 899, original_price: 1099, discount_percent: 18, weight: '500g',
       sku: 'DTS-MDJ-500', stock: 90, rating: 4.9, review_count: 315,
+      thumbnail: '/images/categories/dates.png',
       is_featured: false, is_best_seller: true,
       benefits: ['Instant Energy', 'Rich in Iron', 'Bone Health', 'Natural Sweetener'],
       nutrition_facts: { calories: 277, protein: '2g', fat: '0.2g', carbs: '75g', fiber: '7g', sugar: '66g' },
@@ -112,6 +120,7 @@ const seed = async () => {
       description: 'Our golden raisins are made from premium Thompson Seedless grapes, naturally sun-dried to preserve their natural sweetness and nutrients. Perfect for baking, cooking, or as a healthy snack.',
       price: 349, original_price: 449, discount_percent: 22, weight: '500g',
       sku: 'RSN-GLD-500', stock: 120, rating: 4.6, review_count: 178,
+      thumbnail: '/images/categories/raisins.png',
       is_featured: false, is_best_seller: false,
       benefits: ['Rich in Iron', 'Natural Energy', 'Digestive Health', 'Bone Strength'],
       nutrition_facts: { calories: 299, protein: '3g', fat: '0.5g', carbs: '79g', fiber: '4g', sugar: '59g' },
@@ -126,6 +135,7 @@ const seed = async () => {
       description: 'Our Royal Mixed Nuts Deluxe is a carefully curated blend of our finest nuts. Each variety is sourced from its optimal growing region and blended in perfect proportion to create a premium snacking experience.',
       price: 999, original_price: 1299, discount_percent: 23, weight: '500g',
       sku: 'MXD-RYL-500', stock: 65, rating: 4.8, review_count: 256,
+      thumbnail: '/images/categories/mixed-nuts.png',
       is_featured: true, is_best_seller: true,
       benefits: ['Complete Nutrition', 'Heart Healthy', 'Brain Booster', 'Premium Quality'],
       nutrition_facts: { calories: 600, protein: '18g', fat: '52g', carbs: '25g', fiber: '7g', sugar: '5g' },
@@ -140,6 +150,7 @@ const seed = async () => {
       description: 'Our Superberry Blend combines three of nature\'s most potent antioxidant sources. Cranberries, blueberries, and goji berries are individually sourced, dried at optimal temperatures, and blended to create a flavor-packed superfood.',
       price: 649, original_price: 849, discount_percent: 24, weight: '300g',
       sku: 'BRY-SUP-300', stock: 80, rating: 4.7, review_count: 134,
+      thumbnail: '/images/categories/dried-berries.png',
       is_featured: true, is_best_seller: false,
       benefits: ['Antioxidant Rich', 'Immune Booster', 'Vision Health', 'Anti-aging'],
       nutrition_facts: { calories: 308, protein: '4g', fat: '1g', carbs: '74g', fiber: '8g', sugar: '55g' },
@@ -150,7 +161,10 @@ const seed = async () => {
   ];
 
   for (const p of products) {
-    await Product.findOrCreate({ where: { slug: p.slug }, defaults: p });
+    const [prod] = await Product.findOrCreate({ where: { slug: p.slug }, defaults: p });
+    // Update thumbnail in case it already exists in DB but had null thumbnail
+    prod.thumbnail = p.thumbnail;
+    await prod.save();
   }
   console.log('✅ Products created');
 

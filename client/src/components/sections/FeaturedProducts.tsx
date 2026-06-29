@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { useStagger, useSplitText } from '@/lib/gsap';
 import ProductCard, { ProductCardProps } from '@/components/ui/ProductCard';
+import { publicApi } from '@/lib/api';
 
 // Static featured products data (fallback while API loads)
 const FEATURED_PRODUCTS: ProductCardProps[] = [
@@ -89,12 +90,53 @@ export default function FeaturedProducts({
 }: FeaturedProductsProps) {
   const titleRef = useSplitText({ delay: 0.1 });
   const gridRef = useStagger('.product-card', { stagger: 0.07 });
+  const [products, setProducts] = useState<ProductCardProps[]>([]);
 
-  const products = filter === 'best_seller'
-    ? FEATURED_PRODUCTS.filter(p => p.is_best_seller).slice(0, limit)
-    : filter === 'featured'
-    ? FEATURED_PRODUCTS.filter(p => p.is_featured).slice(0, limit)
-    : FEATURED_PRODUCTS.slice(0, limit);
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        let res;
+        if (filter === 'best_seller') {
+          res = await publicApi.getBestSellers();
+        } else {
+          res = await publicApi.getFeaturedProducts();
+        }
+        
+        if (res.data && res.data.length > 0) {
+          const formatted = res.data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            price: Number(p.price),
+            original_price: p.original_price ? Number(p.original_price) : undefined,
+            discount_percent: p.discount_percent,
+            weight: p.weight,
+            thumbnail: p.thumbnail || '/images/categories/almonds.png',
+            rating: Number(p.rating),
+            review_count: p.review_count,
+            category: p.category ? { name: p.category.name, slug: p.category.slug } : { name: 'Almonds', slug: 'almonds' }
+          }));
+          setProducts(formatted.slice(0, limit));
+        } else {
+          const staticFallback = filter === 'best_seller'
+            ? FEATURED_PRODUCTS.filter(p => p.is_best_seller).slice(0, limit)
+            : filter === 'featured'
+            ? FEATURED_PRODUCTS.filter(p => p.is_featured).slice(0, limit)
+            : FEATURED_PRODUCTS.slice(0, limit);
+          setProducts(staticFallback);
+        }
+      } catch (err) {
+        console.error('Failed to load live featured products, using fallback:', err);
+        const staticFallback = filter === 'best_seller'
+          ? FEATURED_PRODUCTS.filter(p => p.is_best_seller).slice(0, limit)
+          : filter === 'featured'
+          ? FEATURED_PRODUCTS.filter(p => p.is_featured).slice(0, limit)
+          : FEATURED_PRODUCTS.slice(0, limit);
+        setProducts(staticFallback);
+      }
+    };
+    loadProducts();
+  }, [filter, limit]);
 
   return (
     <section className="section-padding bg-surface">

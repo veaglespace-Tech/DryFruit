@@ -18,9 +18,10 @@ import { toggleWishlist, selectIsInWishlist } from '@/store/slices/wishlistSlice
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import toast from 'react-hot-toast';
+import { publicApi } from '@/lib/api';
 
 // Seeded products data mock fallback
-const ALL_PRODUCTS = [
+const STATIC_PRODUCTS = [
   {
     id: 1, name: 'Premium California Almonds', slug: 'premium-california-almonds',
     price: 599, original_price: 799, discount_percent: 25, weight: '500g',
@@ -126,13 +127,97 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
   const [activeTab, setActiveTab] = useState<'desc' | 'nutrition' | 'shipping'>('desc');
   const detailsRef = useRef<HTMLDivElement>(null);
 
-  const product = ALL_PRODUCTS.find((p) => p.slug === slug) || ALL_PRODUCTS[0];
-  const isWishlisted = useAppSelector(selectIsInWishlist(product.id));
+  const [product, setProduct] = useState<any>(null);
+  const [related, setRelated] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Find related products
-  const related = ALL_PRODUCTS.filter(
-    (p) => p.category.slug === product.category.slug && p.id !== product.id
-  ).slice(0, 4);
+  // Load product details from database
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      try {
+        const res = await publicApi.getProductBySlug(slug);
+        if (res.data && res.data.success !== false) {
+          const raw = res.data.data;
+          const formatted = {
+            id: raw.id,
+            name: raw.name,
+            slug: raw.slug,
+            price: Number(raw.price),
+            original_price: raw.original_price ? Number(raw.original_price) : undefined,
+            discount_percent: raw.discount_percent,
+            weight: raw.weight,
+            thumbnail: raw.thumbnail || '/images/categories/almonds.png',
+            rating: Number(raw.rating),
+            review_count: raw.review_count,
+            short_description: raw.short_description || 'Naturally rich and wholesome organic harvest.',
+            description: raw.description || 'Premium hand-selected selection directly from organic valley orchards.',
+            benefits: Array.isArray(raw.benefits) ? raw.benefits : ['Rich in Nutrients', 'Wholesome Goodness'],
+            nutrition_facts: raw.nutrition_facts || { calories: '500 kcal', protein: '15g', fat: '45g', carbs: '25g', fiber: '8g' },
+            storage_instructions: raw.storage_instructions || 'Store in a cool, dry place. Keep in an airtight container once opened.',
+            category: raw.category ? { name: raw.category.name, slug: raw.category.slug } : { name: 'Almonds', slug: 'almonds' }
+          };
+          setProduct(formatted);
+
+          if (res.data.related && res.data.related.length > 0) {
+            const relFormatted = res.data.related.map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              price: Number(p.price),
+              original_price: p.original_price ? Number(p.original_price) : undefined,
+              discount_percent: p.discount_percent,
+              weight: p.weight,
+              thumbnail: p.thumbnail || '/images/categories/almonds.png',
+              rating: Number(p.rating),
+              review_count: p.review_count,
+              category: p.category ? { name: p.category.name, slug: p.category.slug } : { name: 'Almonds', slug: 'almonds' }
+            }));
+            setRelated(relFormatted);
+          } else {
+            const staticRelated = STATIC_PRODUCTS.filter(
+              (p) => p.category.slug === formatted.category.slug && p.id !== formatted.id
+            ).slice(0, 4);
+            setRelated(staticRelated);
+          }
+        } else {
+          loadFallback();
+        }
+      } catch (err) {
+        console.error('Failed to load product details, using static fallback:', err);
+        loadFallback();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const loadFallback = () => {
+      const p = STATIC_PRODUCTS.find((p) => p.slug === slug) || STATIC_PRODUCTS[0];
+      setProduct(p);
+      const staticRelated = STATIC_PRODUCTS.filter(
+        (relatedProd) => relatedProd.category.slug === p.category.slug && relatedProd.id !== p.id
+      ).slice(0, 4);
+      setRelated(staticRelated);
+    };
+
+    fetchProduct();
+  }, [slug]);
+
+  const isWishlisted = useAppSelector(selectIsInWishlist(product?.id || 0));
+
+  if (loading || !product) {
+    return (
+      <>
+        <AnnouncementBar />
+        <Navbar />
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-primary-DEFAULT border-t-transparent animate-spin"></div>
+          <p className="font-body text-xs text-text-muted animate-pulse">Loading Product Details...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   useGSAP(() => {
     gsap.fromTo('.product-gallery', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out' });
@@ -251,7 +336,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                           <Star
                             key={i}
                             size={16}
-                            className={i < Math.round(product.rating) ? 'fill-accent-DEFAULT text-accent-DEFAULT' : 'text-border-DEFAULT'}
+                            className={i < Math.round(product.rating) ? 'fill-amber-400 text-amber-400' : 'text-gray-200'}
                           />
                         ))}
                       </div>
@@ -289,7 +374,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
 
                 {/* Benefits Checkmarks */}
                 <div className="grid grid-cols-2 gap-3 py-2">
-                  {product.benefits.map((benefit) => (
+                  {product.benefits.map((benefit: string) => (
                     <div key={benefit} className="flex items-center gap-2">
                       <div className="w-5 h-5 rounded-full bg-green-50 flex items-center justify-center flex-shrink-0">
                         <Check size={12} className="text-green-600 font-bold" />
@@ -416,7 +501,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                       {Object.entries(product.nutrition_facts).map(([key, val]) => (
                         <div key={key} className="flex justify-between py-1.5 border-b border-border-light last:border-0 text-text-muted">
                           <span className="capitalize">{key}</span>
-                          <span className="font-semibold text-primary-DEFAULT">{val}</span>
+                          <span className="font-semibold text-primary-DEFAULT">{String(val)}</span>
                         </div>
                       ))}
                     </div>

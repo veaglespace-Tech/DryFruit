@@ -50,29 +50,29 @@ export default function Footer() {
               </div>
               <div>
                 <span className="font-heading text-2xl font-bold text-white">NutriRoots</span>
-                <p className="text-xs text-white/60 font-body">Nature&apos;s Premium Store</p>
+                <p className="text-xs text-white/85 font-body">Nature&apos;s Premium Store</p>
               </div>
             </Link>
 
-            <p className="text-white/70 font-body text-sm leading-relaxed mb-6">
+            <p className="text-white/90 font-body text-sm leading-relaxed mb-6">
               We bring you the finest quality dry fruits, nuts, and superfoods sourced directly from the world&apos;s best farms. 100% natural, no additives, pure goodness.
             </p>
 
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="tel:+919876543210" className="flex items-center gap-3 text-white/70 hover:text-accent-DEFAULT transition-colors text-sm">
+              <a href="tel:+919876543210" className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm">
                 <Phone size={16} className="flex-shrink-0 text-accent-DEFAULT" />
                 +91 98765 43210
               </a>
-              <a href="https://wa.me/919876543210" className="flex items-center gap-3 text-white/70 hover:text-accent-DEFAULT transition-colors text-sm" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/919876543210" className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm" target="_blank" rel="noopener noreferrer">
                 <MessageCircle size={16} className="flex-shrink-0 text-accent-DEFAULT" />
                 WhatsApp Us
               </a>
-              <a href="mailto:hello@nutriroots.com" className="flex items-center gap-3 text-white/70 hover:text-accent-DEFAULT transition-colors text-sm">
+              <a href="mailto:hello@nutriroots.com" className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm">
                 <Mail size={16} className="flex-shrink-0 text-accent-DEFAULT" />
                 hello@nutriroots.com
               </a>
-              <p className="flex items-start gap-3 text-white/70 text-sm">
+              <p className="flex items-start gap-3 text-white/90 text-sm">
                 <MapPin size={16} className="flex-shrink-0 text-accent-DEFAULT mt-0.5" />
                 123, Green Valley Road, Pune, Maharashtra 411001
               </p>
@@ -91,7 +91,7 @@ export default function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
+                  className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/80 hover:text-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
                   aria-label={label}
                 >
                   <Icon size={16} />
@@ -109,7 +109,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="flex items-center gap-2 text-white/60 hover:text-accent-DEFAULT transition-colors text-sm font-body group"
+                    className="flex items-center gap-2 text-white/80 hover:text-accent-DEFAULT transition-colors text-sm font-body group"
                   >
                     <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent-DEFAULT" />
                     {link.label}
@@ -127,7 +127,7 @@ export default function Footer() {
                 <li key={cat.label}>
                   <Link
                     href={cat.href}
-                    className="flex items-center gap-2 text-white/60 hover:text-accent-DEFAULT transition-colors text-sm font-body group"
+                    className="flex items-center gap-2 text-white/80 hover:text-accent-DEFAULT transition-colors text-sm font-body group"
                   >
                     <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-accent-DEFAULT" />
                     {cat.label}
@@ -140,7 +140,7 @@ export default function Footer() {
           {/* Newsletter + Company */}
           <div>
             <h3 className="font-heading text-lg font-semibold text-white mb-6">Stay Connected</h3>
-            <p className="text-white/60 text-sm font-body mb-4">
+            <p className="text-white/80 text-sm font-body mb-4">
               Subscribe for exclusive offers, new arrivals, and healthy living tips.
             </p>
             <div className="flex gap-2 mb-8">
@@ -155,11 +155,11 @@ export default function Footer() {
             </div>
 
             {/* Company Links */}
-            <h3 className="font-heading text-sm font-semibold text-white/80 mb-4">Company</h3>
+            <h3 className="font-heading text-sm font-semibold text-white/95 mb-4">Company</h3>
             <ul className="space-y-2">
               {company.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.href} className="text-white/50 hover:text-accent-DEFAULT transition-colors text-sm font-body">
+                  <Link href={item.href} className="text-white/70 hover:text-accent-DEFAULT transition-colors text-sm font-body">
                     {item.label}
                   </Link>
                 </li>
@@ -173,15 +173,15 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="container-luxury py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/40 text-sm font-body text-center">
+            <p className="text-white/70 text-sm font-body text-center">
               &copy; {new Date().getFullYear()} NutriRoots. All rights reserved.
             </p>
-            <div className="flex items-center gap-1 text-white/40 text-sm font-body">
+            <div className="flex items-center gap-1 text-white/70 text-sm font-body">
               Made with <Heart size={14} className="text-red-400 mx-1" /> for healthy living
             </div>
             <div className="flex items-center gap-6">
               {['Privacy Policy', 'Terms of Service', 'Refund Policy'].map((item) => (
-                <Link key={item} href={`/${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/40 hover:text-white/70 text-xs font-body transition-colors">
+                <Link key={item} href={`/${item.toLowerCase().replace(/ /g, '-')}`} className="text-white/70 hover:text-white/95 text-xs font-body transition-colors">
                   {item}
                 </Link>
               ))}

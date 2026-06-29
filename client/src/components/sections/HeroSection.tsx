@@ -161,7 +161,7 @@ export default function HeroSection() {
           {/* Headline */}
           <div ref={headlineRef} className="mb-6 overflow-hidden">
             <div className="hero-headline-line overflow-hidden">
-              <h1 className="font-heading text-white" style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.02em' }}>
+              <h1 className="font-heading" style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.02em', color: '#ffffff' }}>
                 Nature&apos;s Finest
               </h1>
             </div>
@@ -171,7 +171,7 @@ export default function HeroSection() {
               </h1>
             </div>
             <div className="hero-headline-line overflow-hidden">
-              <h1 className="font-heading text-white/80 italic" style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', fontWeight: 400, lineHeight: 1.2 }}>
+              <h1 className="font-heading italic" style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', fontWeight: 400, lineHeight: 1.2, color: 'rgba(255, 255, 255, 0.85)' }}>
                 Delivered to your door
               </h1>
             </div>
@@ -180,7 +180,7 @@ export default function HeroSection() {
           {/* Subheadline */}
           <p
             ref={subHeadlineRef}
-            className="text-white/70 font-body text-lg leading-relaxed mb-8 max-w-2xl"
+            className="text-white/95 font-body text-lg leading-relaxed mb-8 max-w-2xl"
           >
             Sourced from the world&apos;s finest farms and orchards, our premium dry fruits are handpicked, naturally processed, and packed to perfection. Experience the difference quality makes.
           </p>
@@ -209,7 +209,7 @@ export default function HeroSection() {
               { icon: Leaf, text: 'Chemical Free' },
               { icon: Award, text: 'Award Winning' },
             ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-2 text-white/70">
+              <div key={text} className="flex items-center gap-2 text-white/95">
                 <Icon size={14} className="text-accent-DEFAULT" />
                 <span className="text-xs font-body">{text}</span>
               </div>
@@ -227,7 +227,7 @@ export default function HeroSection() {
               <div className="font-heading text-2xl md:text-3xl font-bold text-accent-DEFAULT mb-1">
                 {stat.value}
               </div>
-              <div className="text-white/60 text-xs font-body">{stat.label}</div>
+              <div className="text-white/85 text-xs font-body">{stat.label}</div>
             </div>
           ))}
         </div>

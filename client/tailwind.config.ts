@@ -60,8 +60,8 @@ const config: Config = {
         },
         text: {
           DEFAULT: "#2D2D2D",
-          muted: "#6B6B6B",
-          light: "#9B9B9B",
+          muted: "#4E4E4E",
+          light: "#636363",
         },
       },
       fontFamily: {

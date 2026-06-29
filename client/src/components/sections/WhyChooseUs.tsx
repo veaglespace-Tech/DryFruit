@@ -182,11 +182,11 @@ export default function WhyChooseUs() {
         {/* Stats Row */}
         <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat) => (
-            <div key={stat.label} className="stat-item text-center p-6 rounded-2xl bg-primary-DEFAULT">
-              <div className="font-heading text-3xl md:text-4xl font-bold text-accent-DEFAULT mb-2">
+            <div key={stat.label} className="stat-item text-center p-6 rounded-2xl bg-[#3D2314] shadow-luxury">
+              <div className="font-heading text-3xl md:text-4xl font-bold text-accent mb-2">
                 {stat.value}
               </div>
-              <div className="text-white/70 text-sm font-body">{stat.label}</div>
+              <div className="text-white/90 text-sm font-body">{stat.label}</div>
             </div>
           ))}
         </div>

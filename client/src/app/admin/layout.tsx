@@ -58,18 +58,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-primary-DEFAULT text-white transition-all duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col bg-[#3D2314] text-white transition-all duration-300 ${
           sidebarOpen ? 'w-64' : 'w-16'
         } ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 p-5 border-b border-white/10">
+        <div className={`flex items-center gap-3 p-5 border-b border-white/10 ${sidebarOpen ? '' : 'justify-center'}`}>
           <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
             <Leaf size={20} style={{ color: '#D4A95A' }} />
           </div>
           {sidebarOpen && (
             <div>
-              <p className="font-heading text-base font-bold">NutriRoots</p>
+              <p className="font-heading text-base font-bold text-white">NutriRoots</p>
               <p className="text-white/50 text-xs font-body">Admin Panel</p>
             </div>
           )}
@@ -83,15 +83,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
-                  isActive ? 'bg-white/15 text-accent-DEFAULT' : 'text-white/70 hover:bg-white/10 hover:text-white'
+                className={`flex items-center rounded-xl transition-all duration-200 ${
+                  sidebarOpen ? 'px-3 py-2.5 gap-3 justify-start' : 'p-2.5 justify-center'
+                } ${
+                  isActive ? 'bg-white/15 text-accent' : 'text-white/70 hover:bg-white/10 hover:text-white'
                 }`}
                 title={!sidebarOpen ? label : undefined}
                 onClick={() => setMobileSidebarOpen(false)}
               >
                 <Icon size={18} className="flex-shrink-0" />
                 {sidebarOpen && <span className="font-body text-sm font-medium">{label}</span>}
-                {sidebarOpen && isActive && <ChevronRight size={14} className="ml-auto text-accent-DEFAULT" />}
+                {sidebarOpen && isActive && <ChevronRight size={14} className="ml-auto text-accent" />}
               </Link>
             );
           })}
@@ -107,7 +109,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           )}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-white/60 hover:text-red-400 hover:bg-white/10 transition-all duration-200"
+            className={`flex items-center w-full rounded-xl text-white/60 hover:text-red-400 hover:bg-white/10 transition-all duration-200 ${
+              sidebarOpen ? 'px-3 py-2.5 gap-3 justify-start' : 'p-2.5 justify-center'
+            }`}
           >
             <LogOut size={18} />
             {sidebarOpen && <span className="font-body text-sm">Sign Out</span>}
