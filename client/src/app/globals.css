@@ -131,13 +131,13 @@ h1, h2, h3, h4, h5, h6 {
    SECTION SPACING
    ============================ */
 .section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
 }
 
 .section-padding-lg {
-  padding-top: 7rem;
-  padding-bottom: 7rem;
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
 }
 
 .container-luxury {
@@ -599,7 +599,7 @@ a {
    ============================ */
 @media (max-width: 768px) {
   .section-padding { padding-top: 3rem; padding-bottom: 3rem; }
-  .section-padding-lg { padding-top: 4rem; padding-bottom: 4rem; }
+  .section-padding-lg { padding-top: 3rem; padding-bottom: 3rem; }
   .heading-display { font-size: clamp(2rem, 8vw, 3rem); }
   .container-luxury { padding-left: 1rem; padding-right: 1rem; }
 }
