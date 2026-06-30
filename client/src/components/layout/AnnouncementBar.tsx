@@ -61,7 +61,6 @@ export default function AnnouncementBar() {
           <div ref={marqueeRef} className="flex items-center gap-0 whitespace-nowrap will-change-transform">
             {allMessages.map((msg, i) => (
               <span key={i} className="flex items-center gap-2 px-8">
-                <Leaf size={10} className="opacity-70" />
                 <span>{msg}</span>
               </span>
             ))}
