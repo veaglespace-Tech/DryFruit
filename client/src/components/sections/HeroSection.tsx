@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingBag, Play, ArrowRight, Leaf, Shield, Award } from 'lucide-react';
@@ -26,6 +26,12 @@ const stats = [
   { value: '15+', label: 'Years of Trust' },
 ];
 
+const slides = [
+  '/images/hero/hero-bg.png',
+  '/images/hero/hero-bg-2.png',
+  '/images/hero/hero-bg-3.png',
+];
+
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -34,6 +40,15 @@ export default function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const nutsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000); // Slide transition every 6 seconds
+    return () => clearInterval(timer);
+  }, []);
 
   useGSAP(() => {
     // Master timeline
@@ -111,20 +126,29 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ paddingTop: '110px' }}
     >
-      {/* Background Image with Parallax */}
+      {/* Background Image Slider with Parallax */}
       <div ref={bgRef} className="absolute inset-0 z-0 scale-110">
-        <Image
-          src="/images/hero/hero-bg.png"
-          alt="Premium Dry Fruits Collection"
-          fill
-          sizes="100vw"
-          className="object-cover"
-          priority
-          loading="eager"
-        />
+        {slides.map((src, index) => (
+          <div
+            key={src}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <Image
+              src={src}
+              alt="Premium Shreepad Collection"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority={index === 0}
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
         {/* Multi-layer Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#3D1F0E]/90 via-[#6B3E26]/70 to-[#A97142]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2D1209]/80 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3D1F0E]/90 via-[#6B3E26]/70 to-[#A97142]/40 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2D1209]/80 via-transparent to-transparent z-10" />
       </div>
 
       {/* Floating Nut Elements */}
