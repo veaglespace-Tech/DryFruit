@@ -67,11 +67,6 @@ export default function AnnouncementBar() {
             ))}
           </div>
         </div>
-
-        {/* Right */}
-        <div className="flex-shrink-0 px-4 border-l border-white/20 py-1 hidden md:block">
-          <span className="text-xs text-white/80">EST. 2020</span>
-        </div>
       </div>
     </div>
   );
