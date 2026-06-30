@@ -251,7 +251,7 @@ export default function Navbar() {
               >
                 <ShoppingBag size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 z-10 w-5 h-5 bg-accent-DEFAULT text-white text-[10px] font-bold rounded-full flex items-center justify-center font-button border border-white">
+                  <span className="absolute -top-1.5 -right-1.5 z-10 w-5 h-5 bg-[#D4A95A] text-[#3D2314] text-[10px] font-bold rounded-full flex items-center justify-center font-button border border-white">
                     {cartCount > 9 ? '9+' : cartCount}
                   </span>
                 )}
