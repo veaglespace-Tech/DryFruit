@@ -5,6 +5,7 @@ import { Search, SlidersHorizontal, ChevronDown, X, Leaf, Star } from 'lucide-re
 import AnnouncementBar from '@/components/layout/AnnouncementBar';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import Image from 'next/image';
 import ProductCard, { ProductCardProps } from '@/components/ui/ProductCard';
 import { useStagger } from '@/lib/gsap';
 import { publicApi } from '@/lib/api';
@@ -21,7 +22,7 @@ const STATIC_PRODUCTS: ProductCardProps[] = [
   { id: 9, name: 'Premium Dried Figs', slug: 'premium-dried-figs', price: 549, original_price: 699, discount_percent: 21, weight: '400g', thumbnail: '/images/categories/figs.png', rating: 4.6, review_count: 98, is_featured: false, is_best_seller: false, category: { name: 'Dried Berries', slug: 'dried-berries' } },
 ];
 
-const STATIC_CATEGORIES = ['All', 'Almonds', 'Cashews', 'Pistachios', 'Walnuts', 'Dates', 'Raisins', 'Mixed Nuts', 'Dried Berries'];
+const STATIC_CATEGORIES = ['All', 'Almonds', 'Cashews', 'Pistachios', 'Walnuts', 'Dates', 'Raisins', 'Figs', 'Seeds', 'Mixed Nuts', 'Dried Berries'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price_asc' },
@@ -338,21 +339,55 @@ export default function ProductsPageClient() {
 
             {/* Products Grid */}
             <div className="flex-1">
-              {/* Mobile Filter Row */}
-              <div className="lg:hidden flex gap-3 mb-6 overflow-x-auto pb-2">
-                {categories.map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-button font-medium transition-all ${
-                      selectedCategory === cat
-                        ? 'bg-primary-DEFAULT text-white'
-                        : 'bg-surface border border-border-DEFAULT text-text-DEFAULT hover:border-primary-DEFAULT'
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
+              {/* Premium Category Filter Scroll Bar (Both Desktop and Mobile) */}
+              <div className="w-full overflow-x-auto pb-4 mb-8 flex gap-3 scrollbar-thin scroll-smooth">
+                {categories.map(cat => {
+                  const categoryImages: Record<string, string> = {
+                    'All': '/images/icons/all.png',
+                    'Almonds': '/images/categories/almonds.png',
+                    'Cashews': '/images/categories/cashews.png',
+                    'Pistachios': '/images/categories/pistachios.png',
+                    'Walnuts': '/images/categories/walnuts.png',
+                    'Dates': '/images/categories/dates.png',
+                    'Raisins': '/images/categories/raisins.png',
+                    'Figs': '/images/categories/figs.png',
+                    'Seeds': '/images/categories/seeds.png',
+                    'Mixed Nuts': '/images/categories/mixed-nuts.png',
+                    'Mixed Nuts & Mixes': '/images/categories/mixed-nuts.png',
+                    'Dried Berries': '/images/categories/dried-berries.png',
+                  };
+
+                  const isActive = selectedCategory === cat;
+
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border text-sm font-button font-semibold transition-all duration-300 flex-shrink-0 ${
+                        isActive
+                          ? 'bg-[#3D2314] text-white border-[#3D2314] shadow-md shadow-[#3D2314]/25 scale-102'
+                          : 'bg-white hover:bg-[#FDFBF7] hover:border-[#D4A95A]/50 text-[#3D2314] border-border-DEFAULT'
+                      }`}
+                    >
+                      {cat === 'All' ? (
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${isActive ? 'bg-white/20 text-white' : 'bg-[#D4A95A]/20 text-[#3D2314]'}`}>
+                          <Star size={12} className="fill-current" />
+                        </div>
+                      ) : (
+                        <div className="relative w-6 h-6 rounded-lg overflow-hidden border border-border-DEFAULT bg-[#FDFBF7]">
+                          <Image
+                            src={categoryImages[cat] || '/images/categories/almonds.png'}
+                            alt={cat}
+                            fill
+                            className="object-cover"
+                            sizes="24px"
+                          />
+                        </div>
+                      )}
+                      <span>{cat}</span>
+                    </button>
+                  );
+                })}
               </div>
 
               {filtered.length > 0 ? (

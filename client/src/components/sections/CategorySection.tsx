@@ -13,14 +13,16 @@ import { publicApi } from '@/lib/api';
 gsap.registerPlugin(ScrollTrigger);
 
 const STATIC_CATEGORIES = [
-  { name: 'Almonds', slug: 'almonds', description: 'Rich in Vitamin E & Protein', image: '/images/categories/almonds.png', count: '12 Products', color: '#F0DCCC' },
-  { name: 'Cashews', slug: 'cashews', description: 'Creamy & Buttery Perfection', image: '/images/categories/cashews.png', count: '8 Products', color: '#F4E4CE' },
-  { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant & Naturally Roasted', image: '/images/categories/pistachios.png', count: '6 Products', color: '#E8F5E9' },
-  { name: 'Walnuts', slug: 'walnuts', description: 'Omega-3 Brain Superfoods', image: '/images/categories/walnuts.png', count: '5 Products', color: '#FBF4EC' },
-  { name: 'Medjool Dates', slug: 'dates', description: 'The King of Dates', image: '/images/categories/dates.png', count: '7 Products', color: '#FFF3E0' },
-  { name: 'Raisins', slug: 'raisins', description: 'Sun-Dried Sweetness', image: '/images/categories/raisins.png', count: '4 Products', color: '#FCE4EC' },
-  { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated Premium Blends', image: '/images/categories/mixed-nuts.png', count: '5 Products', color: '#F3E5F5' },
+  { name: 'Almonds', slug: 'almonds', description: 'Rich in Vitamin E & Protein', image: '/images/categories/almonds.png', count: '13 Products', color: '#F0DCCC' },
+  { name: 'Cashews', slug: 'cashews', description: 'Creamy & Buttery Perfection', image: '/images/categories/cashews.png', count: '9 Products', color: '#F4E4CE' },
+  { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant & Naturally Roasted', image: '/images/categories/pistachios.png', count: '7 Products', color: '#E8F5E9' },
+  { name: 'Walnuts', slug: 'walnuts', description: 'Omega-3 Brain Superfoods', image: '/images/categories/walnuts.png', count: '6 Products', color: '#FBF4EC' },
+  { name: 'Medjool Dates', slug: 'dates', description: 'The King of Dates', image: '/images/categories/dates.png', count: '8 Products', color: '#FFF3E0' },
+  { name: 'Raisins', slug: 'raisins', description: 'Sun-Dried Sweetness', image: '/images/categories/raisins.png', count: '6 Products', color: '#FCE4EC' },
+  { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated Premium Blends', image: '/images/categories/mixed-nuts.png', count: '8 Products', color: '#F3E5F5' },
   { name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant Superfoods', image: '/images/categories/dried-berries.png', count: '8 Products', color: '#FCE4EC' },
+  { name: 'Seeds', slug: 'seeds', description: 'Nutrient-Dense Super Seeds', image: '/images/categories/seeds.png', count: '4 Products', color: '#E8F5E9' },
+  { name: 'Figs', slug: 'figs', description: 'Premium Sun-Dried Figs', image: '/images/categories/figs.png', count: '3 Products', color: '#FFF3E0' },
 ];
 
 export default function CategorySection() {
@@ -77,51 +79,41 @@ export default function CategorySection() {
           </p>
         </div>
 
-        {/* Category Grid */}
-        <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        {/* Circular Category Grid (Decorative & Classic) */}
+        <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 justify-items-center justify-center">
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="category-card group"
+              className="category-card group flex flex-col items-center text-center"
               aria-label={`Browse ${cat.name}`}
             >
-              <div
-                className="relative overflow-hidden rounded-2xl border border-border-DEFAULT transition-all duration-500 group-hover:shadow-luxury-lg group-hover:border-accent-DEFAULT/30"
-                style={{ backgroundColor: cat.color }}
+              {/* Outer circular stamp border with gold offset shadow */}
+              <div 
+                className="relative w-36 h-36 md:w-40 md:h-40 rounded-full border-4 border-[#3D2314] bg-[#FDFBF7] flex items-center justify-center overflow-hidden transition-all duration-300 shadow-[6px_6px_0px_#D4A95A] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_#D4A95A]"
               >
-                {/* Image */}
-                <div className="relative h-44 overflow-hidden">
+                {/* Inner dotted decorative ring */}
+                <div className="absolute inset-2 rounded-full border border-dashed border-[#D4A95A]/60 pointer-events-none" />
+
+                {/* Product Image */}
+                <div className="relative w-[75%] h-[75%] rounded-full overflow-hidden bg-white/40">
                   <Image
                     src={cat.image}
                     alt={cat.name}
                     fill
-                    className="category-image object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="category-image object-cover transition-transform duration-500 group-hover:scale-115"
+                    sizes="(max-width: 768px) 33vw, 20vw"
                   />
-                  {/* Count Badge */}
-                  <div className="absolute top-3 right-3 px-2.5 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-button font-semibold text-primary-DEFAULT shadow-sm">
-                    {cat.count}
-                  </div>
                 </div>
-
-                {/* Content */}
-                <div className="p-4">
-                  <h3 className="font-heading text-base font-semibold text-primary-DEFAULT mb-1">
-                    {cat.name}
-                  </h3>
-                  <p className="text-text-muted text-xs font-body mb-3 leading-relaxed">
-                    {cat.description}
-                  </p>
-                  <div className="flex items-center gap-1 text-accent-DEFAULT text-xs font-button font-semibold">
-                    <span>Explore</span>
-                    <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-
-                {/* Hover overlay line */}
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-DEFAULT to-accent-DEFAULT transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
               </div>
+
+              {/* Title & Count */}
+              <h3 className="font-heading text-sm md:text-base font-bold text-[#3D2314] mt-4 mb-0.5 group-hover:text-[#D4A95A] transition-colors duration-200">
+                {cat.name}
+              </h3>
+              <p className="text-text-muted text-[10px] md:text-xs font-body font-medium">
+                {cat.count}
+              </p>
             </Link>
           ))}
         </div>
