@@ -244,15 +244,14 @@ export default function Navbar() {
                 <Heart size={20} />
               </Link>
 
-              {/* Cart */}
               <button
                 onClick={() => dispatch(toggleCart())}
-                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent-DEFAULT shadow-luxury"
+                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent-DEFAULT shadow-luxury overflow-visible"
                 aria-label={`Cart (${cartCount} items)`}
               >
                 <ShoppingBag size={20} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-accent-DEFAULT text-white text-xs font-bold rounded-full flex items-center justify-center font-button">
+                  <span className="absolute -top-1.5 -right-1.5 z-10 w-5 h-5 bg-accent-DEFAULT text-white text-[10px] font-bold rounded-full flex items-center justify-center font-button border border-white">
                     {cartCount > 9 ? '9+' : cartCount}
                   </span>
                 )}
