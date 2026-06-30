@@ -13,16 +13,13 @@ import { publicApi } from '@/lib/api';
 gsap.registerPlugin(ScrollTrigger);
 
 const STATIC_CATEGORIES = [
-  { name: 'Almonds', slug: 'almonds', description: 'Rich in Vitamin E & Protein', image: '/images/categories/almonds.png', count: '13 Products', color: '#F0DCCC' },
-  { name: 'Cashews', slug: 'cashews', description: 'Creamy & Buttery Perfection', image: '/images/categories/cashews.png', count: '9 Products', color: '#F4E4CE' },
-  { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant & Naturally Roasted', image: '/images/categories/pistachios.png', count: '7 Products', color: '#E8F5E9' },
-  { name: 'Walnuts', slug: 'walnuts', description: 'Omega-3 Brain Superfoods', image: '/images/categories/walnuts.png', count: '6 Products', color: '#FBF4EC' },
-  { name: 'Medjool Dates', slug: 'dates', description: 'The King of Dates', image: '/images/categories/dates.png', count: '8 Products', color: '#FFF3E0' },
-  { name: 'Raisins', slug: 'raisins', description: 'Sun-Dried Sweetness', image: '/images/categories/raisins.png', count: '6 Products', color: '#FCE4EC' },
-  { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated Premium Blends', image: '/images/categories/mixed-nuts.png', count: '8 Products', color: '#F3E5F5' },
-  { name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant Superfoods', image: '/images/categories/dried-berries.png', count: '8 Products', color: '#FCE4EC' },
-  { name: 'Seeds', slug: 'seeds', description: 'Nutrient-Dense Super Seeds', image: '/images/categories/seeds.png', count: '4 Products', color: '#E8F5E9' },
-  { name: 'Figs', slug: 'figs', description: 'Premium Sun-Dried Figs', image: '/images/categories/figs.png', count: '3 Products', color: '#FFF3E0' },
+  { name: 'Dry Fruits & Seeds', slug: 'dry-fruits-seeds', description: 'Premium Dry Fruits, Nuts & Seeds', image: '/images/categories/dry-fruits-seeds.png', count: '18 Products', color: '#F0DCCC' },
+  { name: 'Oils & Ghee', slug: 'oils-ghee', description: 'Cold-Pressed Oils & Cow Ghee', image: '/images/categories/oils-ghee.png', count: '3 Products', color: '#F4E4CE' },
+  { name: 'Tea, Coffee & Beverages', slug: 'tea-coffee-beverages', description: 'Premium Teas & Gourmet Coffees', image: '/images/categories/tea-coffee-beverages.png', count: '3 Products', color: '#E8F5E9' },
+  { name: 'Atta, Rice & Dal', slug: 'atta-rice-dal', description: 'Chakki Atta, Basmati Rice & Dals', image: '/images/categories/atta-rice-dal.png', count: '3 Products', color: '#FBF4EC' },
+  { name: 'Masala, Spices & Salt', slug: 'masala-spices-salt', description: 'Salem Haldi, Chilli Powder & Salts', image: '/images/categories/masala-spices-salt.png', count: '3 Products', color: '#FFF3E0' },
+  { name: 'Breakfast Essentials', slug: 'breakfast-essentials', description: 'Millet Muesli & Ragi Cereals', image: '/images/categories/breakfast-essentials.png', count: '2 Products', color: '#FCE4EC' },
+  { name: 'Sauces & Spreads', slug: 'sauces-instant-foods', description: 'Ready-to-Eat Gravies & Pastes', image: '/images/categories/sauces-instant-foods.png', count: '2 Products', color: '#F3E5F5' },
 ];
 
 export default function CategorySection() {

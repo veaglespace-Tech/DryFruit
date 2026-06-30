@@ -11,18 +11,17 @@ import { useStagger } from '@/lib/gsap';
 import { publicApi } from '@/lib/api';
 
 const STATIC_PRODUCTS: ProductCardProps[] = [
-  { id: 1, name: 'Premium California Almonds', slug: 'premium-california-almonds', price: 599, original_price: 799, discount_percent: 25, weight: '500g', thumbnail: '/images/categories/almonds.png', rating: 4.8, review_count: 247, is_featured: true, is_best_seller: true, category: { name: 'Almonds', slug: 'almonds' } },
-  { id: 2, name: 'Whole Cashews W240 Grade', slug: 'whole-cashews-w240', price: 799, original_price: 999, discount_percent: 20, weight: '500g', thumbnail: '/images/categories/cashews.png', rating: 4.9, review_count: 189, is_featured: true, is_best_seller: true, category: { name: 'Cashews', slug: 'cashews' } },
-  { id: 3, name: 'Iranian Roasted Pistachios', slug: 'iranian-roasted-pistachios', price: 1199, original_price: 1499, discount_percent: 20, weight: '500g', thumbnail: '/images/categories/pistachios.png', rating: 4.7, review_count: 142, is_featured: true, is_best_seller: false, category: { name: 'Pistachios', slug: 'pistachios' } },
-  { id: 4, name: 'Kashmiri Walnut Kernels', slug: 'kashmiri-walnut-kernels', price: 699, original_price: 899, discount_percent: 22, weight: '500g', thumbnail: '/images/categories/walnuts.png', rating: 4.8, review_count: 201, is_featured: true, is_best_seller: true, category: { name: 'Walnuts', slug: 'walnuts' } },
-  { id: 5, name: 'Medjool Dates Premium', slug: 'medjool-dates-premium', price: 899, original_price: 1099, discount_percent: 18, weight: '500g', thumbnail: '/images/categories/dates.png', rating: 4.9, review_count: 315, is_featured: false, is_best_seller: true, category: { name: 'Dates', slug: 'dates' } },
-  { id: 6, name: 'Golden Raisins Kishmish', slug: 'golden-raisins-kishmish', price: 349, original_price: 449, discount_percent: 22, weight: '500g', thumbnail: '/images/categories/raisins.png', rating: 4.6, review_count: 178, is_featured: false, is_best_seller: false, category: { name: 'Raisins', slug: 'raisins' } },
-  { id: 7, name: 'Royal Mixed Nuts Deluxe', slug: 'royal-mixed-nuts-deluxe', price: 999, original_price: 1299, discount_percent: 23, weight: '500g', thumbnail: '/images/categories/mixed-nuts.png', rating: 4.8, review_count: 256, is_featured: true, is_best_seller: true, category: { name: 'Mixed Nuts', slug: 'mixed-nuts' } },
-  { id: 8, name: 'Superberry Blend', slug: 'superberry-blend', price: 649, original_price: 849, discount_percent: 24, weight: '300g', thumbnail: '/images/categories/dried-berries.png', rating: 4.7, review_count: 134, is_featured: true, is_best_seller: false, category: { name: 'Dried Berries', slug: 'dried-berries' } },
-  { id: 9, name: 'Premium Dried Figs', slug: 'premium-dried-figs', price: 549, original_price: 699, discount_percent: 21, weight: '400g', thumbnail: '/images/categories/figs.png', rating: 4.6, review_count: 98, is_featured: false, is_best_seller: false, category: { name: 'Dried Berries', slug: 'dried-berries' } },
+  { id: 1, name: 'Premium California Almonds', slug: 'premium-california-almonds', price: 599, original_price: 799, discount_percent: 25, weight: '500g', thumbnail: '/images/categories/almonds.png', rating: 4.8, review_count: 247, is_featured: true, is_best_seller: true, category: { name: 'Dry Fruits & Seeds', slug: 'dry-fruits-seeds' } },
+  { id: 2, name: 'Whole Cashews W240 Grade', slug: 'whole-cashews-w240', price: 799, original_price: 999, discount_percent: 20, weight: '500g', thumbnail: '/images/categories/cashews.png', rating: 4.9, review_count: 189, is_featured: true, is_best_seller: true, category: { name: 'Dry Fruits & Seeds', slug: 'dry-fruits-seeds' } },
+  { id: 3, name: 'Tata Sampann Premium Pure Cow Ghee 1L', slug: 'tata-sampann-cow-ghee-1l', price: 649, original_price: 720, discount_percent: 10, weight: '1L', thumbnail: '/images/categories/oils-ghee.png', rating: 4.9, review_count: 231, is_featured: true, is_best_seller: true, category: { name: 'Oils & Ghee', slug: 'oils-ghee' } },
+  { id: 4, name: 'Tata Tea Gold Premium Leaf Tea 1kg', slug: 'tata-tea-gold-1kg', price: 449, original_price: 520, discount_percent: 13, weight: '1kg', thumbnail: '/images/categories/tea-coffee-beverages.png', rating: 4.8, review_count: 312, is_featured: true, is_best_seller: true, category: { name: 'Tea, Coffee & Beverages', slug: 'tea-coffee-beverages' } },
+  { id: 5, name: 'Tata Sampann Premium Toor Dal (Arhar) 1kg', slug: 'tata-sampann-toor-dal-1kg', price: 189, original_price: 220, discount_percent: 14, weight: '1kg', thumbnail: '/images/categories/atta-rice-dal.png', rating: 4.8, review_count: 289, is_featured: true, is_best_seller: true, category: { name: 'Atta, Rice & Dal', slug: 'atta-rice-dal' } },
+  { id: 6, name: 'Tata Sampann Turmeric Powder (Haldi) 500g', slug: 'tata-sampann-turmeric-500g', price: 129, original_price: 160, discount_percent: 19, weight: '500g', thumbnail: '/images/categories/masala-spices-salt.png', rating: 4.8, review_count: 222, is_featured: true, is_best_seller: true, category: { name: 'Masala, Spices & Salt', slug: 'masala-spices-salt' } },
+  { id: 7, name: 'Tata Soulfull Fruit & Nut Millet Muesli 400g', slug: 'tata-soulfull-muesli-400g', price: 249, original_price: 299, discount_percent: 16, weight: '400g', thumbnail: '/images/categories/breakfast-essentials.png', rating: 4.8, review_count: 134, is_featured: true, is_best_seller: true, category: { name: 'Breakfast Essentials', slug: 'breakfast-essentials' } },
+  { id: 8, name: 'Tata Sampann Yumside Paneer Butter Masala 300g', slug: 'tata-sampann-paneer-butter-masala-300g', price: 129, original_price: 149, discount_percent: 13, weight: '300g', thumbnail: '/images/categories/sauces-instant-foods.png', rating: 4.7, review_count: 112, is_featured: true, is_best_seller: false, category: { name: 'Sauces & Spreads', slug: 'sauces-instant-foods' } },
 ];
 
-const STATIC_CATEGORIES = ['All', 'Almonds', 'Cashews', 'Pistachios', 'Walnuts', 'Dates', 'Raisins', 'Figs', 'Seeds', 'Mixed Nuts', 'Dried Berries'];
+const STATIC_CATEGORIES = ['All', 'Dry Fruits & Seeds', 'Oils & Ghee', 'Tea, Coffee & Beverages', 'Atta, Rice & Dal', 'Masala, Spices & Salt', 'Breakfast Essentials', 'Sauces & Spreads'];
 const sortOptions = [
   { label: 'Newest', value: 'newest' },
   { label: 'Price: Low to High', value: 'price_asc' },
@@ -70,7 +69,18 @@ export default function ProductsPageClient() {
       try {
         const params: Record<string, string | number> = {};
         if (search) params.search = search;
-        if (selectedCategory !== 'All') params.category = selectedCategory.toLowerCase();
+        if (selectedCategory !== 'All') {
+          const slugMap: Record<string, string> = {
+            'Dry Fruits & Seeds': 'dry-fruits-seeds',
+            'Oils & Ghee': 'oils-ghee',
+            'Tea, Coffee & Beverages': 'tea-coffee-beverages',
+            'Atta, Rice & Dal': 'atta-rice-dal',
+            'Masala, Spices & Salt': 'masala-spices-salt',
+            'Breakfast Essentials': 'breakfast-essentials',
+            'Sauces & Spreads': 'sauces-instant-foods',
+          };
+          params.category = slugMap[selectedCategory] || selectedCategory.toLowerCase();
+        }
         
         if (sortBy === 'price_asc') params.sort = 'price';
         if (sortBy === 'price_desc') params.sort = '-price';
@@ -344,17 +354,13 @@ export default function ProductsPageClient() {
                 {categories.map(cat => {
                   const categoryImages: Record<string, string> = {
                     'All': '/images/icons/all.png',
-                    'Almonds': '/images/categories/almonds.png',
-                    'Cashews': '/images/categories/cashews.png',
-                    'Pistachios': '/images/categories/pistachios.png',
-                    'Walnuts': '/images/categories/walnuts.png',
-                    'Dates': '/images/categories/dates.png',
-                    'Raisins': '/images/categories/raisins.png',
-                    'Figs': '/images/categories/figs.png',
-                    'Seeds': '/images/categories/seeds.png',
-                    'Mixed Nuts': '/images/categories/mixed-nuts.png',
-                    'Mixed Nuts & Mixes': '/images/categories/mixed-nuts.png',
-                    'Dried Berries': '/images/categories/dried-berries.png',
+                    'Dry Fruits & Seeds': '/images/categories/dry-fruits-seeds.png',
+                    'Oils & Ghee': '/images/categories/oils-ghee.png',
+                    'Tea, Coffee & Beverages': '/images/categories/tea-coffee-beverages.png',
+                    'Atta, Rice & Dal': '/images/categories/atta-rice-dal.png',
+                    'Masala, Spices & Salt': '/images/categories/masala-spices-salt.png',
+                    'Breakfast Essentials': '/images/categories/breakfast-essentials.png',
+                    'Sauces & Spreads': '/images/categories/sauces-instant-foods.png',
                   };
 
                   const isActive = selectedCategory === cat;
