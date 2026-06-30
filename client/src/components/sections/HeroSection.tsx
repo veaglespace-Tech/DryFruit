@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShoppingBag, Play, ArrowRight, Leaf, Shield, Award } from 'lucide-react';
@@ -26,12 +26,6 @@ const stats = [
   { value: '15+', label: 'Years of Trust' },
 ];
 
-const slides = [
-  '/images/hero/hero-bg.png',
-  '/images/hero/hero-bg-2.png',
-  '/images/hero/hero-bg-3.png',
-];
-
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -40,15 +34,6 @@ export default function HeroSection() {
   const ctaRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const nutsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000); // Slide transition every 6 seconds
-    return () => clearInterval(timer);
-  }, []);
 
   useGSAP(() => {
     // Master timeline
@@ -126,29 +111,20 @@ export default function HeroSection() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ paddingTop: '110px' }}
     >
-      {/* Background Image Slider with Parallax */}
+      {/* Background Image with Parallax */}
       <div ref={bgRef} className="absolute inset-0 z-0 scale-110">
-        {slides.map((src, index) => (
-          <div
-            key={src}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <Image
-              src={src}
-              alt="Premium Shreepad Collection"
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority={index === 0}
-              loading={index === 0 ? "eager" : "lazy"}
-            />
-          </div>
-        ))}
+        <Image
+          src="/images/hero/hero-bg.png"
+          alt="Premium Dry Fruits Collection"
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+          loading="eager"
+        />
         {/* Multi-layer Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#3D1F0E]/90 via-[#6B3E26]/70 to-[#A97142]/40 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2D1209]/80 via-transparent to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#3D1F0E]/90 via-[#6B3E26]/70 to-[#A97142]/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2D1209]/80 via-transparent to-transparent" />
       </div>
 
       {/* Floating Nut Elements */}
@@ -260,7 +236,7 @@ export default function HeroSection() {
       {/* Bottom Wave */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
         <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 82.5C1200 85 1320 80 1380 77.5L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#FFFDF8"/>
+          <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 82.5C1200 85 1320 80 1380 77.5L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#FFFDF8" />
         </svg>
       </div>
     </section>
