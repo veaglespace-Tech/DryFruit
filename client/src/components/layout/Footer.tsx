@@ -37,7 +37,7 @@ export default function Footer() {
   const ref = useFadeUp({ delay: 0.1 });
 
   return (
-    <footer className="bg-primary-DEFAULT text-white" ref={ref}>
+    <footer className="bg-[#3D2314] text-white" ref={ref}>
       {/* Main Footer */}
       <div className="container-luxury py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
