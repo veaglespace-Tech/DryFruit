@@ -130,20 +130,23 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-20">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group" aria-label="NutriRoots Home">
-              <div className="w-10 h-10 rounded-full bg-luxury-gradient flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-shadow">
-                <Leaf size={20} className="text-white" />
+            <Link href="/" className="flex items-center gap-3 group" aria-label="Shreepad Enterprises Home">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-all duration-300 border border-border-DEFAULT/30">
+                <img src="/images/logo.png" alt="Shreepad Enterprises Logo" className="w-full h-full object-cover scale-110" />
               </div>
-              <div>
+              <div className="flex flex-col">
                 <span
-                  className="font-heading text-2xl font-bold leading-none"
+                  className="font-heading text-xl font-bold leading-none tracking-tight"
                   style={{ color: !isDarkHeader ? '#3D2314' : '#fff' }}
                 >
-                  NutriRoots
+                  Shreepad
                 </span>
-                <p className="text-xs font-body" style={{ color: !isDarkHeader ? '#A97142' : 'rgba(255,255,255,0.8)' }}>
-                  Nature&apos;s Premium Store
-                </p>
+                <span
+                  className="font-body text-[10px] font-bold uppercase tracking-widest mt-0.5"
+                  style={{ color: !isDarkHeader ? '#A97142' : 'rgba(255,255,255,0.85)' }}
+                >
+                  Enterprises
+                </span>
               </div>
             </Link>
 
@@ -326,12 +329,12 @@ export default function Navbar() {
         <div className="flex-1 overflow-y-auto px-6 py-6">
           {/* Brand */}
           <div className="flex items-center gap-3 mb-8 pb-6 border-b border-border-DEFAULT">
-            <div className="w-12 h-12 rounded-full bg-luxury-gradient flex items-center justify-center">
-              <Leaf size={24} className="text-white" />
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center border border-border-DEFAULT/30 shadow-sm">
+              <img src="/images/logo.png" alt="Shreepad Enterprises Logo" className="w-full h-full object-cover scale-110" />
             </div>
-            <div>
-              <p className="font-heading text-xl font-bold text-primary-DEFAULT">NutriRoots</p>
-              <p className="text-xs text-text-muted font-body">Nature&apos;s Premium Store</p>
+            <div className="flex flex-col">
+              <p className="font-heading text-lg font-bold text-primary-DEFAULT leading-none">Shreepad</p>
+              <p className="font-body text-[10px] font-bold uppercase tracking-widest text-[#A97142] mt-1">Enterprises</p>
             </div>
           </div>
 

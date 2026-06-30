@@ -44,13 +44,13 @@ export default function Footer() {
 
           {/* Brand Column */}
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2 group mb-6">
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
-                <Leaf size={24} className="text-accent-DEFAULT" />
+            <Link href="/" className="flex items-center gap-3 group mb-6">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center border border-white/20 shadow-sm">
+                <img src="/images/logo.png" alt="Shreepad Enterprises Logo" className="w-full h-full object-cover scale-110" />
               </div>
-              <div>
-                <span className="font-heading text-2xl font-bold text-white">NutriRoots</span>
-                <p className="text-xs text-white/85 font-body">Nature&apos;s Premium Store</p>
+              <div className="flex flex-col">
+                <span className="font-heading text-xl font-bold text-white leading-none">Shreepad</span>
+                <span className="font-body text-[10px] font-bold uppercase tracking-widest text-[#D4A95A] mt-1">Enterprises</span>
               </div>
             </Link>
 
@@ -174,7 +174,7 @@ export default function Footer() {
         <div className="container-luxury py-5">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-white/70 text-sm font-body text-center">
-              &copy; {new Date().getFullYear()} NutriRoots. All rights reserved.
+              &copy; {new Date().getFullYear()} Shreepad Enterprises. All rights reserved.
             </p>
             <div className="flex items-center gap-1 text-white/70 text-sm font-body">
               Made with <Heart size={14} className="text-red-400 mx-1" /> for healthy living

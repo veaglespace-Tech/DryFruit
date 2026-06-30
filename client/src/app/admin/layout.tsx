@@ -63,14 +63,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         } ${mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Logo */}
-        <div className={`flex items-center gap-3 p-5 border-b border-white/10 ${sidebarOpen ? '' : 'justify-center'}`}>
-          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-            <Leaf size={20} style={{ color: '#D4A95A' }} />
+        <div className={`flex items-center gap-3 p-4 border-b border-white/10 ${sidebarOpen ? '' : 'justify-center'}`}>
+          <div className="w-10 h-10 rounded-xl overflow-hidden bg-white flex items-center justify-center flex-shrink-0 border border-white/10">
+            <img src="/images/logo.png" alt="Shreepad Enterprises Logo" className="w-full h-full object-cover scale-110" />
           </div>
           {sidebarOpen && (
-            <div>
-              <p className="font-heading text-base font-bold text-white">NutriRoots</p>
-              <p className="text-white/50 text-xs font-body">Admin Panel</p>
+            <div className="flex flex-col">
+              <p className="font-heading text-sm font-bold text-white leading-none">Shreepad</p>
+              <p className="font-body text-[9px] font-bold uppercase tracking-widest text-[#D4A95A] mt-1">Enterprises</p>
             </div>
           )}
         </div>

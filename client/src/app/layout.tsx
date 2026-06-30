@@ -29,27 +29,27 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nutriroots.com"),
+  metadataBase: new URL("https://shreepadenterprises.com"),
   title: {
-    default: "NutriRoots | Premium Dry Fruits & Nuts Online",
-    template: "%s | NutriRoots",
+    default: "Shreepad Enterprises | Premium Grocery, Dry Fruits & Healthy Foods",
+    template: "%s | Shreepad Enterprises",
   },
   description:
-    "Discover India's finest selection of premium dry fruits, nuts, and superfoods. 100% natural, farm-fresh, chemical-free. Shop almonds, cashews, pistachios, walnuts, dates and more.",
+    "Discover Shreepad Enterprises' finest selection of premium grocery, dry fruits, cold pressed oils, organic spices, and healthy foods. 100% natural, farm-fresh, chemical-free.",
   keywords: [
     "dry fruits online",
     "premium dry fruits India",
     "buy almonds online",
     "cashews online",
-    "pistachios India",
-    "organic dry fruits",
-    "NutriRoots",
-    "healthy snacks",
-    "natural nuts",
+    "cold pressed oils",
+    "organic spices",
+    "Shreepad Enterprises",
+    "healthy foods",
+    "natural groceries",
   ],
-  authors: [{ name: "NutriRoots" }],
-  creator: "NutriRoots",
-  publisher: "NutriRoots",
+  authors: [{ name: "Shreepad Enterprises" }],
+  creator: "Shreepad Enterprises",
+  publisher: "Shreepad Enterprises",
   robots: {
     index: true,
     follow: true,
@@ -58,26 +58,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://nutriroots.com",
-    siteName: "NutriRoots",
-    title: "NutriRoots | Premium Dry Fruits & Nuts Online",
+    url: "https://shreepadenterprises.com",
+    siteName: "Shreepad Enterprises",
+    title: "Shreepad Enterprises | Premium Grocery, Dry Fruits & Healthy Foods",
     description:
-      "India's finest premium dry fruits, nuts & superfoods. 100% natural, farm-fresh, chemical-free.",
+      "India's finest premium grocery, dry fruits, cold pressed oils & healthy foods. 100% natural, farm-fresh, chemical-free.",
     images: [
       {
         url: "/images/hero/hero-bg.png",
         width: 1200,
         height: 630,
-        alt: "NutriRoots Premium Dry Fruits",
+        alt: "Shreepad Enterprises Premium Products",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NutriRoots | Premium Dry Fruits & Nuts Online",
-    description: "India's finest premium dry fruits, nuts & superfoods.",
+    title: "Shreepad Enterprises | Premium Grocery, Dry Fruits & Healthy Foods",
+    description: "India's finest premium grocery, dry fruits, cold pressed oils & healthy foods.",
     images: ["/images/hero/hero-bg.png"],
-    creator: "@nutriroots",
+    creator: "@shreepad_enterprises",
   },
 };
 
