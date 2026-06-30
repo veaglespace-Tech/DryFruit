@@ -40,7 +40,7 @@ export default function WishlistPage() {
       <Navbar />
       <main style={{ paddingTop: '110px' }}>
         {/* Header */}
-        <div className="section-padding bg-background border-b border-border-DEFAULT">
+        <div className="py-10 md:py-12 bg-background border-b border-border-DEFAULT">
           <div className="container-luxury">
             <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest">My Preferences</span>
             <h1 className="font-heading text-primary-DEFAULT mt-2" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700 }}>

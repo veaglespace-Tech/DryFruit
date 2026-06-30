@@ -161,7 +161,7 @@ export default function ProductsPageClient() {
       <main style={{ paddingTop: '110px' }}>
 
         {/* Page Header */}
-        <div className="section-padding bg-background border-b border-border-DEFAULT">
+        <div className="py-10 md:py-12 bg-background border-b border-border-DEFAULT">
           <div className="container-luxury">
             <div className="flex items-center gap-2 text-sm font-body text-text-muted mb-4">
               <a href="/" className="hover:text-primary-DEFAULT transition-colors">Home</a>
