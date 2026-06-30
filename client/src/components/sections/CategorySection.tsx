@@ -25,7 +25,7 @@ const STATIC_CATEGORIES = [
 export default function CategorySection() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useSplitText({ delay: 0.1 });
-  const gridRef = useStagger('.category-card', { stagger: 0.08 });
+  const gridRef = useStagger('.category-item-anim', { stagger: 0.08 });
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -82,7 +82,7 @@ export default function CategorySection() {
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="category-card group flex flex-col items-center text-center"
+              className="category-item-anim group flex flex-col items-center text-center"
               aria-label={`Browse ${cat.name}`}
             >
               {/* Outer circular stamp border with gold offset shadow */}
