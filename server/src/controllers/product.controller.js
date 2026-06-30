@@ -8,10 +8,11 @@ const getProducts = async (req, res) => {
   try {
     const {
       page = 1, limit = 12, category, search, sort = 'created_at', order = 'DESC',
-      featured, best_seller, min_price, max_price,
+      featured, best_seller, min_price, max_price, all = 'false'
     } = req.query;
 
-    const where = { is_active: true };
+    const where = {};
+    if (all !== 'true') where.is_active = true;
     if (category) where['$category.slug$'] = category;
     if (featured !== undefined) where.is_featured = featured === 'true';
     if (best_seller !== undefined) where.is_best_seller = best_seller === 'true';
@@ -160,4 +161,25 @@ const uploadProductImage = async (req, res) => {
   }
 };
 
-module.exports = { getProducts, getProductBySlug, createProduct, updateProduct, deleteProduct, uploadProductImage };
+// @desc    Get single product by ID (Admin)
+// @route   GET /api/admin/products/:id
+// @access  Private
+const getProductById = async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id, {
+      include: [
+        { model: Category, as: 'category', attributes: ['id', 'name', 'slug'] }
+      ]
+    });
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    res.json({ success: true, data: product });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { getProducts, getProductBySlug, createProduct, updateProduct, deleteProduct, uploadProductImage, getProductById };

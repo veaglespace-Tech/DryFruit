@@ -260,8 +260,8 @@ export default function Navbar() {
                 )}
               </button>
 
-              {/* User / Admin Account */}
-              {admin ? (
+              {/* Admin Panel Link */}
+              {admin && (
                 <Link
                   href="/admin/dashboard"
                   className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
@@ -274,32 +274,6 @@ export default function Navbar() {
                     A
                   </div>
                   <span>Admin Panel</span>
-                </Link>
-              ) : user ? (
-                <Link
-                  href="/user/dashboard"
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
-                  style={{
-                    color: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.9)',
-                    borderColor: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.4)',
-                  }}
-                >
-                  <div className="w-5 h-5 rounded-full bg-accent-DEFAULT text-white flex items-center justify-center text-[10px] font-bold">
-                    {user.name[0].toUpperCase()}
-                  </div>
-                  <span>Dashboard</span>
-                </Link>
-              ) : (
-                <Link
-                  href="/user/login"
-                  className="hidden md:flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
-                  style={{
-                    color: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.9)',
-                    borderColor: !isDarkHeader ? '#3D2314' : 'rgba(255,255,255,0.4)',
-                  }}
-                >
-                  <User size={14} />
-                  <span>Sign In</span>
                 </Link>
               )}
 

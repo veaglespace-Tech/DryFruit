@@ -1,30 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, Plus, Trash2, Leaf, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import { adminApi } from '@/lib/api';
 import toast from 'react-hot-toast';
 
-const CATEGORIES = [
-  { id: 1, name: 'Almonds' },
-  { id: 2, name: 'Cashews' },
-  { id: 3, name: 'Pistachios' },
-  { id: 4, name: 'Walnuts' },
-  { id: 5, name: 'Dates' },
-  { id: 6, name: 'Raisins' },
-  { id: 7, name: 'Mixed Nuts' },
-  { id: 8, name: 'Dried Berries' },
-];
+interface DB_Category {
+  id: number;
+  name: string;
+}
 
 export default function AdminNewProductPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<DB_Category[]>([]);
 
   // Form State
   const [name, setName] = useState('');
-  const [categoryId, setCategoryId] = useState(1);
+  const [categoryId, setCategoryId] = useState<string>('');
+  const [customCategory, setCustomCategory] = useState('');
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
   const [discountPercent, setDiscountPercent] = useState('0');
@@ -50,6 +46,26 @@ export default function AdminNewProductPage() {
   // File
   const [file, setFile] = useState<File | null>(null);
 
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await adminApi.getCategories();
+        if (res.data?.success) {
+          const list = res.data.data;
+          setCategories(list);
+          if (list.length > 0) {
+            setCategoryId(list[0].id.toString());
+          } else {
+            setCategoryId('others');
+          }
+        }
+      } catch (err) {
+        toast.error('Failed to load categories');
+      }
+    };
+    fetchCats();
+  }, []);
+
   const handleAddBenefit = () => {
     if (benefitInput.trim()) {
       setBenefits(prev => [...prev, benefitInput.trim()]);
@@ -66,9 +82,35 @@ export default function AdminNewProductPage() {
     setLoading(true);
 
     try {
+      let finalCategoryId = categoryId;
+
+      if (categoryId === 'others') {
+        if (!customCategory.trim()) {
+          toast.error('Please enter a category name');
+          setLoading(false);
+          return;
+        }
+        
+        // Create custom category
+        const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        const catFormData = new FormData();
+        catFormData.append('name', customCategory);
+        catFormData.append('slug', slugify(customCategory));
+        catFormData.append('description', 'Custom added category');
+        catFormData.append('is_active', 'true');
+        
+        const catRes = await adminApi.createCategory(catFormData);
+        if (catRes.data?.success) {
+          finalCategoryId = catRes.data.data.id.toString();
+          toast.success(`Category "${customCategory}" created! 🌿`);
+        } else {
+          throw new Error('Failed to create category');
+        }
+      }
+
       const formData = new FormData();
       formData.append('name', name);
-      formData.append('category_id', categoryId.toString());
+      formData.append('category_id', finalCategoryId);
       formData.append('price', price);
       if (originalPrice) formData.append('original_price', originalPrice);
       formData.append('discount_percent', discountPercent);
@@ -84,13 +126,13 @@ export default function AdminNewProductPage() {
       formData.append('nutrition_facts', JSON.stringify({ calories, protein, fat, carbs }));
       if (file) formData.append('thumbnail', file);
 
-      // Simulate API submit or hit real backend API if running
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success('Product added successfully! 🌿');
-      router.push('/admin/products');
+      const res = await adminApi.createProduct(formData);
+      if (res.data?.success) {
+        toast.success('Product added successfully! 🌿');
+        router.push('/admin/products');
+      }
     } catch (err: any) {
-      toast.error('Failed to create product. Check details.');
+      toast.error(err.response?.data?.message || 'Failed to create product. Check details.');
     }
     setLoading(false);
   };
@@ -218,13 +260,29 @@ export default function AdminNewProductPage() {
             <h3 className="font-heading text-sm font-semibold text-primary-DEFAULT border-b border-border-light pb-2">Category</h3>
             <select
               value={categoryId}
-              onChange={e => setCategoryId(parseInt(e.target.value))}
+              onChange={e => setCategoryId(e.target.value)}
               className="w-full px-4 py-3 border border-border-DEFAULT bg-white rounded-xl text-sm outline-none focus:border-accent-DEFAULT"
             >
-              {CATEGORIES.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id.toString()}>{cat.name}</option>
               ))}
+              <option value="others">Others (Create New)</option>
             </select>
+
+            {categoryId === 'others' && (
+              <div className="form-floating mt-3">
+                <input
+                  type="text"
+                  value={customCategory}
+                  onChange={e => setCustomCategory(e.target.value)}
+                  placeholder=" "
+                  required
+                  id="custom-cat-name"
+                  className="w-full border-accent-DEFAULT"
+                />
+                <label htmlFor="custom-cat-name" className="text-accent-DEFAULT">New Category Name *</label>
+              </div>
+            )}
           </div>
 
           {/* Nutrition */}

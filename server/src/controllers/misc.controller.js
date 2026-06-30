@@ -106,9 +106,9 @@ const deleteFAQ = async (req, res) => {
 // =========== CONTACTS ===========
 const submitContact = async (req, res) => {
   try {
-    const { name, email, phone, subject, message } = req.body;
+    const { name, email, phone, subject, message, type = 'enquiry' } = req.body;
     const contact = await Contact.create({
-      name, email, phone, subject, message,
+      name, email, phone, subject, message, type,
       ip_address: req.ip,
     });
     res.status(201).json({ success: true, message: 'Your message has been received. We will get back to you soon!' });
@@ -116,9 +116,10 @@ const submitContact = async (req, res) => {
 };
 const getContacts = async (req, res) => {
   try {
-    const { status, page = 1, limit = 20 } = req.query;
+    const { status, type, page = 1, limit = 20 } = req.query;
     const where = {};
     if (status) where.status = status;
+    if (type) where.type = type;
     const offset = (parseInt(page) - 1) * parseInt(limit);
     const { count, rows } = await Contact.findAndCountAll({ where, order: [['created_at', 'DESC']], limit: parseInt(limit), offset });
     res.json({ success: true, data: rows, pagination: { total: count, page: parseInt(page), limit: parseInt(limit), totalPages: Math.ceil(count / parseInt(limit)) } });

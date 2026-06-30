@@ -4,24 +4,13 @@ import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Save, Plus, Trash2, Leaf } from 'lucide-react';
 import Link from 'next/link';
-import { adminApi, publicApi } from '@/lib/api';
+import { adminApi } from '@/lib/api';
 import toast from 'react-hot-toast';
 
-const CATEGORIES = [
-  { id: 1, name: 'Almonds' },
-  { id: 2, name: 'Cashews' },
-  { id: 3, name: 'Pistachios' },
-  { id: 4, name: 'Walnuts' },
-  { id: 5, name: 'Dates' },
-  { id: 6, name: 'Raisins' },
-  { id: 7, name: 'Mixed Nuts' },
-  { id: 8, name: 'Dried Berries' },
-];
-
-const MOCK_PRODUCTS = [
-  { id: 1, name: 'Premium California Almonds', category_id: 1, price: '599', original_price: '799', discount_percent: '25', weight: '500g', sku: 'ALM-CA-500', stock: '100', short_description: 'Hand-selected California almonds', description: 'Premium almonds sourced from San Joaquin Valley.', is_featured: true, is_best_seller: true, is_active: true, benefits: ['Rich in Vitamin E', 'High in Protein'], nutrition_facts: { calories: '579 kcal', protein: '21g', fat: '50g', carbs: '22g' } },
-  { id: 2, name: 'Whole Cashews W240 Grade', category_id: 2, price: '799', original_price: '999', discount_percent: '20', weight: '500g', sku: 'CSH-W240-500', stock: '85', short_description: 'Premium W240 grade whole cashews', description: 'Large whole cashews from Konkan coast.', is_featured: true, is_best_seller: true, is_active: true, benefits: ['Rich in Zinc', 'Boosts Immunity'], nutrition_facts: { calories: '553 kcal', protein: '18g', fat: '44g', carbs: '30g' } },
-];
+interface DB_Category {
+  id: number;
+  name: string;
+}
 
 export default function AdminEditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -29,10 +18,13 @@ export default function AdminEditProductPage({ params }: { params: Promise<{ id:
   const productId = parseInt(id);
 
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [categories, setCategories] = useState<DB_Category[]>([]);
 
   // Form State
   const [name, setName] = useState('');
-  const [categoryId, setCategoryId] = useState(1);
+  const [categoryId, setCategoryId] = useState<string>('');
+  const [customCategory, setCustomCategory] = useState('');
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
   const [discountPercent, setDiscountPercent] = useState('0');
@@ -59,28 +51,47 @@ export default function AdminEditProductPage({ params }: { params: Promise<{ id:
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
-    // Find matching mock product or fetch details
-    const prod = MOCK_PRODUCTS.find(p => p.id === productId) || MOCK_PRODUCTS[0];
-    if (prod) {
-      setName(prod.name);
-      setCategoryId(prod.category_id);
-      setPrice(prod.price);
-      setOriginalPrice(prod.original_price || '');
-      setDiscountPercent(prod.discount_percent);
-      setWeight(prod.weight);
-      setSku(prod.sku || '');
-      setStock(prod.stock);
-      setShortDesc(prod.short_description || '');
-      setDescription(prod.description || '');
-      setIsFeatured(prod.is_featured);
-      setIsBestSeller(prod.is_best_seller);
-      setIsActive(prod.is_active);
-      setBenefits(prod.benefits || []);
-      setCalories(prod.nutrition_facts?.calories || '579 kcal');
-      setProtein(prod.nutrition_facts?.protein || '21g');
-      setFat(prod.nutrition_facts?.fat || '50g');
-      setCarbs(prod.nutrition_facts?.carbs || '22g');
-    }
+    const loadData = async () => {
+      try {
+        setFetching(true);
+        // Load categories
+        const catRes = await adminApi.getCategories();
+        let catList: DB_Category[] = [];
+        if (catRes.data?.success) {
+          catList = catRes.data.data;
+          setCategories(catList);
+        }
+
+        // Load product
+        const prodRes = await adminApi.getProductById(productId);
+        if (prodRes.data?.success) {
+          const prod = prodRes.data.data;
+          setName(prod.name || '');
+          setCategoryId(prod.category_id ? prod.category_id.toString() : (catList[0]?.id.toString() || ''));
+          setPrice(prod.price ? prod.price.toString() : '');
+          setOriginalPrice(prod.original_price ? prod.original_price.toString() : '');
+          setDiscountPercent(prod.discount_percent ? prod.discount_percent.toString() : '0');
+          setWeight(prod.weight || '500g');
+          setSku(prod.sku || '');
+          setStock(prod.stock ? prod.stock.toString() : '100');
+          setShortDesc(prod.short_description || '');
+          setDescription(prod.description || '');
+          setIsFeatured(!!prod.is_featured);
+          setIsBestSeller(!!prod.is_best_seller);
+          setIsActive(!!prod.is_active);
+          setBenefits(prod.benefits || []);
+          setCalories(prod.nutrition_facts?.calories || '579 kcal');
+          setProtein(prod.nutrition_facts?.protein || '21g');
+          setFat(prod.nutrition_facts?.fat || '50g');
+          setCarbs(prod.nutrition_facts?.carbs || '22g');
+        }
+      } catch (err) {
+        toast.error('Failed to fetch product details');
+      } finally {
+        setFetching(false);
+      }
+    };
+    loadData();
   }, [productId]);
 
   const handleAddBenefit = () => {
@@ -99,16 +110,69 @@ export default function AdminEditProductPage({ params }: { params: Promise<{ id:
     setLoading(true);
 
     try {
-      // Simulate API submit or hit real backend API if running
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast.success('Product updated successfully! 🌿');
-      router.push('/admin/products');
+      let finalCategoryId = categoryId;
+
+      if (categoryId === 'others') {
+        if (!customCategory.trim()) {
+          toast.error('Please enter a category name');
+          setLoading(false);
+          return;
+        }
+
+        // Create custom category
+        const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        const catFormData = new FormData();
+        catFormData.append('name', customCategory);
+        catFormData.append('slug', slugify(customCategory));
+        catFormData.append('description', 'Custom added category');
+        catFormData.append('is_active', 'true');
+
+        const catRes = await adminApi.createCategory(catFormData);
+        if (catRes.data?.success) {
+          finalCategoryId = catRes.data.data.id.toString();
+          toast.success(`Category "${customCategory}" created! 🌿`);
+        } else {
+          throw new Error('Failed to create category');
+        }
+      }
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('category_id', finalCategoryId);
+      formData.append('price', price);
+      if (originalPrice) formData.append('original_price', originalPrice);
+      formData.append('discount_percent', discountPercent);
+      formData.append('weight', weight);
+      formData.append('sku', sku || 'SKU-' + Date.now());
+      formData.append('stock', stock);
+      formData.append('short_description', shortDesc);
+      formData.append('description', description);
+      formData.append('is_featured', isFeatured.toString());
+      formData.append('is_best_seller', isBestSeller.toString());
+      formData.append('is_active', isActive.toString());
+      formData.append('benefits', JSON.stringify(benefits));
+      formData.append('nutrition_facts', JSON.stringify({ calories, protein, fat, carbs }));
+      if (file) formData.append('thumbnail', file);
+
+      const res = await adminApi.updateProduct(productId, formData);
+      if (res.data?.success) {
+        toast.success('Product updated successfully! 🌿');
+        router.push('/admin/products');
+      }
     } catch (err: any) {
-      toast.error('Failed to update product.');
+      toast.error(err.response?.data?.message || 'Failed to update product.');
     }
     setLoading(false);
   };
+
+  if (fetching) {
+    return (
+      <div className="text-center py-24">
+        <div className="w-10 h-10 border-4 border-accent-DEFAULT border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-sm text-text-muted font-body">Loading product details...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -233,13 +297,29 @@ export default function AdminEditProductPage({ params }: { params: Promise<{ id:
             <h3 className="font-heading text-sm font-semibold text-primary-DEFAULT border-b border-border-light pb-2">Category</h3>
             <select
               value={categoryId}
-              onChange={e => setCategoryId(parseInt(e.target.value))}
+              onChange={e => setCategoryId(e.target.value)}
               className="w-full px-4 py-3 border border-border-DEFAULT bg-white rounded-xl text-sm outline-none focus:border-accent-DEFAULT"
             >
-              {CATEGORIES.map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id.toString()}>{cat.name}</option>
               ))}
+              <option value="others">Others (Create New)</option>
             </select>
+
+            {categoryId === 'others' && (
+              <div className="form-floating mt-3">
+                <input
+                  type="text"
+                  value={customCategory}
+                  onChange={e => setCustomCategory(e.target.value)}
+                  placeholder=" "
+                  required
+                  id="custom-cat-name"
+                  className="w-full border-accent-DEFAULT"
+                />
+                <label htmlFor="custom-cat-name" className="text-accent-DEFAULT">New Category Name *</label>
+              </div>
+            )}
           </div>
 
           {/* Nutrition */}

@@ -28,18 +28,6 @@ export default function CheckoutPage() {
   const [completed, setCompleted] = useState(false);
   const [orderId, setOrderId] = useState('');
 
-  useEffect(() => {
-    // Fill details from user profile if logged in
-    const userData = localStorage.getItem('nutriroots_user');
-    if (userData) {
-      const user = JSON.parse(userData);
-      setName(user.name || '');
-      setEmail(user.email || '');
-      setPhone(user.phone || '');
-      setAddress(user.address || '');
-    }
-  }, []);
-
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cartItems.length === 0) return;
@@ -55,6 +43,7 @@ export default function CheckoutPage() {
         phone,
         subject: `Pre-Order Inquiry [Total: ₹${cartTotal}]`,
         message: `Order Items: ${itemsList}. \nShipping Address: ${address}. \nNotes: ${notes}`,
+        type: 'order',
       });
 
       const randomId = 'INQ-' + Math.floor(1000 + Math.random() * 9000);

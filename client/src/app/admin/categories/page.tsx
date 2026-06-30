@@ -13,48 +13,70 @@ interface Category {
   is_active: boolean;
 }
 
-const MOCK_CATEGORIES: Category[] = [
-  { id: 1, name: 'Almonds', slug: 'almonds', description: 'Premium California and Indian almonds', is_active: true },
-  { id: 2, name: 'Cashews', slug: 'cashews', description: 'Creamy, buttery cashews', is_active: true },
-  { id: 3, name: 'Pistachios', slug: 'pistachios', description: 'Naturally shelled and roasted', is_active: true },
-  { id: 4, name: 'Walnuts', slug: 'walnuts', description: 'Brain-healthy Kashmiri walnuts', is_active: true },
-  { id: 5, name: 'Dates', slug: 'dates', description: 'Premium Medjool and Ajwa dates', is_active: true },
-  { id: 6, name: 'Raisins', slug: 'raisins', description: 'Naturally sun-dried golden raisins', is_active: true },
-  { id: 7, name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated premium blends', is_active: true },
-  { id: 8, name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant dried berries', is_active: true },
-];
-
 export default function AdminCategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [editId, setEditId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name) return;
-
-    if (editId !== null) {
-      // Update
-      setCategories(prev =>
-        prev.map(cat => cat.id === editId ? { ...cat, name, description, slug: name.toLowerCase().replace(/ /g, '-') } : cat)
-      );
-      setEditId(null);
-      toast.success('Category updated successfully');
-    } else {
-      // Add
-      const newCat: Category = {
-        id: Date.now(),
-        name,
-        slug: name.toLowerCase().replace(/ /g, '-'),
-        description,
-        is_active: true,
-      };
-      setCategories(prev => [...prev, newCat]);
-      toast.success('Category added successfully');
+  const fetchCategories = async () => {
+    try {
+      setLoading(true);
+      const res = await adminApi.getCategories();
+      if (res.data?.success) {
+        setCategories(res.data.data);
+      }
+    } catch (e) {
+      toast.error('Failed to load categories');
+    } finally {
+      setLoading(false);
     }
-    setName('');
-    setDescription('');
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    setSubmitting(true);
+
+    try {
+      const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('slug', slugify(name));
+      formData.append('description', description);
+
+      if (editId !== null) {
+        // Update
+        const res = await adminApi.updateCategory(editId, formData);
+        if (res.data?.success) {
+          toast.success('Category updated successfully! 🌿');
+          setCategories(prev =>
+            prev.map(cat => cat.id === editId ? res.data.data : cat)
+          );
+          setEditId(null);
+        }
+      } else {
+        // Add
+        formData.append('is_active', 'true');
+        const res = await adminApi.createCategory(formData);
+        if (res.data?.success) {
+          toast.success('Category added successfully! 🌿');
+          setCategories(prev => [...prev, res.data.data]);
+        }
+      }
+      setName('');
+      setDescription('');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || 'Failed to save category');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleEdit = (cat: Category) => {
@@ -63,10 +85,35 @@ export default function AdminCategoriesPage() {
     setDescription(cat.description || '');
   };
 
-  const handleDelete = (id: number) => {
+  const handleToggleStatus = async (cat: Category) => {
+    try {
+      const newStatus = !cat.is_active;
+      const formData = new FormData();
+      formData.append('is_active', newStatus.toString());
+
+      const res = await adminApi.updateCategory(cat.id, formData);
+      if (res.data?.success) {
+        setCategories(prev =>
+          prev.map(c => c.id === cat.id ? { ...c, is_active: newStatus } : c)
+        );
+        toast.success(`Category is now ${newStatus ? 'active' : 'inactive'}`);
+      }
+    } catch (err) {
+      toast.error('Failed to update category status');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this category?')) {
-      setCategories(prev => prev.filter(cat => cat.id !== id));
-      toast.success('Category deleted successfully');
+      try {
+        const res = await adminApi.deleteCategory(id);
+        if (res.data?.success) {
+          setCategories(prev => prev.filter(cat => cat.id !== id));
+          toast.success('Category deleted successfully');
+        }
+      } catch (err) {
+        toast.error('Failed to delete category');
+      }
     }
   };
 
@@ -105,8 +152,8 @@ export default function AdminCategoriesPage() {
           </div>
 
           <div className="flex gap-2">
-            <button type="submit" className="btn-primary-luxury text-xs px-5 py-2.5 flex-1 justify-center">
-              {editId !== null ? 'Update' : 'Add Category'}
+            <button type="submit" disabled={submitting} className="btn-primary-luxury text-xs px-5 py-2.5 flex-1 justify-center">
+              {submitting ? 'Saving...' : editId !== null ? 'Update' : 'Add Category'}
             </button>
             {editId !== null && (
               <button
@@ -126,49 +173,64 @@ export default function AdminCategoriesPage() {
       <div className="md:col-span-2 bg-white border border-border-DEFAULT rounded-2xl p-6 shadow-card">
         <h2 className="font-heading text-lg font-bold text-primary-DEFAULT mb-4">Manage Categories</h2>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border-DEFAULT bg-background">
-                <th className="text-left p-3 font-button font-semibold text-text-muted">Name</th>
-                <th className="text-left p-3 font-button font-semibold text-text-muted">Description</th>
-                <th className="text-left p-3 font-button font-semibold text-text-muted">Status</th>
-                <th className="text-left p-3 font-button font-semibold text-text-muted">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map(cat => (
-                <tr key={cat.id} className="border-b border-border-light hover:bg-background transition-colors">
-                  <td className="p-3 font-body font-semibold text-primary-DEFAULT">{cat.name}</td>
-                  <td className="p-3 text-text-muted font-body text-xs leading-relaxed max-w-xs truncate">{cat.description || '—'}</td>
-                  <td className="p-3">
-                    <span className={`px-2 py-0.5 rounded-full text-xxs font-button font-bold ${cat.is_active ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                      {cat.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEdit(cat)}
-                        className="w-7 h-7 border border-border-DEFAULT hover:border-accent-DEFAULT hover:text-accent-DEFAULT flex items-center justify-center rounded-lg text-text-muted transition-colors"
-                        title="Edit"
-                      >
-                        <Edit2 size={12} />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(cat.id)}
-                        className="w-7 h-7 border border-border-DEFAULT hover:border-red-300 hover:text-red-500 flex items-center justify-center rounded-lg text-text-muted transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 size={12} />
-                      </button>
-                    </div>
-                  </td>
+        {loading ? (
+          <div className="text-center py-16">
+            <div className="w-8 h-8 border-4 border-accent-DEFAULT border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-xs text-text-muted font-body">Loading categories...</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border-DEFAULT bg-background">
+                  <th className="text-left p-3 font-button font-semibold text-text-muted">Name</th>
+                  <th className="text-left p-3 font-button font-semibold text-text-muted">Description</th>
+                  <th className="text-left p-3 font-button font-semibold text-text-muted">Status</th>
+                  <th className="text-left p-3 font-button font-semibold text-text-muted">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {categories.map(cat => (
+                  <tr key={cat.id} className="border-b border-border-light hover:bg-background transition-colors">
+                    <td className="p-3 font-body font-semibold text-primary-DEFAULT">{cat.name}</td>
+                    <td className="p-3 text-text-muted font-body text-xs leading-relaxed max-w-xs truncate">{cat.description || '—'}</td>
+                    <td className="p-3">
+                      <button
+                        onClick={() => handleToggleStatus(cat)}
+                        className={`px-2.5 py-1 rounded-full text-xxs font-button font-bold border transition-colors ${
+                          cat.is_active
+                            ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100'
+                            : 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100'
+                        }`}
+                        title="Click to toggle status"
+                      >
+                        {cat.is_active ? 'Active' : 'Inactive'}
+                      </button>
+                    </td>
+                    <td className="p-3">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEdit(cat)}
+                          className="w-7 h-7 border border-border-DEFAULT hover:border-accent-DEFAULT hover:text-accent-DEFAULT flex items-center justify-center rounded-lg text-text-muted transition-colors"
+                          title="Edit"
+                        >
+                          <Edit2 size={12} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(cat.id)}
+                          className="w-7 h-7 border border-border-DEFAULT hover:border-red-300 hover:text-red-500 flex items-center justify-center rounded-lg text-text-muted transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

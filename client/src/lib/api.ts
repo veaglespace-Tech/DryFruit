@@ -81,6 +81,7 @@ export const adminApi = {
 
   // Products
   getProducts: (params?: Record<string, string | number>) => api.get('/products', { params }),
+  getProductById: (id: number) => api.get(`/products/admin-detail/${id}`),
   createProduct: (data: FormData) => api.post('/products', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   updateProduct: (id: number, data: FormData) => api.put(`/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
   deleteProduct: (id: number) => api.delete(`/products/${id}`),

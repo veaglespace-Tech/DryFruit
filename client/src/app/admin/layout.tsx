@@ -5,7 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
   LayoutDashboard, Package, Tag, Image, MessageSquare, HelpCircle,
-  Mail, Settings, LogOut, Leaf, Menu, X, ChevronRight, Bell
+  Mail, Settings, LogOut, Leaf, Menu, X, ChevronRight, Bell, ShoppingBag
 } from 'lucide-react';
 
 const adminNavLinks = [
@@ -15,7 +15,8 @@ const adminNavLinks = [
   { label: 'Banners', href: '/admin/banners', icon: Image },
   { label: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
   { label: 'FAQs', href: '/admin/faqs', icon: HelpCircle },
-  { label: 'Contact Leads', href: '/admin/contacts', icon: Mail },
+  { label: 'Order Leads', href: '/admin/orders', icon: ShoppingBag },
+  { label: 'Enquiry Leads', href: '/admin/contacts', icon: Mail },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
