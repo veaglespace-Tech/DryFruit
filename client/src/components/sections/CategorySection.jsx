@@ -141,17 +141,17 @@ export default function CategorySection() {
         {/* Circular Category Grid (Decorative & Classic) */}
         <div
           ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 justify-items-center justify-center"
+          className="flex overflow-x-auto md:grid md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-6 justify-start md:justify-center scrollbar-thin scroll-smooth"
         >
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="category-item-anim group flex flex-col items-center text-center"
+              className="category-item-anim group flex flex-col items-center text-center flex-shrink-0 w-32 sm:w-36 md:w-auto"
               aria-label={`Browse ${cat.name}`}
             >
               {/* Outer circular stamp border with gold offset shadow */}
-              <div className="relative w-36 h-36 md:w-40 md:h-40 rounded-full border-4 border-[#3D2314] bg-[#FDFBF7] flex items-center justify-center overflow-hidden transition-all duration-300 shadow-[6px_6px_0px_#D4A95A] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_#D4A95A]">
+              <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full border-4 border-[#3D2314] bg-[#FDFBF7] flex items-center justify-center overflow-hidden transition-all duration-300 shadow-[6px_6px_0px_#D4A95A] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_#D4A95A]">
                 {/* Inner dotted decorative ring */}
                 <div className="absolute inset-2 rounded-full border border-dashed border-[#D4A95A]/60 pointer-events-none" />
 
@@ -168,7 +168,7 @@ export default function CategorySection() {
               </div>
 
               {/* Title & Count */}
-              <h3 className="font-heading text-sm md:text-base font-bold text-[#3D2314] mt-4 mb-0.5 group-hover:text-[#D4A95A] transition-colors duration-200">
+              <h3 className="font-heading text-xs sm:text-sm md:text-base font-bold text-[#3D2314] mt-4 mb-0.5 group-hover:text-[#D4A95A] transition-colors duration-200">
                 {cat.name}
               </h3>
               <p className="text-text-muted text-[10px] md:text-xs font-body font-medium">

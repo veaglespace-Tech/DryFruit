@@ -127,17 +127,17 @@ export default function FAQSection() {
   return (
     <section ref={sectionRef} className="section-padding bg-background">
       <div className="container-luxury">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border-DEFAULT mb-4">
-              <span className="text-primary-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border mb-4">
+              <span className="text-primary text-xs font-button font-semibold uppercase tracking-widest">
                 Got Questions?
               </span>
             </div>
             <h2
               ref={titleRef}
-              className="font-heading text-primary-DEFAULT mb-4"
+              className="font-heading text-primary mb-4"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700 }}
             >
               Frequently Asked Questions
@@ -163,14 +163,14 @@ export default function FAQSection() {
                   id={`faq-btn-${faq.id}`}
                   aria-controls={`faq-content-${faq.id}`}
                 >
-                  <span className="font-body font-semibold text-primary-DEFAULT pr-4 text-sm md:text-base">
+                  <span className="font-body font-semibold text-primary pr-4 text-sm md:text-base">
                     {faq.question}
                   </span>
                   <span
                     className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                       openId === faq.id
-                        ? "bg-primary-DEFAULT text-white"
-                        : "bg-primary-50 text-primary-DEFAULT"
+                        ? "bg-primary text-white"
+                        : "bg-primary-50 text-primary"
                     }`}
                   >
                     {openId === faq.id ? (
@@ -195,7 +195,7 @@ export default function FAQSection() {
                   aria-labelledby={`faq-btn-${faq.id}`}
                 >
                   <div className="px-5 md:px-6 pb-5 md:pb-6">
-                    <div className="h-px bg-border-DEFAULT mb-4" />
+                    <div className="h-px bg-border mb-4" />
                     <p className="text-text-muted font-body text-sm md:text-base leading-relaxed">
                       {faq.answer}
                     </p>
@@ -206,8 +206,8 @@ export default function FAQSection() {
           </div>
 
           {/* CTA */}
-          <div className="mt-12 text-center p-8 rounded-2xl bg-primary-50 border border-border-DEFAULT">
-            <p className="font-heading text-lg text-primary-DEFAULT font-semibold mb-2">
+          <div className="mt-12 text-center p-8 rounded-2xl bg-primary-50 border border-border">
+            <p className="font-heading text-lg text-primary font-semibold mb-2">
               Still have questions?
             </p>
             <p className="text-text-muted font-body text-sm mb-4">

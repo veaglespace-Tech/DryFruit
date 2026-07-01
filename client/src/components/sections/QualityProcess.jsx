@@ -129,14 +129,14 @@ export default function QualityProcess() {
       <div className="container-luxury">
         {/* Header */}
         <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent-DEFAULT/20 mb-4">
-            <span className="text-accent-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent/20 mb-4">
+            <span className="text-accent text-xs font-button font-semibold uppercase tracking-widest">
               Our Process
             </span>
           </div>
           <h2
             ref={titleRef}
-            className="font-heading text-primary-DEFAULT mb-4"
+            className="font-heading text-primary mb-4"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700 }}
           >
             From Farm to Your Table
@@ -151,10 +151,10 @@ export default function QualityProcess() {
         {/* Desktop Timeline */}
         <div className="hidden lg:block relative mb-8">
           {/* Progress Line */}
-          <div className="absolute top-16 left-[8%] right-[8%] h-0.5 bg-border-DEFAULT">
+          <div className="absolute top-16 left-[8%] right-[8%] h-0.5 bg-border">
             <div
               ref={lineRef}
-              className="h-full bg-gradient-to-r from-primary-DEFAULT via-secondary-DEFAULT to-accent-DEFAULT"
+              className="h-full bg-gradient-to-r from-primary via-secondary to-accent"
             />
           </div>
 
@@ -169,19 +169,19 @@ export default function QualityProcess() {
                 >
                   {/* Icon Circle */}
                   <div
-                    className="quality-step-icon relative z-10 w-14 h-14 rounded-full flex items-center justify-center mb-6 border-2 border-accent-DEFAULT"
+                    className="quality-step-icon relative z-10 w-14 h-14 rounded-full flex items-center justify-center mb-6 border-2 border-accent"
                     style={{
                       background: "linear-gradient(135deg, #6B3E26, #A97142)",
                     }}
                   >
                     <Icon size={22} className="text-white" />
                     {/* Step Number */}
-                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-accent-DEFAULT rounded-full text-white text-xs font-button font-bold flex items-center justify-center">
+                    <span className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full text-white text-xs font-button font-bold flex items-center justify-center">
                       {index + 1}
                     </span>
                   </div>
                   {/* Content */}
-                  <h3 className="font-heading text-sm font-semibold text-primary-DEFAULT mb-2">
+                  <h3 className="font-heading text-sm font-semibold text-primary mb-2">
                     {step.title}
                   </h3>
                   <p className="text-text-muted text-xs font-body leading-relaxed">
@@ -202,7 +202,7 @@ export default function QualityProcess() {
                 {/* Left: Icon + Line */}
                 <div className="flex flex-col items-center flex-shrink-0">
                   <div
-                    className="quality-step-icon w-12 h-12 rounded-full flex items-center justify-center border-2 border-accent-DEFAULT flex-shrink-0"
+                    className="quality-step-icon w-12 h-12 rounded-full flex items-center justify-center border-2 border-accent flex-shrink-0"
                     style={{
                       background: "linear-gradient(135deg, #6B3E26, #A97142)",
                     }}
@@ -210,16 +210,16 @@ export default function QualityProcess() {
                     <Icon size={18} className="text-white" />
                   </div>
                   {index < steps.length - 1 && (
-                    <div className="flex-1 w-0.5 bg-gradient-to-b from-accent-DEFAULT to-border-DEFAULT mt-2 min-h-[2rem]" />
+                    <div className="flex-1 w-0.5 bg-gradient-to-b from-accent to-border mt-2 min-h-[2rem]" />
                   )}
                 </div>
                 {/* Right: Content */}
                 <div className="pb-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-button font-bold text-accent-DEFAULT">
+                    <span className="text-xs font-button font-bold text-accent">
                       {step.step}
                     </span>
-                    <h3 className="font-heading text-base font-semibold text-primary-DEFAULT">
+                    <h3 className="font-heading text-base font-semibold text-primary">
                       {step.title}
                     </h3>
                   </div>
