@@ -282,9 +282,10 @@ export default function Navbar() {
                 onClick={() => dispatch(setSearchOpen(true))}
                 className={`p-2 rounded-full transition-all duration-200 ${
                   !isDarkHeader
-                    ? "text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background"
-                    : "text-white/80 hover:text-white"
+                    ? "hover:bg-background"
+                    : "hover:text-white"
                 }`}
+                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label="Search"
               >
                 <Search size={20} />
@@ -306,9 +307,10 @@ export default function Navbar() {
                 href="/wishlist"
                 className={`p-2 rounded-full transition-all duration-200 ${
                   !isDarkHeader
-                    ? "text-text-DEFAULT hover:text-primary-DEFAULT hover:bg-background"
-                    : "text-white/80 hover:text-white"
+                    ? "hover:bg-background"
+                    : "hover:text-white"
                 }`}
+                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label="Wishlist"
               >
                 <Heart size={20} />
@@ -351,9 +353,10 @@ export default function Navbar() {
                 onClick={() => dispatch(toggleMobileNav())}
                 className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
                   !isDarkHeader
-                    ? "text-text-DEFAULT hover:bg-background"
-                    : "text-white hover:bg-white/10"
+                    ? "hover:bg-background"
+                    : "hover:bg-white/10"
                 }`}
+                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileNavOpen}
               >
@@ -371,25 +374,6 @@ export default function Navbar() {
         style={{ paddingTop: "110px", transform: "translateX(100%)" }}
       >
         <div className="flex-1 overflow-y-auto px-6 py-6">
-          {/* Brand */}
-          <div className="flex items-center gap-3 mb-8 pb-6 border-b border-border-DEFAULT">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center border border-border-DEFAULT/30 shadow-sm">
-              <img
-                src="/images/logo.png"
-                alt="Shreepad Enterprises Logo"
-                className="w-full h-full object-cover scale-110"
-              />
-            </div>
-            <div className="flex flex-col">
-              <p className="font-heading text-lg font-bold text-primary-DEFAULT leading-none">
-                Shreepad
-              </p>
-              <p className="font-body text-[10px] font-bold uppercase tracking-widest text-[#A97142] mt-1">
-                Enterprises
-              </p>
-            </div>
-          </div>
-
           {/* Nav Links */}
           <ul className="space-y-1">
             {navLinks.map((link) => (

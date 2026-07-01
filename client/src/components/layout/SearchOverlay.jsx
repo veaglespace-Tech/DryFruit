@@ -85,47 +85,53 @@ export default function SearchOverlay() {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 bg-[#3D1F0E]/80 backdrop-blur-md flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-[#3D1F0E]/80 backdrop-blur-md flex items-center justify-center p-4 w-full h-full"
     >
-      {/* Close button */}
-      <button
-        onClick={handleClose}
-        className="absolute top-6 right-6 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all border border-white/10"
-        aria-label="Close search"
-      >
-        <X size={20} />
-      </button>
-
       {/* Main Search Panel */}
-      <div className="search-content w-full max-w-2xl bg-white rounded-3xl p-6 md:p-8 shadow-luxury-xl border border-border-DEFAULT">
+      <div className="search-content w-full max-w-lg bg-white rounded-3xl p-5 md:p-8 shadow-luxury-xl border border-border">
+        {/* Header Row with Title and Close Button */}
+        <div className="flex items-center justify-between mb-5 pb-2 border-b border-border/60">
+          <h3 className="font-heading text-base font-bold text-primary flex items-center gap-2">
+            <Search size={18} className="text-accent" />
+            Search Products
+          </h3>
+          <button
+            onClick={handleClose}
+            className="p-1.5 rounded-full hover:bg-background text-text-muted transition-colors border border-border"
+            aria-label="Close search"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
         <form onSubmit={handleSubmit} className="relative mb-6">
           <Search
-            size={22}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-DEFAULT"
+            size={20}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-primary"
           />
           <input
             ref={inputRef}
             type="search"
-            placeholder="Search premium dry fruits, nuts, superfoods..."
+            placeholder="Search premium dry fruits, nuts..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border-2 border-border-DEFAULT bg-background font-body text-base text-text-DEFAULT outline-none focus:border-primary-DEFAULT transition-all shadow-inner"
+            className="w-full pl-11 pr-4 py-3 rounded-2xl border-2 border-border bg-background font-body text-sm text-text-DEFAULT outline-none focus:border-primary transition-all shadow-inner"
           />
 
           {query.trim() && (
             <button
               type="submit"
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-primary-DEFAULT text-white hover:bg-secondary-DEFAULT transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl bg-primary text-white hover:bg-secondary transition-colors"
             >
-              <ArrowRight size={18} />
+              <ArrowRight size={16} />
             </button>
           )}
         </form>
 
         {/* Popular Suggestions */}
         <div>
-          <h3 className="font-heading text-sm font-semibold text-primary-DEFAULT mb-3 flex items-center gap-2">
-            <Leaf size={14} className="text-accent-DEFAULT" />
+          <h3 className="font-heading text-xs font-semibold text-primary mb-3 flex items-center gap-2">
+            <Leaf size={12} className="text-accent" />
             Popular Searches
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -136,7 +142,7 @@ export default function SearchOverlay() {
                   handleClose();
                   router.push(item.href);
                 }}
-                className="px-4 py-2 rounded-xl bg-background border border-border-light text-sm font-body text-text-DEFAULT hover:border-accent-DEFAULT hover:text-primary-DEFAULT transition-all"
+                className="px-3.5 py-1.5 rounded-xl bg-background border border-border-light text-xs font-body text-text-DEFAULT hover:border-accent hover:text-primary transition-all"
               >
                 {item.label}
               </button>

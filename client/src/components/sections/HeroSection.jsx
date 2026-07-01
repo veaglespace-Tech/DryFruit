@@ -299,7 +299,7 @@ export default function HeroSection() {
             </Link>
             <Link
               href="/products"
-              className="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-white/40 text-white hover:bg-white/10 transition-all duration-300 font-button font-semibold"
+              className="flex items-center gap-3 px-6 py-3 rounded-full border-2 border-white/40 !text-white hover:bg-white/10 transition-all duration-300 font-button font-semibold"
             >
               <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                 <Play size={14} className="text-white ml-0.5" />
