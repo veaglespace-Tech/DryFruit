@@ -24,61 +24,53 @@ const features = [
     title: "100% Natural",
     description:
       "No artificial preservatives, colors, or flavors. Pure nature in every bite.",
-    color: "#4CAF50",
-    bg: "#F1F8E9",
+    bgImage: "/images/why/natural.png",
   },
   {
     icon: Shield,
     title: "Premium Quality",
     description:
       "Every batch is rigorously tested and quality-checked before reaching you.",
-    color: "#6B3E26",
-    bg: "#F9F0EB",
+    bgImage: "/images/why/quality.png",
   },
   {
     icon: Sprout,
     title: "Farm Fresh",
     description: "Sourced directly from trusted farms and orchards worldwide.",
-    color: "#2E7D32",
-    bg: "#E8F5E9",
+    bgImage: "/images/why/farm.png",
   },
   {
     icon: CheckCircle,
     title: "Chemical Free",
     description: "No harmful chemicals, pesticides, or artificial processing.",
-    color: "#1565C0",
-    bg: "#E3F2FD",
+    bgImage: "/images/why/chemical-free.png",
   },
   {
     icon: Award,
     title: "Secure Packaging",
     description:
       "Food-safe airtight packaging that preserves freshness for months.",
-    color: "#D4A95A",
-    bg: "#FDF8EE",
+    bgImage: "/images/why/packaging.png",
   },
   {
     icon: Truck,
     title: "Fast Delivery",
     description:
       "Speedy pan-India delivery in 3-5 business days to your doorstep.",
-    color: "#7B1FA2",
-    bg: "#F3E5F5",
+    bgImage: "/images/why/delivery.png",
   },
   {
     icon: Clock,
     title: "Long Shelf Life",
     description:
       "Properly processed and sealed for 6-12 months of optimal freshness.",
-    color: "#E65100",
-    bg: "#FFF3E0",
+    bgImage: "/images/why/shelf-life.png",
   },
   {
     icon: HeartHandshake,
     title: "Customer First",
     description: "Dedicated support team and hassle-free returns policy.",
-    color: "#C62828",
-    bg: "#FFEBEE",
+    bgImage: "/images/why/customer.png",
   },
 ];
 
@@ -169,14 +161,14 @@ export default function WhyChooseUs() {
       <div className="container-luxury">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border-DEFAULT mb-4">
-            <span className="text-primary-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border mb-4">
+            <span className="text-primary text-xs font-button font-semibold uppercase tracking-widest">
               Why NutriRoots
             </span>
           </div>
           <h2
             ref={titleRef}
-            className="font-heading text-primary-DEFAULT mb-4"
+            className="font-heading text-primary mb-4"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700 }}
           >
             The NutriRoots Difference
@@ -199,23 +191,39 @@ export default function WhyChooseUs() {
             return (
               <div
                 key={feature.title}
-                className="why-card group p-6 rounded-2xl border border-border-DEFAULT bg-surface hover:shadow-luxury-lg transition-all duration-400 cursor-default"
+                className="why-card group relative p-6 rounded-2xl border border-[#3D2314]/10 overflow-hidden hover:shadow-luxury-lg hover:border-accent/40 transition-all duration-400 cursor-default"
+                style={{ minHeight: "220px" }}
               >
-                {/* Icon */}
-                <div
-                  className="why-icon w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-transform"
-                  style={{ backgroundColor: feature.bg }}
-                >
-                  <Icon size={28} style={{ color: feature.color }} />
+                {/* Background Image with overlay */}
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src={feature.bgImage}
+                    alt={feature.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-[#1e1008]/88 group-hover:bg-[#1e1008]/82 transition-colors duration-400" />
                 </div>
-                {/* Title */}
-                <h3 className="font-heading text-base font-semibold text-primary-DEFAULT mb-2">
-                  {feature.title}
-                </h3>
-                {/* Description */}
-                <p className="text-text-muted text-sm font-body leading-relaxed">
-                  {feature.description}
-                </p>
+
+                {/* Content Container (relative z-10) */}
+                <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    {/* Icon */}
+                    <div
+                      className="why-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform border border-white/10"
+                      style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
+                    >
+                      <Icon size={24} className="text-accent" />
+                    </div>
+                    {/* Title */}
+                    <h3 className="font-heading text-base font-bold !text-white mb-2 group-hover:!text-accent transition-colors">
+                      {feature.title}
+                    </h3>
+                    {/* Description */}
+                    <p className="text-white/80 text-xs font-body leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           })}
