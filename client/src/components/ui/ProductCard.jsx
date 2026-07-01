@@ -128,20 +128,17 @@ export default function ProductCard({ product }) {
         <div className="absolute inset-0 bg-primary-DEFAULT/60 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
           <Link
             href={`/products/${product.slug}`}
-            className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-lg hover:bg-accent-DEFAULT hover:text-white transition-colors"
+            className="w-11 h-11 rounded-full bg-white text-primary-DEFAULT flex items-center justify-center shadow-lg hover:bg-accent-DEFAULT hover:text-white transition-colors"
             aria-label="View product details"
           >
-            <Eye
-              size={18}
-              className="text-primary-DEFAULT group-hover:text-white"
-            />
+            <Eye size={18} />
           </Link>
           <button
             onClick={handleAddToCart}
-            className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-lg hover:bg-primary-DEFAULT hover:text-white transition-colors"
+            className="w-11 h-11 rounded-full bg-white text-primary-DEFAULT flex items-center justify-center shadow-lg hover:bg-primary-DEFAULT hover:text-white transition-colors"
             aria-label="Add to cart"
           >
-            <ShoppingBag size={18} className="text-primary-DEFAULT" />
+            <ShoppingBag size={18} />
           </button>
           <a
             href={`https://wa.me/919876543210?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
