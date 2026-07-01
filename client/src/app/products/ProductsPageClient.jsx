@@ -289,24 +289,21 @@ export default function ProductsPageClient() {
       <Navbar />
       <main style={{ paddingTop: "110px" }}>
         {/* Page Header */}
-        <div className="py-10 md:py-12 bg-background border-b border-border-DEFAULT">
+        <div className="py-10 md:py-12 bg-background border-b border-border">
           <div className="container-luxury">
             <div className="flex items-center gap-2 text-sm font-body text-text-muted mb-4">
-              <a
-                href="/"
-                className="hover:text-primary-DEFAULT transition-colors"
-              >
+              <a href="/" className="hover:text-primary transition-colors">
                 Home
               </a>
               <span>/</span>
-              <span className="text-primary-DEFAULT font-semibold">
+              <span className="text-primary font-semibold">
                 Products
               </span>
             </div>
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div>
                 <h1
-                  className="font-heading text-primary-DEFAULT mb-2"
+                  className="font-heading text-primary mb-2"
                   style={{
                     fontSize: "clamp(2rem, 4vw, 3rem)",
                     fontWeight: 700,
@@ -330,7 +327,7 @@ export default function ProductsPageClient() {
                   placeholder="Search products..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-border-DEFAULT bg-surface font-body text-sm outline-none focus:border-accent-DEFAULT transition-colors"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-border bg-surface font-body text-sm outline-none focus:border-accent transition-colors"
                 />
 
                 {search && (
@@ -352,9 +349,9 @@ export default function ProductsPageClient() {
             <aside className="hidden lg:block w-64 flex-shrink-0">
               <div className="sticky top-32 space-y-4">
                 {/* Categories */}
-                <div className="p-5 rounded-2xl border border-border-DEFAULT bg-surface shadow-xs">
-                  <h3 className="font-heading text-sm font-bold text-primary-DEFAULT mb-3.5 flex items-center gap-2">
-                    <Leaf size={14} className="text-accent-DEFAULT" />
+                <div className="p-5 rounded-2xl border border-border bg-surface shadow-xs">
+                  <h3 className="font-heading text-sm font-bold text-primary mb-3.5 flex items-center gap-2">
+                    <Leaf size={14} className="text-accent" />
                     Categories
                   </h3>
                   <div className="space-y-1">
@@ -364,13 +361,13 @@ export default function ProductsPageClient() {
                         onClick={() => setSelectedCategory(cat)}
                         className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all flex items-center justify-between group/cat ${
                           selectedCategory === cat
-                            ? "bg-primary-DEFAULT text-white font-semibold"
-                            : "text-text-DEFAULT hover:bg-background hover:text-primary-DEFAULT"
+                            ? "bg-primary text-white font-semibold"
+                            : "text-text-DEFAULT hover:bg-background hover:text-primary"
                         }`}
                       >
                         <span className="truncate">{cat}</span>
                         {selectedCategory !== cat && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-accent-DEFAULT/40 opacity-0 group-hover/cat:opacity-100 transition-opacity"></span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent/40 opacity-0 group-hover/cat:opacity-100 transition-opacity"></span>
                         )}
                       </button>
                     ))}
@@ -378,11 +375,11 @@ export default function ProductsPageClient() {
                 </div>
 
                 {/* Price Range Filter */}
-                <div className="p-5 rounded-2xl border border-border-DEFAULT bg-surface shadow-xs">
-                  <h3 className="font-heading text-sm font-bold text-primary-DEFAULT mb-3 flex items-center gap-2">
+                <div className="p-5 rounded-2xl border border-border bg-surface shadow-xs">
+                  <h3 className="font-heading text-sm font-bold text-primary mb-3 flex items-center gap-2">
                     <SlidersHorizontal
                       size={14}
-                      className="text-accent-DEFAULT"
+                      className="text-accent"
                     />
                     Price Range
                   </h3>
@@ -404,7 +401,7 @@ export default function ProductsPageClient() {
                                 Math.max(0, parseInt(e.target.value) || 0),
                               )
                             }
-                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border-DEFAULT bg-background outline-none text-xs"
+                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs"
                           />
                         </div>
                       </div>
@@ -424,7 +421,7 @@ export default function ProductsPageClient() {
                                 Math.max(0, parseInt(e.target.value) || 0),
                               )
                             }
-                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border-DEFAULT bg-background outline-none text-xs"
+                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs"
                           />
                         </div>
                       </div>
@@ -439,7 +436,7 @@ export default function ProductsPageClient() {
                         step="50"
                         value={maxPrice}
                         onChange={(e) => setMaxPrice(parseInt(e.target.value))}
-                        className="w-full accent-primary-DEFAULT h-1.5 bg-border-DEFAULT rounded-lg appearance-none cursor-pointer"
+                        className="range range-primary range-xs w-full cursor-pointer"
                       />
 
                       <div className="flex justify-between text-[10px] text-text-muted font-body">
@@ -451,9 +448,9 @@ export default function ProductsPageClient() {
                 </div>
 
                 {/* Rating Filter */}
-                <div className="p-5 rounded-2xl border border-border-DEFAULT bg-surface shadow-xs">
-                  <h3 className="font-heading text-sm font-bold text-primary-DEFAULT mb-3 flex items-center gap-2">
-                    <Star size={14} className="text-accent-DEFAULT" />
+                <div className="p-5 rounded-2xl border border-border bg-surface shadow-xs">
+                  <h3 className="font-heading text-sm font-bold text-primary mb-3 flex items-center gap-2">
+                    <Star size={14} className="text-accent" />
                     Customer Rating
                   </h3>
                   <div className="space-y-2">
@@ -467,7 +464,7 @@ export default function ProductsPageClient() {
                         onClick={() => setMinRating(opt.value)}
                         className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-body transition-all flex items-center gap-2 ${
                           minRating === opt.value
-                            ? "bg-accent-50 text-primary-DEFAULT font-semibold border border-accent-DEFAULT/20"
+                            ? "bg-accent-50 text-primary font-semibold border border-accent/20"
                             : "text-text-DEFAULT hover:bg-background border border-transparent"
                         }`}
                       >
@@ -493,8 +490,8 @@ export default function ProductsPageClient() {
                 </div>
 
                 {/* Sort */}
-                <div className="p-5 rounded-2xl border border-border-DEFAULT bg-surface shadow-xs">
-                  <h3 className="font-heading text-sm font-bold text-primary-DEFAULT mb-3.5">
+                <div className="p-5 rounded-2xl border border-border bg-surface shadow-xs">
+                  <h3 className="font-heading text-sm font-bold text-primary mb-3.5">
                     Sort By
                   </h3>
                   <div className="space-y-1">
@@ -504,7 +501,7 @@ export default function ProductsPageClient() {
                         onClick={() => setSortBy(opt.value)}
                         className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all ${
                           sortBy === opt.value
-                            ? "bg-accent-DEFAULT text-white font-semibold"
+                            ? "bg-[#3D2314] text-white font-semibold"
                             : "text-text-DEFAULT hover:bg-background"
                         }`}
                       >
@@ -546,7 +543,7 @@ export default function ProductsPageClient() {
                       className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border text-sm font-button font-semibold transition-all duration-300 flex-shrink-0 ${
                         isActive
                           ? "bg-[#3D2314] text-white border-[#3D2314] shadow-md shadow-[#3D2314]/25 scale-102"
-                          : "bg-white hover:bg-[#FDFBF7] hover:border-[#D4A95A]/50 text-[#3D2314] border-border-DEFAULT"
+                          : "bg-white hover:bg-[#FDFBF7] hover:border-[#D4A95A]/50 text-[#3D2314] border-border"
                       }`}
                     >
                       {cat === "All" ? (
@@ -556,7 +553,7 @@ export default function ProductsPageClient() {
                           <Star size={12} className="fill-current" />
                         </div>
                       ) : (
-                        <div className="relative w-6 h-6 rounded-lg overflow-hidden border border-border-DEFAULT bg-[#FDFBF7]">
+                        <div className="relative w-6 h-6 rounded-lg overflow-hidden border border-border bg-[#FDFBF7]">
                           <Image
                             src={
                               categoryImages[cat] ||
@@ -589,7 +586,7 @@ export default function ProductsPageClient() {
                   <div className="w-16 h-16 rounded-full bg-background flex items-center justify-center mx-auto mb-4">
                     <Search size={28} className="text-text-muted" />
                   </div>
-                  <h3 className="font-heading text-xl text-primary-DEFAULT mb-2">
+                  <h3 className="font-heading text-xl text-primary mb-2">
                     No products found
                   </h3>
                   <p className="text-text-muted font-body text-sm">
