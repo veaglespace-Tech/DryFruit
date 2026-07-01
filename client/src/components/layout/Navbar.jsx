@@ -180,10 +180,10 @@ export default function Navbar() {
             {/* Logo */}
             <Link
               href="/"
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-2 sm:gap-3 group"
               aria-label="Shreepad Enterprises Home"
             >
-              <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-all duration-300 border border-border-DEFAULT/30">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-all duration-300 border border-border-DEFAULT/30">
                 <img
                   src="/images/logo.png"
                   alt="Shreepad Enterprises Logo"
@@ -192,13 +192,13 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span
-                  className="font-heading text-xl font-bold leading-none tracking-tight"
+                  className="font-heading text-base sm:text-xl font-bold leading-none tracking-tight"
                   style={{ color: !isDarkHeader ? "#3D2314" : "#fff" }}
                 >
                   Shreepad
                 </span>
                 <span
-                  className="font-body text-[10px] font-bold uppercase tracking-widest mt-0.5"
+                  className="font-body text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5"
                   style={{
                     color: !isDarkHeader ? "#A97142" : "rgba(255,255,255,0.85)",
                   }}
@@ -276,7 +276,7 @@ export default function Navbar() {
             </ul>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {/* Search */}
               <button
                 onClick={() => dispatch(setSearchOpen(true))}
@@ -305,7 +305,7 @@ export default function Navbar() {
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className={`p-2 rounded-full transition-all duration-200 ${
+                className={`hidden sm:flex p-2 rounded-full transition-all duration-200 ${
                   !isDarkHeader
                     ? "hover:bg-background"
                     : "hover:text-white"
@@ -316,9 +316,10 @@ export default function Navbar() {
                 <Heart size={20} />
               </Link>
 
+              {/* Cart */}
               <button
                 onClick={() => dispatch(toggleCart())}
-                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent-DEFAULT shadow-luxury overflow-visible"
+                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent shadow-luxury overflow-visible"
                 aria-label={`Cart (${cartCount} items)`}
               >
                 <ShoppingBag size={20} />
@@ -333,9 +334,9 @@ export default function Navbar() {
               {admin && (
                 <Link
                   href="/admin/dashboard"
-                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
+                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
                   style={{
-                    color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.9)",
+                    color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)",
                     borderColor: !isDarkHeader
                       ? "#3D2314"
                       : "rgba(255,255,255,0.4)",
