@@ -125,17 +125,17 @@ export default function ProductCard({ product }) {
         </Link>
 
         {/* Hover Actions Overlay */}
-        <div className="absolute inset-0 bg-primary-DEFAULT/60 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute inset-0 bg-primary/60 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
           <Link
             href={`/products/${product.slug}`}
-            className="w-11 h-11 rounded-full bg-white text-primary-DEFAULT flex items-center justify-center shadow-lg hover:bg-accent-DEFAULT hover:text-white transition-colors"
+            className="w-11 h-11 rounded-full bg-white text-primary flex items-center justify-center shadow-lg hover:bg-accent hover:text-white transition-colors"
             aria-label="View product details"
           >
             <Eye size={18} />
           </Link>
           <button
             onClick={handleAddToCart}
-            className="w-11 h-11 rounded-full bg-white text-primary-DEFAULT flex items-center justify-center shadow-lg hover:bg-primary-DEFAULT hover:text-white transition-colors"
+            className="w-11 h-11 rounded-full bg-white text-primary flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-colors"
             aria-label="Add to cart"
           >
             <ShoppingBag size={18} />
@@ -157,7 +157,7 @@ export default function ProductCard({ product }) {
         {/* Category */}
         <Link
           href={`/products?category=${product.category.slug}`}
-          className="text-xs font-button font-semibold text-accent-DEFAULT uppercase tracking-wider hover:text-secondary-DEFAULT transition-colors"
+          className="text-xs font-button font-semibold text-accent uppercase tracking-wider hover:text-secondary transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           {product.category.name}
@@ -165,7 +165,7 @@ export default function ProductCard({ product }) {
 
         {/* Name */}
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-heading text-base font-semibold text-primary-DEFAULT mt-1 mb-0.5 leading-snug group-hover:text-secondary-DEFAULT transition-colors line-clamp-2">
+          <h3 className="font-heading text-base font-semibold text-primary mt-1 mb-0.5 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
@@ -198,7 +198,7 @@ export default function ProductCard({ product }) {
         {/* Price Row */}
         <div className="flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="font-heading text-xl font-bold text-primary-DEFAULT">
+            <span className="font-heading text-xl font-bold text-primary">
               ₹{product.price.toLocaleString()}
             </span>
             {product.original_price && (
@@ -217,7 +217,7 @@ export default function ProductCard({ product }) {
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          className="w-full mt-3 py-2.5 rounded-xl bg-primary-50 text-primary-DEFAULT font-button font-semibold text-sm hover:bg-primary-DEFAULT hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-primary-DEFAULT/20 hover:border-primary-DEFAULT"
+          className="w-full mt-3 py-2.5 rounded-xl bg-primary-50 text-primary font-button font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-primary/20 hover:border-primary"
         >
           <ShoppingBag size={16} />
           Add to Cart
