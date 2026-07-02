@@ -166,7 +166,7 @@ export default function TestimonialsSection() {
           ref={sliderRef}
           className="max-w-4xl mx-auto mb-10 testimonial-card"
         >
-          <div className="relative p-8 md:p-12 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20">
+          <div className="relative p-5 sm:p-8 md:p-12 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/20">
             {/* Quote Icon */}
             <Quote size={48} className="text-accent-DEFAULT/30 mb-4" />
 

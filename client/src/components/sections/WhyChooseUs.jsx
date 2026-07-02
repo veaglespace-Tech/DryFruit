@@ -184,15 +184,15 @@ export default function WhyChooseUs() {
         {/* Features Grid */}
         <div
           ref={iconsRef}
-          className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 pb-6 mb-16 scrollbar-thin scroll-smooth"
+          className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 pb-6 mb-10 scrollbar-thin scroll-smooth"
         >
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
               <div
                 key={feature.title}
-                className="why-card group relative p-6 rounded-2xl border border-[#3D2314]/10 overflow-hidden hover:shadow-luxury-lg hover:border-accent/40 transition-all duration-400 cursor-default flex-shrink-0 w-[260px] sm:w-[280px] md:w-auto"
-                style={{ minHeight: "220px" }}
+                className="why-card group relative p-5 sm:p-6 rounded-2xl border border-[#3D2314]/10 overflow-hidden hover:shadow-luxury-lg hover:border-accent/40 transition-all duration-400 cursor-default flex-shrink-0 w-[220px] sm:w-[260px] md:w-auto"
+                style={{ minHeight: "200px" }}
               >
                 {/* Background Image with overlay */}
                 <div className="absolute inset-0 z-0">

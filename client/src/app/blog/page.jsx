@@ -65,8 +65,7 @@ export default function BlogPage() {
                 Wellness & Nutrition Blog
               </h1>
               <div
-                className="section-divider ml-0"
-                style={{ margin: "12px 0" }}
+                className="section-divider mt-3 ml-0"
               />
               <p className="text-text-muted font-body leading-relaxed text-sm md:text-base">
                 Tips, guides, and nutrition insights to help you build healthier

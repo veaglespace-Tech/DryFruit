@@ -495,7 +495,7 @@ export default function ProductDetailClient({ slug }) {
       <Navbar />
       <main ref={detailsRef} style={{ paddingTop: "110px" }}>
         {/* Breadcrumb */}
-        <div className="bg-background py-4 border-b border-border-DEFAULT">
+        <div className="bg-background py-5 border-b border-border-DEFAULT">
           <div className="container-luxury">
             <div className="flex items-center gap-2 text-xs md:text-sm font-body text-text-muted">
               <Link

@@ -88,7 +88,7 @@ export default function SearchOverlay() {
       className="fixed inset-0 z-50 bg-[#3D1F0E]/80 backdrop-blur-md flex items-center justify-center p-4 w-full h-full"
     >
       {/* Main Search Panel */}
-      <div className="search-content w-full max-w-lg bg-white rounded-3xl p-5 md:p-8 shadow-luxury-xl border border-border">
+      <div className="search-content w-full max-w-lg bg-white rounded-3xl p-4 sm:p-5 md:p-8 shadow-luxury-xl border border-border">
         {/* Header Row with Title and Close Button */}
         <div className="flex items-center justify-between mb-5 pb-2 border-b border-border/60">
           <h3 className="font-heading text-base font-bold text-primary flex items-center gap-2">

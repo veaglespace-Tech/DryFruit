@@ -68,12 +68,14 @@ export default function FAQSection() {
 
   useGSAP(
     () => {
+      const isMobile = window.innerWidth < 768;
       gsap.fromTo(
         ".faq-item",
-        { opacity: 0, x: -30 },
+        { opacity: 0, x: isMobile ? 0 : -30, y: isMobile ? 20 : 0 },
         {
           opacity: 1,
           x: 0,
+          y: 0,
           duration: 0.6,
           stagger: 0.06,
           ease: "power3.out",
@@ -127,7 +129,7 @@ export default function FAQSection() {
   return (
     <section ref={sectionRef} className="section-padding bg-background">
       <div className="container-luxury">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border mb-4">

@@ -62,7 +62,7 @@ export default function ContactSection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="section-padding bg-surface"
+      className="section-padding bg-surface overflow-hidden"
     >
       <div className="container-luxury">
         <div className="text-center mb-16">
@@ -84,7 +84,7 @@ export default function ContactSection() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left: Info */}
           <div ref={leftRef}>
             {/* Contact Cards */}
@@ -197,7 +197,7 @@ export default function ContactSection() {
             {!submitted ? (
               <form
                 onSubmit={handleSubmit}
-                className="p-8 rounded-3xl border border-border-DEFAULT bg-white shadow-luxury"
+                className="p-5 sm:p-6 md:p-8 rounded-3xl border border-border-DEFAULT bg-white shadow-luxury"
               >
                 <div className="flex items-center gap-3 mb-6">
                   <Zap size={20} className="text-accent-DEFAULT" />

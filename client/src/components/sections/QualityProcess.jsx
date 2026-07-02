@@ -128,7 +128,7 @@ export default function QualityProcess() {
     >
       <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent/20 mb-4">
             <span className="text-accent text-xs font-button font-semibold uppercase tracking-widest">
               Our Process

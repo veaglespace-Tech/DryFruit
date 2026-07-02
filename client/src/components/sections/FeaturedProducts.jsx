@@ -237,7 +237,6 @@ export default function FeaturedProducts({
             </h2>
             <div
               className="section-divider mt-3 ml-0"
-              style={{ margin: "12px 0" }}
             />
             <p className="body-lead max-w-xl">{subtitle}</p>
           </div>
@@ -256,7 +255,7 @@ export default function FeaturedProducts({
           className="flex overflow-x-auto md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-6 scrollbar-thin scroll-smooth"
         >
           {products.map((product) => (
-            <div key={product.id} className="flex-shrink-0 w-[240px] sm:w-[260px] md:w-auto">
+            <div key={product.id} className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-auto">
               <ProductCard product={product} />
             </div>
           ))}

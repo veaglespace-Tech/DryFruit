@@ -343,7 +343,7 @@ export default function ProductsPageClient() {
           </div>
         </div>
 
-        <div className="container-luxury py-8">
+        <div className="container-luxury section-padding">
           <div className="flex gap-8">
             {/* Sidebar Filters */}
             <aside className="hidden lg:block w-64 flex-shrink-0">

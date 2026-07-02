@@ -80,7 +80,7 @@ export default function CheckoutPage() {
       <AnnouncementBar />
       <Navbar />
       <main style={{ paddingTop: "110px" }}>
-        <div className="container-luxury py-10">
+        <div className="container-luxury section-padding">
           {!completed ? (
             <>
               {/* Back to cart */}

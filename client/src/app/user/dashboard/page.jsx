@@ -155,7 +155,7 @@ export default function UserDashboard() {
       </header>
 
       {/* Main Grid content */}
-      <div className="container-luxury py-10">
+      <div className="container-luxury section-padding">
         <div className="grid lg:grid-cols-3 gap-8 items-start">
           {/* Left panel: Summary */}
           <div className="dashboard-card lg:col-span-1 bg-white border border-border-DEFAULT rounded-3xl p-6 shadow-luxury">

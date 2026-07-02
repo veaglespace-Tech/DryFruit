@@ -18,11 +18,13 @@ export const useFadeUp = (options) => {
   useGSAP(
     () => {
       if (!ref.current) return;
+      const isMobile = window.innerWidth < 768;
+      const initialY = isMobile ? Math.min(options?.y ?? 40, 20) : (options?.y ?? 40);
       const elements = ref.current.querySelectorAll(".gsap-reveal");
       if (elements.length === 0) {
         gsap.fromTo(
           ref.current,
-          { opacity: 0, y: options?.y ?? 40 },
+          { opacity: 0, y: initialY },
           {
             opacity: 1,
             y: 0,
@@ -39,7 +41,7 @@ export const useFadeUp = (options) => {
       } else {
         gsap.fromTo(
           elements,
-          { opacity: 0, y: options?.y ?? 40 },
+          { opacity: 0, y: initialY },
           {
             opacity: 1,
             y: 0,
@@ -157,12 +159,14 @@ export const useFadeLeft = (options) => {
   useGSAP(
     () => {
       if (!ref.current) return;
+      const isMobile = window.innerWidth < 1024;
       gsap.fromTo(
         ref.current,
-        { opacity: 0, x: -60 },
+        { opacity: 0, x: isMobile ? 0 : -60, y: isMobile ? 30 : 0 },
         {
           opacity: 1,
           x: 0,
+          y: 0,
           duration: 0.9,
           delay: options?.delay ?? 0,
           ease: "power3.out",
@@ -180,12 +184,14 @@ export const useFadeRight = (options) => {
   useGSAP(
     () => {
       if (!ref.current) return;
+      const isMobile = window.innerWidth < 1024;
       gsap.fromTo(
         ref.current,
-        { opacity: 0, x: 60 },
+        { opacity: 0, x: isMobile ? 0 : 60, y: isMobile ? 30 : 0 },
         {
           opacity: 1,
           x: 0,
+          y: 0,
           duration: 0.9,
           delay: options?.delay ?? 0,
           ease: "power3.out",

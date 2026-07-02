@@ -170,10 +170,14 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-          isScrolled ? "navbar-glass shadow-luxury" : "bg-transparent"
+        className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
+          isMobileNavOpen
+            ? "bg-white border-b border-border-DEFAULT shadow-luxury"
+            : isScrolled
+              ? "navbar-glass shadow-luxury"
+              : "bg-transparent"
         }`}
-        style={{ top: "36px" }}
+        style={{ top: isScrolled ? "0px" : "36px" }}
       >
         <div className="container-luxury">
           <div className="flex items-center justify-between h-20">
@@ -193,14 +197,14 @@ export default function Navbar() {
               <div className="flex flex-col">
                 <span
                   className="font-heading text-base sm:text-xl font-bold leading-none tracking-tight"
-                  style={{ color: !isDarkHeader ? "#3D2314" : "#fff" }}
+                  style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "#fff" }}
                 >
                   Shreepad
                 </span>
                 <span
                   className="font-body text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5"
                   style={{
-                    color: !isDarkHeader ? "#A97142" : "rgba(255,255,255,0.85)",
+                    color: isMobileNavOpen || !isDarkHeader ? "#A97142" : "rgba(255,255,255,0.85)",
                   }}
                 >
                   Enterprises
@@ -281,11 +285,11 @@ export default function Navbar() {
               <button
                 onClick={() => dispatch(setSearchOpen(true))}
                 className={`p-2 rounded-full transition-all duration-200 ${
-                  !isDarkHeader
+                  isMobileNavOpen || !isDarkHeader
                     ? "hover:bg-background"
                     : "hover:text-white"
                 }`}
-                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label="Search"
               >
                 <Search size={20} />
@@ -305,12 +309,12 @@ export default function Navbar() {
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className={`hidden sm:flex p-2 rounded-full transition-all duration-200 ${
-                  !isDarkHeader
+                className={`flex p-2 rounded-full transition-all duration-200 ${
+                  isMobileNavOpen || !isDarkHeader
                     ? "hover:bg-background"
                     : "hover:text-white"
                 }`}
-                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label="Wishlist"
               >
                 <Heart size={20} />
@@ -336,8 +340,8 @@ export default function Navbar() {
                   href="/admin/dashboard"
                   className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
                   style={{
-                    color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)",
-                    borderColor: !isDarkHeader
+                    color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)",
+                    borderColor: isMobileNavOpen || !isDarkHeader
                       ? "#3D2314"
                       : "rgba(255,255,255,0.4)",
                   }}
@@ -353,11 +357,11 @@ export default function Navbar() {
               <button
                 onClick={() => dispatch(toggleMobileNav())}
                 className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
-                  !isDarkHeader
+                  isMobileNavOpen || !isDarkHeader
                     ? "hover:bg-background"
                     : "hover:bg-white/10"
                 }`}
-                style={{ color: !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileNavOpen}
               >
@@ -413,14 +417,7 @@ export default function Navbar() {
               <Phone size={20} />
               +91 98765 43210
             </a>
-            <Link
-              href="/admin"
-              className="flex items-center gap-3 px-4 py-3 border border-border-DEFAULT text-text-muted rounded-xl font-body text-sm"
-              onClick={() => dispatch(setMobileNavOpen(false))}
-            >
-              <User size={18} />
-              Admin Login
-            </Link>
+
           </div>
         </div>
       </div>
