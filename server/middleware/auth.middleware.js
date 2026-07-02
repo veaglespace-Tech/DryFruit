@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Admin, User } = require('../models');
+const { prisma } = require('../config/db');
 
 const protect = async (req, res, next) => {
   let token;
@@ -14,8 +14,17 @@ const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.admin = await Admin.findByPk(decoded.id, {
-      attributes: { exclude: ['password'] },
+    req.admin = await prisma.admin.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        is_active: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
 
     if (!req.admin || !req.admin.is_active) {
@@ -41,8 +50,18 @@ const protectUser = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findByPk(decoded.id, {
-      attributes: { exclude: ['password'] },
+    req.user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        address: true,
+        is_active: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
 
     if (!req.user || !req.user.is_active) {
@@ -56,4 +75,3 @@ const protectUser = async (req, res, next) => {
 };
 
 module.exports = { protect, protectUser };
-
