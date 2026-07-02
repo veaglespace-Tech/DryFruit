@@ -5,11 +5,11 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
-const { connectDB } = require('./src/config/db');
-const authRoutes = require('./src/routes/auth.routes');
-const categoryRoutes = require('./src/routes/category.routes');
-const productRoutes = require('./src/routes/product.routes');
-const miscRoutes = require('./src/routes/misc.routes');
+const { connectDB } = require('./config/db');
+const authRoutes = require('./routes/auth.routes');
+const categoryRoutes = require('./routes/category.routes');
+const productRoutes = require('./routes/product.routes');
+const miscRoutes = require('./routes/misc.routes');
 
 const app = express();
 

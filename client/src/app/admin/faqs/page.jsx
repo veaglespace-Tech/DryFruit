@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { HelpCircle, Plus, Trash2 } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminFAQsQuery,
+  useCreateFAQMutation,
+  useDeleteFAQMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminFAQsPage() {
-  const [faqs, setFaqs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: faqsData, isLoading: loading } = useGetAdminFAQsQuery();
+  const [createFAQ] = useCreateFAQMutation();
+  const [deleteFAQ] = useDeleteFAQMutation();
+
+  const faqs = faqsData?.data || faqsData || [];
 
   // Form State for new FAQ
   const [question, setQuestion] = useState("");
@@ -15,39 +22,18 @@ export default function AdminFAQsPage() {
   const [category, setCategory] = useState("General");
   const [submitting, setSubmitting] = useState(false);
 
-  const fetchFAQs = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getFAQs();
-      if (res.data?.success) {
-        setFaqs(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load FAQs");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchFAQs();
-  }, []);
-
   const handleAddFAQ = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      const res = await adminApi.createFAQ({ question, answer, category });
-      if (res.data?.success) {
-        toast.success("FAQ added successfully!");
-        setQuestion("");
-        setAnswer("");
-        setCategory("General");
-        fetchFAQs();
-      }
+      await createFAQ({ question, answer, category }).unwrap();
+      toast.success("FAQ added successfully!");
+      setQuestion("");
+      setAnswer("");
+      setCategory("General");
     } catch (err) {
-      toast.error("Failed to create FAQ");
+      toast.error(err.data?.message || "Failed to create FAQ");
     } finally {
       setSubmitting(false);
     }
@@ -56,11 +42,8 @@ export default function AdminFAQsPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this FAQ?")) {
       try {
-        const res = await adminApi.deleteFAQ(id);
-        if (res.data?.success) {
-          toast.success("FAQ deleted");
-          setFaqs((prev) => prev.filter((f) => f.id !== id));
-        }
+        await deleteFAQ(id).unwrap();
+        toast.success("FAQ deleted");
       } catch (err) {
         toast.error("Failed to delete FAQ");
       }

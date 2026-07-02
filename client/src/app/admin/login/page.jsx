@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Leaf, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { adminApi } from "@/lib/api";
+import { useAdminLoginMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminLoginPage() {
@@ -14,7 +14,7 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [adminLogin, { isLoading: loading }] = useAdminLoginMutation();
 
   useGSAP(
     () => {
@@ -29,16 +29,15 @@ export default function AdminLoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const res = await adminApi.login(email, password);
-      localStorage.setItem("nutriroots_admin_token", res.data.token);
-      localStorage.setItem("nutriroots_admin", JSON.stringify(res.data.admin));
-      toast.success(`Welcome back, ${res.data.admin.name}! 🌿`);
+      const res = await adminLogin({ email, password }).unwrap();
+      localStorage.setItem("nutriroots_admin_token", res.token);
+      localStorage.setItem("nutriroots_admin", JSON.stringify(res.admin));
+      toast.success(`Welcome back, ${res.admin.name}! 🌿`);
       router.push("/admin/dashboard");
     } catch (err) {
       toast.error(
-        err.response?.data?.message || "Invalid credentials. Please try again.",
+        err.data?.message || "Invalid credentials. Please try again.",
       );
       const tl = gsap.timeline();
       tl.to(formRef.current, { x: -12, duration: 0.08 })
@@ -47,7 +46,6 @@ export default function AdminLoginPage() {
         .to(formRef.current, { x: 8, duration: 0.08 })
         .to(formRef.current, { x: 0, duration: 0.08 });
     }
-    setLoading(false);
   };
 
   return (

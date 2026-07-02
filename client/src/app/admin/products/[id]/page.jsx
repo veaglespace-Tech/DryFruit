@@ -4,7 +4,12 @@ import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { adminApi } from "@/lib/api";
+import {
+  useGetProductByIdQuery,
+  useGetAdminCategoriesQuery,
+  useUpdateProductMutation,
+  useCreateCategoryMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminEditProductPage({ params }) {
@@ -13,7 +18,12 @@ export default function AdminEditProductPage({ params }) {
   const productId = parseInt(id);
 
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
+  const { data: categoriesData, isLoading: catsLoading } = useGetAdminCategoriesQuery();
+  const { data: productData, isLoading: prodLoading } = useGetProductByIdQuery(productId, { skip: !productId });
+  const [updateProduct] = useUpdateProductMutation();
+  const [createCategory] = useCreateCategoryMutation();
+
+  const categoriesList = categoriesData?.data || categoriesData || [];
   const [categories, setCategories] = useState([]);
 
   // Form State
@@ -46,56 +56,42 @@ export default function AdminEditProductPage({ params }) {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setFetching(true);
-        // Load categories
-        const catRes = await adminApi.getCategories();
-        let catList = [];
-        if (catRes.data?.success) {
-          catList = catRes.data.data;
-          setCategories(catList);
-        }
+    if (categoriesList.length > 0) {
+      setCategories(categoriesList);
+    }
+  }, [categoriesList]);
 
-        // Load product
-        const prodRes = await adminApi.getProductById(productId);
-        if (prodRes.data?.success) {
-          const prod = prodRes.data.data;
-          setName(prod.name || "");
-          setCategoryId(
-            prod.category_id
-              ? prod.category_id.toString()
-              : catList[0]?.id.toString() || "",
-          );
-          setPrice(prod.price ? prod.price.toString() : "");
-          setOriginalPrice(
-            prod.original_price ? prod.original_price.toString() : "",
-          );
-          setDiscountPercent(
-            prod.discount_percent ? prod.discount_percent.toString() : "0",
-          );
-          setWeight(prod.weight || "500g");
-          setSku(prod.sku || "");
-          setStock(prod.stock ? prod.stock.toString() : "100");
-          setShortDesc(prod.short_description || "");
-          setDescription(prod.description || "");
-          setIsFeatured(!!prod.is_featured);
-          setIsBestSeller(!!prod.is_best_seller);
-          setIsActive(!!prod.is_active);
-          setBenefits(prod.benefits || []);
-          setCalories(prod.nutrition_facts?.calories || "579 kcal");
-          setProtein(prod.nutrition_facts?.protein || "21g");
-          setFat(prod.nutrition_facts?.fat || "50g");
-          setCarbs(prod.nutrition_facts?.carbs || "22g");
-        }
-      } catch (err) {
-        toast.error("Failed to fetch product details");
-      } finally {
-        setFetching(false);
-      }
-    };
-    loadData();
-  }, [productId]);
+  useEffect(() => {
+    if (productData?.data || productData) {
+      const prod = productData.data || productData;
+      setName(prod.name || "");
+      setCategoryId(
+        prod.category_id
+          ? prod.category_id.toString()
+          : categoriesList[0]?.id?.toString() || "",
+      );
+      setPrice(prod.price ? prod.price.toString() : "");
+      setOriginalPrice(
+        prod.original_price ? prod.original_price.toString() : "",
+      );
+      setDiscountPercent(
+        prod.discount_percent ? prod.discount_percent.toString() : "0",
+      );
+      setWeight(prod.weight || "500g");
+      setSku(prod.sku || "");
+      setStock(prod.stock ? prod.stock.toString() : "100");
+      setShortDesc(prod.short_description || "");
+      setDescription(prod.description || "");
+      setIsFeatured(!!prod.is_featured);
+      setIsBestSeller(!!prod.is_best_seller);
+      setIsActive(!!prod.is_active);
+      setBenefits(prod.benefits || []);
+      setCalories(prod.nutrition_facts?.calories || "579 kcal");
+      setProtein(prod.nutrition_facts?.protein || "21g");
+      setFat(prod.nutrition_facts?.fat || "50g");
+      setCarbs(prod.nutrition_facts?.carbs || "22g");
+    }
+  }, [productData, categoriesList]);
 
   const handleAddBenefit = () => {
     if (benefitInput.trim()) {
@@ -134,12 +130,12 @@ export default function AdminEditProductPage({ params }) {
         catFormData.append("description", "Custom added category");
         catFormData.append("is_active", "true");
 
-        const catRes = await adminApi.createCategory(catFormData);
-        if (catRes.data?.success) {
-          finalCategoryId = catRes.data.data.id.toString();
+        try {
+          const catRes = await createCategory(catFormData).unwrap();
+          finalCategoryId = catRes.id?.toString() || catRes.data?.id?.toString();
           toast.success(`Category "${customCategory}" created! 🌿`);
-        } else {
-          throw new Error("Failed to create category");
+        } catch (catErr) {
+          throw new Error(catErr.data?.message || "Failed to create category");
         }
       }
 
@@ -164,16 +160,16 @@ export default function AdminEditProductPage({ params }) {
       );
       if (file) formData.append("thumbnail", file);
 
-      const res = await adminApi.updateProduct(productId, formData);
-      if (res.data?.success) {
-        toast.success("Product updated successfully! 🌿");
-        router.push("/admin/products");
-      }
+      await updateProduct({ id: productId, formData }).unwrap();
+      toast.success("Product updated successfully! 🌿");
+      router.push("/admin/products");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update product.");
+      toast.error(err.data?.message || err.message || "Failed to update product.");
     }
     setLoading(false);
   };
+
+  const fetching = catsLoading || prodLoading;
 
   if (fetching) {
     return (

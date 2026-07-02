@@ -4,12 +4,21 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminCategoriesQuery,
+  useCreateCategoryMutation,
+  useCreateProductMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminNewProductPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { data: categoriesData } = useGetAdminCategoriesQuery();
+  const [createCategory] = useCreateCategoryMutation();
+  const [createProduct] = useCreateProductMutation();
+
+  const categoriesList = categoriesData?.data || categoriesData || [];
   const [categories, setCategories] = useState([]);
 
   // Form State
@@ -45,24 +54,15 @@ export default function AdminNewProductPage() {
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    const fetchCats = async () => {
-      try {
-        const res = await adminApi.getCategories();
-        if (res.data?.success) {
-          const list = res.data.data;
-          setCategories(list);
-          if (list.length > 0) {
-            setCategoryId(list[0].id.toString());
-          } else {
-            setCategoryId("others");
-          }
-        }
-      } catch (err) {
-        toast.error("Failed to load categories");
+    if (categoriesList.length > 0) {
+      setCategories(categoriesList);
+      if (!categoryId) {
+        setCategoryId(categoriesList[0].id.toString());
       }
-    };
-    fetchCats();
-  }, []);
+    } else if (categoriesList.length === 0 && categoriesData) {
+      setCategoryId("others");
+    }
+  }, [categoriesList, categoryId, categoriesData]);
 
   const handleAddBenefit = () => {
     if (benefitInput.trim()) {
@@ -99,12 +99,12 @@ export default function AdminNewProductPage() {
         catFormData.append("slug", slugify(customCategory));
         catFormData.append("description", "Custom added category");
         catFormData.append("is_active", "true");
-        const catRes = await adminApi.createCategory(catFormData);
-        if (catRes.data?.success) {
-          finalCategoryId = catRes.data.data.id.toString();
+        try {
+          const catRes = await createCategory(catFormData).unwrap();
+          finalCategoryId = catRes.id?.toString() || catRes.data?.id?.toString();
           toast.success(`Category "${customCategory}" created! 🌿`);
-        } else {
-          throw new Error("Failed to create category");
+        } catch (catErr) {
+          throw new Error(catErr.data?.message || "Failed to create category");
         }
       }
 
@@ -129,15 +129,13 @@ export default function AdminNewProductPage() {
       );
       if (file) formData.append("thumbnail", file);
 
-      const res = await adminApi.createProduct(formData);
-      if (res.data?.success) {
-        toast.success("Product added successfully! 🌿");
-        router.push("/admin/products");
-      }
+      await createProduct(formData).unwrap();
+      toast.success("Product added successfully! 🌿");
+      router.push("/admin/products");
     } catch (err) {
       toast.error(
-        err.response?.data?.message ||
-          "Failed to create product. Check details.",
+        err.data?.message || err.message ||
+        "Failed to create product. Check details.",
       );
     }
     setLoading(false);

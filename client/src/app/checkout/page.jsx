@@ -23,7 +23,7 @@ import {
   clearCart,
 } from "@/store/slices/cartSlice";
 import toast from "react-hot-toast";
-import { publicApi } from "@/lib/api";
+import { useSubmitContactMutation } from "@/store/api/apiSlice";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -40,6 +40,8 @@ export default function CheckoutPage() {
   const [completed, setCompleted] = useState(false);
   const [orderId, setOrderId] = useState("");
 
+  const [submitContact] = useSubmitContactMutation();
+
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (cartItems.length === 0) return;
@@ -50,14 +52,14 @@ export default function CheckoutPage() {
         .map((item) => `${item.name} (${item.weight}) x ${item.quantity}`)
         .join(", ");
       // Post to contact leads as a pre-order inquiry
-      await publicApi.submitContact({
+      await submitContact({
         name,
         email,
         phone,
         subject: `Pre-Order Inquiry [Total: ₹${cartTotal}]`,
         message: `Order Items: ${itemsList}. \nShipping Address: ${address}. \nNotes: ${notes}`,
         type: "order",
-      });
+      }).unwrap();
 
       const randomId = "INQ-" + Math.floor(1000 + Math.random() * 9000);
       setOrderId(randomId);

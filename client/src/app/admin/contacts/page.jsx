@@ -1,45 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Mail, Calendar, MessageSquare, Trash2 } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetContactsQuery,
+  useUpdateContactStatusMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminContactsPage() {
-  const [leads, setLeads] = useState([]);
+  const { data: leadsData, isLoading: loading } = useGetContactsQuery({ type: "enquiry" });
+  const [updateContactStatus] = useUpdateContactStatusMutation();
+
+  const leads = leadsData?.data || leadsData || [];
   const [selectedLead, setSelectedLead] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const fetchLeads = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getContacts({ type: "enquiry" });
-      if (res.data?.success) {
-        setLeads(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load enquiry leads");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchLeads();
-  }, []);
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const res = await adminApi.updateContactStatus(id, { status });
-      if (res.data?.success) {
-        setLeads((prev) =>
-          prev.map((lead) => (lead.id === id ? { ...lead, status } : lead)),
-        );
-        if (selectedLead && selectedLead.id === id) {
-          setSelectedLead((prev) => (prev ? { ...prev, status } : null));
-        }
-        toast.success(`Lead status updated to ${status}`);
+      await updateContactStatus({ id, data: { status } }).unwrap();
+      if (selectedLead && selectedLead.id === id) {
+        setSelectedLead((prev) => (prev ? { ...prev, status } : null));
       }
+      toast.success(`Lead status updated to ${status}`);
     } catch (err) {
       toast.error("Failed to update lead status");
     }
@@ -48,8 +30,7 @@ export default function AdminContactsPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to close this lead?")) {
       try {
-        await adminApi.updateContactStatus(id, { status: "closed" });
-        setLeads((prev) => prev.filter((lead) => lead.id !== id));
+        await updateContactStatus({ id, data: { status: "closed" } }).unwrap();
         if (selectedLead && selectedLead.id === id) setSelectedLead(null);
         toast.success("Lead marked as closed");
       } catch (err) {
@@ -90,11 +71,10 @@ export default function AdminContactsPage() {
               <div
                 key={lead.id}
                 onClick={() => setSelectedLead(lead)}
-                className={`p-4 border rounded-xl cursor-pointer transition-all flex justify-between items-start gap-4 ${
-                  selectedLead?.id === lead.id
+                className={`p-4 border rounded-xl cursor-pointer transition-all flex justify-between items-start gap-4 ${selectedLead?.id === lead.id
                     ? "border-accent-DEFAULT bg-primary-50/30"
                     : "border-border-light hover:border-border-DEFAULT bg-white"
-                }`}
+                  }`}
               >
                 <div className="space-y-1 flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -125,15 +105,14 @@ export default function AdminContactsPage() {
 
                 <div className="flex items-center gap-3">
                   <span
-                    className={`px-2 py-0.5 rounded-full text-xxs font-button font-bold capitalize ${
-                      lead.status === "replied"
+                    className={`px-2 py-0.5 rounded-full text-xxs font-button font-bold capitalize ${lead.status === "replied"
                         ? "bg-green-50 text-green-700"
                         : lead.status === "read"
                           ? "bg-blue-50 text-blue-700"
                           : lead.status === "new"
                             ? "bg-red-50 text-red-700"
                             : "bg-stone-100 text-stone-700"
-                    }`}
+                      }`}
                   >
                     {lead.status}
                   </span>

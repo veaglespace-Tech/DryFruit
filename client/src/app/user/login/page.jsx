@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Leaf, Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { publicApi } from "@/lib/api";
+import { useUserLoginMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function UserLoginPage() {
@@ -15,7 +15,7 @@ export default function UserLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [userLogin, { isLoading: loading }] = useUserLoginMutation();
 
   useEffect(() => {
     const token = localStorage.getItem("nutriroots_user_token");
@@ -35,16 +35,15 @@ export default function UserLoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const res = await publicApi.login({ email, password });
-      localStorage.setItem("nutriroots_user_token", res.data.token);
-      localStorage.setItem("nutriroots_user", JSON.stringify(res.data.user));
-      toast.success(`Welcome back, ${res.data.user.name}! 🌿`);
+      const res = await userLogin({ email, password }).unwrap();
+      localStorage.setItem("nutriroots_user_token", res.token);
+      localStorage.setItem("nutriroots_user", JSON.stringify(res.user));
+      toast.success(`Welcome back, ${res.user.name}! 🌿`);
       router.push("/user/dashboard");
     } catch (err) {
       toast.error(
-        err.response?.data?.message || "Invalid credentials. Please try again.",
+        err.data?.message || "Invalid credentials. Please try again.",
       );
       // Shake animation on error
       const tl = gsap.timeline();
@@ -54,7 +53,6 @@ export default function UserLoginPage() {
         .to(formRef.current, { x: 8, duration: 0.08 })
         .to(formRef.current, { x: 0, duration: 0.08 });
     }
-    setLoading(false);
   };
 
   return (

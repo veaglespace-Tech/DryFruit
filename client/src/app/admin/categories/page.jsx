@@ -1,35 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Edit2, Trash2, Tag, X } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminCategoriesPage() {
-  const [categories, setCategories] = useState([]);
+  const { data: categoriesData, isLoading: loading } = useGetAdminCategoriesQuery();
+  const [createCategory] = useCreateCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const categories = categoriesData?.data || categoriesData || [];
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getCategories();
-      if (res.data?.success) {
-        setCategories(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load categories");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,28 +40,18 @@ export default function AdminCategoriesPage() {
       formData.append("description", description);
 
       if (editId !== null) {
-        // Update
-        const res = await adminApi.updateCategory(editId, formData);
-        if (res.data?.success) {
-          toast.success("Category updated successfully! 🌿");
-          setCategories((prev) =>
-            prev.map((cat) => (cat.id === editId ? res.data.data : cat)),
-          );
-          setEditId(null);
-        }
+        await updateCategory({ id: editId, formData }).unwrap();
+        toast.success("Category updated successfully! 🌿");
+        setEditId(null);
       } else {
-        // Add
         formData.append("is_active", "true");
-        const res = await adminApi.createCategory(formData);
-        if (res.data?.success) {
-          toast.success("Category added successfully! 🌿");
-          setCategories((prev) => [...prev, res.data.data]);
-        }
+        await createCategory(formData).unwrap();
+        toast.success("Category added successfully! 🌿");
       }
       setName("");
       setDescription("");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to save category");
+      toast.error(err.data?.message || "Failed to save category");
     } finally {
       setSubmitting(false);
     }
@@ -86,16 +68,8 @@ export default function AdminCategoriesPage() {
       const newStatus = !cat.is_active;
       const formData = new FormData();
       formData.append("is_active", newStatus.toString());
-
-      const res = await adminApi.updateCategory(cat.id, formData);
-      if (res.data?.success) {
-        setCategories((prev) =>
-          prev.map((c) =>
-            c.id === cat.id ? { ...c, is_active: newStatus } : c,
-          ),
-        );
-        toast.success(`Category is now ${newStatus ? "active" : "inactive"}`);
-      }
+      await updateCategory({ id: cat.id, formData }).unwrap();
+      toast.success(`Category is now ${newStatus ? "active" : "inactive"}`);
     } catch (err) {
       toast.error("Failed to update category status");
     }
@@ -104,11 +78,8 @@ export default function AdminCategoriesPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
       try {
-        const res = await adminApi.deleteCategory(id);
-        if (res.data?.success) {
-          setCategories((prev) => prev.filter((cat) => cat.id !== id));
-          toast.success("Category deleted successfully");
-        }
+        await deleteCategory(id).unwrap();
+        toast.success("Category deleted successfully");
       } catch (err) {
         toast.error("Failed to delete category");
       }
@@ -228,11 +199,10 @@ export default function AdminCategoriesPage() {
                     <td className="p-3">
                       <button
                         onClick={() => handleToggleStatus(cat)}
-                        className={`px-2.5 py-1 rounded-full text-xxs font-button font-bold border transition-colors ${
-                          cat.is_active
+                        className={`px-2.5 py-1 rounded-full text-xxs font-button font-bold border transition-colors ${cat.is_active
                             ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
                             : "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
-                        }`}
+                          }`}
                         title="Click to toggle status"
                       >
                         {cat.is_active ? "Active" : "Inactive"}
