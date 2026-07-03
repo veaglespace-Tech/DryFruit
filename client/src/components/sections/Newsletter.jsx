@@ -140,6 +140,7 @@ export default function Newsletter() {
                   required
                   className="w-full px-5 py-3.5 rounded-2xl border-2 border-border-DEFAULT bg-white font-body text-sm text-text-DEFAULT placeholder-text-muted outline-none focus:border-accent-DEFAULT transition-colors shadow-card"
                   aria-label="Email address for newsletter"
+                  suppressHydrationWarning
                 />
               </div>
               <button
@@ -148,6 +149,7 @@ export default function Newsletter() {
                 disabled={loading}
                 className="btn-primary-luxury px-6 flex-shrink-0"
                 aria-label="Subscribe to newsletter"
+                suppressHydrationWarning
               >
                 <span className="flex items-center gap-2">
                   {loading ? (

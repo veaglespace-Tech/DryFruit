@@ -222,6 +222,7 @@ export default function ContactSection() {
                       placeholder=" "
                       required
                       id="contact-name"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="contact-name">Full Name *</label>
                   </div>
@@ -233,6 +234,7 @@ export default function ContactSection() {
                       onChange={handleChange}
                       placeholder=" "
                       id="contact-email"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="contact-email">Email Address</label>
                   </div>
@@ -244,6 +246,7 @@ export default function ContactSection() {
                       onChange={handleChange}
                       placeholder=" "
                       id="contact-phone"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="contact-phone">Phone Number</label>
                   </div>
@@ -255,6 +258,7 @@ export default function ContactSection() {
                       onChange={handleChange}
                       placeholder=" "
                       id="contact-subject"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="contact-subject">Subject</label>
                   </div>
@@ -267,6 +271,7 @@ export default function ContactSection() {
                       required
                       rows={5}
                       id="contact-message"
+                      suppressHydrationWarning
                     />
                     <label htmlFor="contact-message">Your Message *</label>
                   </div>
@@ -276,6 +281,7 @@ export default function ContactSection() {
                   type="submit"
                   disabled={submitting}
                   className="btn-primary-luxury w-full justify-center"
+                  suppressHydrationWarning
                 >
                   <span className="flex items-center gap-2">
                     {submitting ? (

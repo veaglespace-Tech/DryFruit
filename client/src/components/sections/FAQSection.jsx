@@ -165,6 +165,7 @@ export default function FAQSection() {
                   aria-expanded={openId === faq.id}
                   id={`faq-btn-${faq.id}`}
                   aria-controls={`faq-content-${faq.id}`}
+                  suppressHydrationWarning
                 >
                   <span className="font-body font-semibold text-primary pr-4 text-sm md:text-base">
                     {faq.question}

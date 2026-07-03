@@ -229,6 +229,7 @@ export default function TestimonialsSection() {
             onClick={() => goTo(activeIndex - 1)}
             className="w-11 h-11 rounded-full border border-white/30 bg-white/10 flex items-center justify-center text-white hover:bg-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
             aria-label="Previous testimonial"
+            suppressHydrationWarning
           >
             <ChevronLeft size={20} />
           </button>
@@ -244,6 +245,7 @@ export default function TestimonialsSection() {
                   i === activeIndex ? "bg-accent-DEFAULT scale-125" : "bg-white/50 scale-100"
                 }`}
                 aria-label={`Go to testimonial ${i + 1}`}
+                suppressHydrationWarning
               />
             ))}
           </div>
@@ -253,6 +255,7 @@ export default function TestimonialsSection() {
             onClick={() => goTo(activeIndex + 1)}
             className="w-11 h-11 rounded-full border border-white/30 bg-white/10 flex items-center justify-center text-white hover:bg-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
             aria-label="Next testimonial"
+            suppressHydrationWarning
           >
             <ChevronRight size={20} />
           </button>
