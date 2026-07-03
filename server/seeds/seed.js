@@ -231,8 +231,8 @@ const seed = async () => {
   const settings = [
     { key: 'site_name', value: 'Shreepad Enterprises', label: 'Site Name' },
     { key: 'site_tagline', value: 'Nature\'s Premium Dry Fruits & Nuts', label: 'Site Tagline' },
-    { key: 'phone', value: '+91 98765 43210', label: 'Phone Number' },
-    { key: 'whatsapp', value: '+919876543210', label: 'WhatsApp Number' },
+    { key: 'phone', value: '+91 98609 41171', label: 'Phone Number' },
+    { key: 'whatsapp', value: '+91 77097 47803', label: 'WhatsApp Number' },
     { key: 'email', value: 'hello@shreepadenterprises.com', label: 'Email Address' },
     { key: 'address', value: '123, Green Valley Road, Pune, Maharashtra 411001', label: 'Address' },
     { key: 'map_embed', value: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.654!2d73.856!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDMxJzEzLjMiTiA3M8KwNTEnMjEuNiJF!5e0!3m2!1sen!2sin!4v1234567890', label: 'Google Maps Embed URL' },

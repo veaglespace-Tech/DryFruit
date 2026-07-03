@@ -9,8 +9,8 @@ export default function AdminSettingsPage() {
 
   // Settings state
   const [siteName, setSiteName] = useState("Shreepad Enterprises");
-  const [phone, setPhone] = useState("+91 98765 43210");
-  const [whatsapp, setWhatsapp] = useState("+91 98765 43210");
+  const [phone, setPhone] = useState("+91 98609 41171");
+  const [whatsapp, setWhatsapp] = useState("+91 77097 47803");
   const [email, setEmail] = useState("hello@shreepadenterprises.com");
   const [address, setAddress] = useState(
     "123, Green Valley Road, Pune, Maharashtra 411001",

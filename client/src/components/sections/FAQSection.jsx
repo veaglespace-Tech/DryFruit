@@ -38,7 +38,7 @@ const faqs = [
     id: 5,
     question: "How do I place a bulk order?",
     answer:
-      "For bulk orders (10kg+), please contact us via WhatsApp (+91 98765 43210) or email us at hello@shreepadenterprises.com. We offer competitive pricing for bulk purchases and corporate orders, with dedicated account management support.",
+      "For bulk orders (10kg+), please contact us via WhatsApp (+91 77097 47803) or email us at hello@shreepadenterprises.com. We offer competitive pricing for bulk purchases and corporate orders, with dedicated account management support.",
   },
   {
     id: 6,
@@ -218,7 +218,7 @@ export default function FAQSection() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/917709747803"
                 className="btn-primary-luxury text-sm px-6 py-2.5"
                 target="_blank"
                 rel="noopener noreferrer"

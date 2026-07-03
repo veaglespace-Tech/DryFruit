@@ -686,7 +686,7 @@ export default function ProductDetailClient({ slug }) {
 
                 {/* WhatsApp Enquiry Button */}
                 <a
-                  href={`https://wa.me/919876543210?text=Hi,%20I'm%20interested%20in%20ordering%20${qty}%20x%20${encodeURIComponent(product.name)}%20(${product.weight}).%20Please%20provide%20more%20details.`}
+                  href={`https://wa.me/917709747803?text=Hi,%20I'm%20interested%20in%20ordering%20${qty}%20x%20${encodeURIComponent(product.name)}%20(${product.weight}).%20Please%20provide%20more%20details.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 bg-green-50 hover:bg-green-100 text-green-700 font-button font-semibold rounded-2xl flex items-center justify-center gap-2 border border-green-200 transition-colors"

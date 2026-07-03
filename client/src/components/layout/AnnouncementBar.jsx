@@ -8,7 +8,7 @@ const messages = [
   "🌿 Free delivery on orders above ₹999",
   "✨ 100% Natural & Chemical Free",
   "🎁 Premium Gift Packaging Available",
-  "📞 Call us: +91 98765 43210",
+  "📞 Call us: +91 98609 41171",
   "💚 Farm Fresh Quality Guaranteed",
   "🚚 Pan India Delivery in 3-5 Days",
   "🌟 Use code FIRST10 for 10% off your first order",
@@ -37,7 +37,7 @@ export default function AnnouncementBar() {
         {/* Left Icons */}
         <div className="flex-shrink-0 flex items-center gap-4 px-4 border-r border-white/20 py-1">
           <a
-            href="tel:+919876543210"
+            href="tel:+919860941171"
             className="flex items-center gap-1 text-white/90 hover:text-white transition-colors"
             aria-label="Call us"
           >
@@ -45,7 +45,7 @@ export default function AnnouncementBar() {
             <span className="hidden sm:inline text-xs">Call</span>
           </a>
           <a
-            href="https://wa.me/919876543210"
+            href="https://wa.me/917709747803"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-white/90 hover:text-white transition-colors"

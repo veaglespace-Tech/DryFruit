@@ -297,7 +297,7 @@ export default function Navbar() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/917709747803"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hidden md:flex items-center gap-1 p-2 rounded-full transition-all duration-200 text-green-600 hover:bg-green-50"
@@ -402,7 +402,7 @@ export default function Navbar() {
           {/* Contact Actions */}
           <div className="mt-8 pt-6 border-t border-border-DEFAULT space-y-3">
             <a
-              href="https://wa.me/919876543210"
+              href="https://wa.me/917709747803"
               className="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 rounded-xl font-body font-medium"
               target="_blank"
               rel="noopener noreferrer"
@@ -411,11 +411,11 @@ export default function Navbar() {
               WhatsApp Us
             </a>
             <a
-              href="tel:+919876543210"
+              href="tel:+919860941171"
               className="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-DEFAULT rounded-xl font-body font-medium"
             >
               <Phone size={20} />
-              +91 98765 43210
+              +91 98609 41171
             </a>
 
           </div>

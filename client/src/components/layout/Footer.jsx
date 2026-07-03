@@ -80,17 +80,17 @@ export default function Footer() {
             {/* Contact Info */}
             <div className="space-y-3">
               <a
-                href="tel:+919876543210"
+                href="tel:+919860941171"
                 className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm"
               >
                 <Phone
                   size={16}
                   className="flex-shrink-0 text-accent-DEFAULT"
                 />
-                +91 98765 43210
+                +91 98609 41171
               </a>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/917709747803"
                 className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm"
                 target="_blank"
                 rel="noopener noreferrer"

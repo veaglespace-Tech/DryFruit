@@ -100,9 +100,9 @@ export default function ContactSection() {
                 {
                   icon: Phone,
                   title: "Call Us",
-                  value: "+91 98765 43210",
-                  desc: "Mon-Sat, 9am to 7pm IST",
-                  href: "tel:+919876543210",
+                  value: "+91 98609 41171",
+                  desc: "Tue-Sun, Closed Mon",
+                  href: "tel:+919860941171",
                   color: "#6B3E26",
                 },
                 {
@@ -110,7 +110,7 @@ export default function ContactSection() {
                   title: "WhatsApp",
                   value: "Chat with Us",
                   desc: "Instant replies, 7 days a week",
-                  href: "https://wa.me/919876543210",
+                  href: "https://wa.me/917709747803",
                   color: "#4CAF50",
                 },
                 {
@@ -164,9 +164,8 @@ export default function ContactSection() {
               </div>
               <div className="space-y-1.5 text-sm font-body">
                 {[
-                  { day: "Monday - Friday", time: "9:00 AM - 7:00 PM" },
-                  { day: "Saturday", time: "9:00 AM - 6:00 PM" },
-                  { day: "Sunday", time: "10:00 AM - 4:00 PM" },
+                  { day: "Tuesday - Sunday", time: "10:30 AM - 1:30 PM | 5:30 PM - 9:30 PM" },
+                  { day: "Monday", time: "Closed" },
                 ].map(({ day, time }) => (
                   <div
                     key={day}
@@ -307,7 +306,7 @@ export default function ContactSection() {
                   </p>
                 </div>
                 <a
-                  href="https://wa.me/919876543210"
+                  href="https://wa.me/917709747803"
                   className="btn-primary-luxury"
                   target="_blank"
                   rel="noopener noreferrer"

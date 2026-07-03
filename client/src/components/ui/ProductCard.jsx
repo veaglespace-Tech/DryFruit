@@ -143,7 +143,7 @@ export default function ProductCard({ product }) {
             <ShoppingBag size={18} />
           </button>
           <a
-            href={`https://wa.me/919876543210?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
+            href={`https://wa.me/917709747803?text=Hi, I'm interested in ${encodeURIComponent(product.name)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="w-11 h-11 rounded-full bg-green-500 flex items-center justify-center shadow-lg hover:bg-green-600 transition-colors"
