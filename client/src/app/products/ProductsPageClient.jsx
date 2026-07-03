@@ -8,7 +8,7 @@ import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import ProductCard from "@/components/ui/ProductCard";
 import { useStagger } from "@/lib/gsap";
-import { publicApi } from "@/lib/api";
+import { useGetProductsQuery, useGetPublicCategoriesQuery } from "@/store/api/apiSlice";
 
 const STATIC_PRODUCTS = [
   {
@@ -151,118 +151,77 @@ const sortOptions = [
   { label: "Popularity", value: "popularity" },
 ];
 
+const SLUG_MAP = {
+  "Dry Fruits & Seeds": "dry-fruits-seeds",
+  "Oils & Ghee": "oils-ghee",
+  "Tea, Coffee & Beverages": "tea-coffee-beverages",
+  "Atta, Rice & Dal": "atta-rice-dal",
+  "Masala, Spices & Salt": "masala-spices-salt",
+  "Breakfast Essentials": "breakfast-essentials",
+  "Sauces & Spreads": "sauces-instant-foods",
+};
+
 export default function ProductsPageClient() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
   const gridRef = useStagger(".product-card", { stagger: 0.06 });
-
-  const [categories, setCategories] = useState(STATIC_CATEGORIES);
-  const [rawProducts, setRawProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   // Price and Rating filters
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1500);
   const [minRating, setMinRating] = useState(0);
 
-  // Load categories
-  useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const res = await publicApi.getCategories();
-        if (res.data && res.data.length > 0) {
-          const names = ["All", ...res.data.map((cat) => cat.name)];
-          setCategories(names);
-        }
-      } catch (err) {
-        console.error("Failed to load filter categories:", err);
-      }
-    };
-    loadCategories();
-  }, []);
+  // Build query params for RTK
+  const productParams = {};
+  if (search) productParams.search = search;
+  if (selectedCategory !== "All") {
+    productParams.category =
+      SLUG_MAP[selectedCategory] || selectedCategory.toLowerCase();
+  }
+  if (sortBy === "price_asc") productParams.sort = "price";
+  if (sortBy === "price_desc") productParams.sort = "-price";
+  if (sortBy === "rating") productParams.sort = "-rating";
+  if (sortBy === "popularity") productParams.sort = "-popularity";
 
-  // Load products from DB
-  useEffect(() => {
-    const loadProducts = async () => {
-      setLoading(true);
-      try {
-        const params = {};
-        if (search) params.search = search;
-        if (selectedCategory !== "All") {
-          const slugMap = {
-            "Dry Fruits & Seeds": "dry-fruits-seeds",
-            "Oils & Ghee": "oils-ghee",
-            "Tea, Coffee & Beverages": "tea-coffee-beverages",
-            "Atta, Rice & Dal": "atta-rice-dal",
-            "Masala, Spices & Salt": "masala-spices-salt",
-            "Breakfast Essentials": "breakfast-essentials",
-            "Sauces & Spreads": "sauces-instant-foods",
-          };
-          params.category =
-            slugMap[selectedCategory] || selectedCategory.toLowerCase();
-        }
-        if (sortBy === "price_asc") params.sort = "price";
-        if (sortBy === "price_desc") params.sort = "-price";
-        if (sortBy === "rating") params.sort = "-rating";
-        if (sortBy === "popularity") params.sort = "-popularity";
+  const { data: serverCategories, isSuccess: catsSuccess } = useGetPublicCategoriesQuery();
+  const { data: serverProducts, isLoading: loading, isError: productsError } = useGetProductsQuery(productParams);
 
-        const res = await publicApi.getProducts(params);
-        if (res.data && res.data.length > 0) {
-          const formatted = res.data.map((p) => ({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            price: Number(p.price),
-            original_price: p.original_price
-              ? Number(p.original_price)
-              : undefined,
-            discount_percent: p.discount_percent,
-            weight: p.weight,
-            thumbnail: p.thumbnail || "/images/categories/almonds.png",
-            rating: Number(p.rating),
-            review_count: p.review_count,
-            category: p.category
-              ? { name: p.category.name, slug: p.category.slug }
-              : { name: "Almonds", slug: "almonds" },
-          }));
-          setRawProducts(formatted);
-        } else {
-          setRawProducts(filterAndSortStatic());
-        }
-      } catch (err) {
-        console.error(
-          "Failed to load products from database, fallback to static:",
-          err,
-        );
-        setRawProducts(filterAndSortStatic());
-      } finally {
-        setLoading(false);
-      }
-    };
+  const categories = catsSuccess && serverCategories?.length > 0
+    ? ["All", ...serverCategories.map((cat) => cat.name)]
+    : STATIC_CATEGORIES;
 
-    const filterAndSortStatic = () => {
-      let filtered = STATIC_PRODUCTS.filter((p) => {
-        const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        const matchCat =
-          selectedCategory === "All" || p.category.name === selectedCategory;
-        return matchSearch && matchCat;
-      });
-      return [...filtered].sort((a, b) => {
-        if (sortBy === "price_asc") return a.price - b.price;
-        if (sortBy === "price_desc") return b.price - a.price;
-        if (sortBy === "rating") return b.rating - a.rating;
-        if (sortBy === "popularity") return b.review_count - a.review_count;
-        return b.id - a.id;
-      });
-    };
-
-    const delayDebounce = setTimeout(() => {
-      loadProducts();
-    }, 250);
-
-    return () => clearTimeout(delayDebounce);
-  }, [search, selectedCategory, sortBy]);
+  const rawProducts = (() => {
+    if (serverProducts && serverProducts.length > 0) {
+      return serverProducts.map((p) => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: Number(p.price),
+        original_price: p.original_price ? Number(p.original_price) : undefined,
+        discount_percent: p.discount_percent,
+        weight: p.weight,
+        thumbnail: p.thumbnail || "/images/categories/almonds.png",
+        rating: Number(p.rating),
+        review_count: p.review_count,
+        category: p.category
+          ? { name: p.category.name, slug: p.category.slug }
+          : { name: "Almonds", slug: "almonds" },
+      }));
+    }
+    // Fallback: filter static products
+    return STATIC_PRODUCTS.filter((p) => {
+      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+      const matchCat = selectedCategory === "All" || p.category.name === selectedCategory;
+      return matchSearch && matchCat;
+    }).sort((a, b) => {
+      if (sortBy === "price_asc") return a.price - b.price;
+      if (sortBy === "price_desc") return b.price - a.price;
+      if (sortBy === "rating") return b.rating - a.rating;
+      if (sortBy === "popularity") return b.review_count - a.review_count;
+      return b.id - a.id;
+    });
+  })();
 
   // Compute final filtered results client-side for ultra-reactive updates on sliders
   let filtered = rawProducts.filter((p) => {
@@ -359,11 +318,10 @@ export default function ProductsPageClient() {
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all flex items-center justify-between group/cat ${
-                          selectedCategory === cat
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all flex items-center justify-between group/cat ${selectedCategory === cat
                             ? "bg-primary text-white font-semibold"
                             : "text-text-DEFAULT hover:bg-background hover:text-primary"
-                        }`}
+                          }`}
                       >
                         <span className="truncate">{cat}</span>
                         {selectedCategory !== cat && (
@@ -462,11 +420,10 @@ export default function ProductsPageClient() {
                       <button
                         key={opt.value}
                         onClick={() => setMinRating(opt.value)}
-                        className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-body transition-all flex items-center gap-2 ${
-                          minRating === opt.value
+                        className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-body transition-all flex items-center gap-2 ${minRating === opt.value
                             ? "bg-accent-50 text-primary font-semibold border border-accent/20"
                             : "text-text-DEFAULT hover:bg-background border border-transparent"
-                        }`}
+                          }`}
                       >
                         <span className="flex items-center gap-0.5">
                           {[...Array(5)].map((_, i) => (
@@ -499,11 +456,10 @@ export default function ProductsPageClient() {
                       <button
                         key={opt.value}
                         onClick={() => setSortBy(opt.value)}
-                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all ${
-                          sortBy === opt.value
+                        className={`w-full text-left px-3 py-2 rounded-xl text-sm font-body transition-all ${sortBy === opt.value
                             ? "bg-[#3D2314] text-white font-semibold"
                             : "text-text-DEFAULT hover:bg-background"
-                        }`}
+                          }`}
                       >
                         {opt.label}
                       </button>
@@ -540,11 +496,10 @@ export default function ProductsPageClient() {
                     <button
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border text-sm font-button font-semibold transition-all duration-300 flex-shrink-0 ${
-                        isActive
+                      className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border text-sm font-button font-semibold transition-all duration-300 flex-shrink-0 ${isActive
                           ? "bg-[#3D2314] text-white border-[#3D2314] shadow-md shadow-[#3D2314]/25 scale-102"
                           : "bg-white hover:bg-[#FDFBF7] hover:border-[#D4A95A]/50 text-[#3D2314] border-border"
-                      }`}
+                        }`}
                     >
                       {cat === "All" ? (
                         <div

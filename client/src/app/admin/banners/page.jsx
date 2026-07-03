@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Image as ImageIcon, Plus, Trash2 } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminBannersQuery,
+  useCreateBannerMutation,
+  useDeleteBannerMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminBannersPage() {
-  const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: bannersData, isLoading: loading, refetch } = useGetAdminBannersQuery();
+  const [createBanner] = useCreateBannerMutation();
+  const [deleteBanner] = useDeleteBannerMutation();
+
+  const banners = bannersData?.data || bannersData || [];
 
   // Form State for new Banner
   const [title, setTitle] = useState("");
@@ -16,24 +23,6 @@ export default function AdminBannersPage() {
   const [position, setPosition] = useState("home_hero");
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-
-  const fetchBanners = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getBanners();
-      if (res.data?.success) {
-        setBanners(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load banners");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBanners();
-  }, []);
 
   const handleAddBanner = async (e) => {
     e.preventDefault();
@@ -52,17 +41,14 @@ export default function AdminBannersPage() {
       formData.append("is_active", "true");
       formData.append("image", file);
 
-      const res = await adminApi.createBanner(formData);
-      if (res.data?.success) {
-        toast.success("Banner added successfully!");
-        setTitle("");
-        setSubtitle("");
-        setLinkUrl("");
-        setFile(null);
-        fetchBanners();
-      }
+      await createBanner(formData).unwrap();
+      toast.success("Banner added successfully!");
+      setTitle("");
+      setSubtitle("");
+      setLinkUrl("");
+      setFile(null);
     } catch (err) {
-      toast.error("Failed to create banner");
+      toast.error(err.data?.message || "Failed to create banner");
     } finally {
       setSubmitting(false);
     }
@@ -71,11 +57,8 @@ export default function AdminBannersPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this banner?")) {
       try {
-        const res = await adminApi.deleteBanner(id);
-        if (res.data?.success) {
-          toast.success("Banner deleted");
-          setBanners((prev) => prev.filter((b) => b.id !== id));
-        }
+        await deleteBanner(id).unwrap();
+        toast.success("Banner deleted");
       } catch (err) {
         toast.error("Failed to delete banner");
       }

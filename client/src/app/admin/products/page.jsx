@@ -1,34 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, Search, Package, Star } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminProductsQuery,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: productsData, isLoading: loading } = useGetAdminProductsQuery({ all: "true" });
+  const [updateProduct] = useUpdateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const products = productsData?.data || productsData || [];
+
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getProducts({ all: "true" });
-      if (res.data?.success) {
-        setProducts(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load products");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   const handleToggleStatus = async (product) => {
     try {
@@ -36,15 +26,8 @@ export default function AdminProductsPage() {
       const formData = new FormData();
       formData.append("is_active", newStatus.toString());
 
-      const res = await adminApi.updateProduct(product.id, formData);
-      if (res.data?.success) {
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.id === product.id ? { ...p, is_active: newStatus } : p,
-          ),
-        );
-        toast.success(`Product is now ${newStatus ? "active" : "inactive"}`);
-      }
+      await updateProduct({ id: product.id, formData }).unwrap();
+      toast.success(`Product is now ${newStatus ? "active" : "inactive"}`);
     } catch (err) {
       toast.error("Failed to update product status");
     }
@@ -53,11 +36,8 @@ export default function AdminProductsPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const res = await adminApi.deleteProduct(id);
-        if (res.data?.success) {
-          setProducts((prev) => prev.filter((p) => p.id !== id));
-          toast.success("Product deleted successfully");
-        }
+        await deleteProduct(id).unwrap();
+        toast.success("Product deleted successfully");
       } catch (err) {
         toast.error("Failed to delete product");
       }
@@ -233,11 +213,10 @@ export default function AdminProductsPage() {
                     <td className="p-4">
                       <button
                         onClick={() => handleToggleStatus(product)}
-                        className={`px-3 py-1 rounded-full text-xs font-button font-bold border transition-colors ${
-                          product.is_active
+                        className={`px-3 py-1 rounded-full text-xs font-button font-bold border transition-colors ${product.is_active
                             ? "bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
                             : "bg-red-50 text-red-700 border-red-200 hover:bg-red-100"
-                        }`}
+                          }`}
                         title="Click to toggle status"
                       >
                         {product.is_active ? "Active" : "Inactive"}

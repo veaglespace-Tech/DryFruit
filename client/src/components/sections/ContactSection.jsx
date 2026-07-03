@@ -14,7 +14,7 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useFadeLeft, useFadeRight } from "@/lib/gsap";
-import { publicApi } from "@/lib/api";
+import { useSubmitContactMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 import { contactFormSchema } from "@/lib/validation";
 
@@ -32,7 +32,7 @@ export default function ContactSection() {
     subject: "",
     message: "",
   });
-  const [submitting, setSubmitting] = useState(false);
+  const [submitContact, { isLoading: submitting }] = useSubmitContactMutation();
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e) => {
@@ -49,9 +49,8 @@ export default function ContactSection() {
       return;
     }
 
-    setSubmitting(true);
     try {
-      await publicApi.submitContact(formData);
+      await submitContact(formData).unwrap();
       setSubmitted(true);
       toast.success("Message sent! We'll get back to you within 24 hours. 🌿");
       gsap.fromTo(
@@ -61,10 +60,9 @@ export default function ContactSection() {
       );
     } catch (err) {
       toast.error(
-        "Something went wrong. Please try WhatsApp or call us directly.",
+        err.data?.message || "Something went wrong. Please try WhatsApp or call us directly.",
       );
     }
-    setSubmitting(false);
   };
 
   return (

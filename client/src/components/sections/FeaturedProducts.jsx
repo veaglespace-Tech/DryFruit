@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useStagger, useSplitText } from "@/lib/gsap";
 import ProductCard from "@/components/ui/ProductCard";
-import { publicApi } from "@/lib/api";
+import { useGetFeaturedProductsQuery, useGetBestSellersQuery } from "@/store/api/apiSlice";
 
 // Static featured products data (fallback while API loads)
 const FEATURED_PRODUCTS = [
@@ -155,64 +155,46 @@ export default function FeaturedProducts({
 }) {
   const titleRef = useSplitText({ delay: 0.1 });
   const gridRef = useStagger(".product-card", { stagger: 0.07 });
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(FEATURED_PRODUCTS);
+
+  const isBestSeller = filter === "best_seller";
+  const { data: featuredData, isSuccess: isFeaturedSuccess, isError: isFeaturedError } = useGetFeaturedProductsQuery(undefined, { skip: isBestSeller });
+  const { data: bestSellerData, isSuccess: isBestSellerSuccess, isError: isBestSellerError } = useGetBestSellersQuery(undefined, { skip: !isBestSeller });
 
   useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        let res;
-        if (filter === "best_seller") {
-          res = await publicApi.getBestSellers();
-        } else {
-          res = await publicApi.getFeaturedProducts();
-        }
-        if (res.data && res.data.length > 0) {
-          const formatted = res.data.map((p) => ({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            price: Number(p.price),
-            original_price: p.original_price
-              ? Number(p.original_price)
-              : undefined,
-            discount_percent: p.discount_percent,
-            weight: p.weight,
-            thumbnail: p.thumbnail || "/images/categories/almonds.png",
-            rating: Number(p.rating),
-            review_count: p.review_count,
-            category: p.category
-              ? { name: p.category.name, slug: p.category.slug }
-              : { name: "Almonds", slug: "almonds" },
-          }));
-          setProducts(formatted.slice(0, limit));
-        } else {
-          const staticFallback =
-            filter === "best_seller"
-              ? FEATURED_PRODUCTS.filter((p) => p.is_best_seller).slice(
-                  0,
-                  limit,
-                )
-              : filter === "featured"
-                ? FEATURED_PRODUCTS.filter((p) => p.is_featured).slice(0, limit)
-                : FEATURED_PRODUCTS.slice(0, limit);
-          setProducts(staticFallback);
-        }
-      } catch (err) {
-        console.error(
-          "Failed to load live featured products, using fallback:",
-          err,
-        );
-        const staticFallback =
-          filter === "best_seller"
-            ? FEATURED_PRODUCTS.filter((p) => p.is_best_seller).slice(0, limit)
-            : filter === "featured"
-              ? FEATURED_PRODUCTS.filter((p) => p.is_featured).slice(0, limit)
-              : FEATURED_PRODUCTS.slice(0, limit);
-        setProducts(staticFallback);
-      }
-    };
-    loadProducts();
-  }, [filter, limit]);
+    const liveData = isBestSeller ? bestSellerData : featuredData;
+    const isSuccess = isBestSeller ? isBestSellerSuccess : isFeaturedSuccess;
+    const isError = isBestSeller ? isBestSellerError : isFeaturedError;
+
+    if (isSuccess && liveData && liveData.length > 0) {
+      const formatted = liveData.map((p) => ({
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        price: Number(p.price),
+        original_price: p.original_price
+          ? Number(p.original_price)
+          : undefined,
+        discount_percent: p.discount_percent,
+        weight: p.weight,
+        thumbnail: p.thumbnail || "/images/categories/almonds.png",
+        rating: Number(p.rating),
+        review_count: p.review_count,
+        category: p.category
+          ? { name: p.category.name, slug: p.category.slug }
+          : { name: "Almonds", slug: "almonds" },
+      }));
+      setProducts(formatted.slice(0, limit));
+    } else if (isError) {
+      const staticFallback =
+        filter === "best_seller"
+          ? FEATURED_PRODUCTS.filter((p) => p.is_best_seller).slice(0, limit)
+          : filter === "featured"
+            ? FEATURED_PRODUCTS.filter((p) => p.is_featured).slice(0, limit)
+            : FEATURED_PRODUCTS.slice(0, limit);
+      setProducts(staticFallback);
+    }
+  }, [filter, limit, featuredData, bestSellerData, isFeaturedSuccess, isBestSellerSuccess, isFeaturedError, isBestSellerError, isBestSeller]);
 
   return (
     <section className="section-padding bg-surface">

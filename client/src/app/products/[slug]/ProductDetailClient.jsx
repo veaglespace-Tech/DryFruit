@@ -29,7 +29,7 @@ import {
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import toast from "react-hot-toast";
-import { publicApi } from "@/lib/api";
+import { useGetProductBySlugQuery } from "@/store/api/apiSlice";
 
 // Seeded products data mock fallback
 const STATIC_PRODUCTS = [
@@ -316,107 +316,84 @@ export default function ProductDetailClient({ slug }) {
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load product details from database
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        const res = await publicApi.getProductBySlug(slug);
-        if (res.data && res.data.success !== false) {
-          const raw = res.data.data;
-          const formatted = {
-            id: raw.id,
-            name: raw.name,
-            slug: raw.slug,
-            price: Number(raw.price),
-            original_price: raw.original_price
-              ? Number(raw.original_price)
-              : undefined,
-            discount_percent: raw.discount_percent,
-            weight: raw.weight,
-            thumbnail: raw.thumbnail || "/images/categories/almonds.png",
-            rating: Number(raw.rating),
-            review_count: raw.review_count,
-            short_description:
-              raw.short_description ||
-              "Naturally rich and wholesome organic harvest.",
-            description:
-              raw.description ||
-              "Premium hand-selected selection directly from organic valley orchards.",
-            benefits: Array.isArray(raw.benefits)
-              ? raw.benefits
-              : ["Rich in Nutrients", "Wholesome Goodness"],
-            nutrition_facts: raw.nutrition_facts || {
-              calories: "500 kcal",
-              protein: "15g",
-              fat: "45g",
-              carbs: "25g",
-              fiber: "8g",
-            },
-            storage_instructions:
-              raw.storage_instructions ||
-              "Store in a cool, dry place. Keep in an airtight container once opened.",
-            category: raw.category
-              ? { name: raw.category.name, slug: raw.category.slug }
-              : { name: "Almonds", slug: "almonds" },
-          };
-          setProduct(formatted);
+  const { data: productData, isLoading: queryLoading, isError } = useGetProductBySlugQuery(slug);
 
-          if (res.data.related && res.data.related.length > 0) {
-            const relFormatted = res.data.related.map((p) => ({
-              id: p.id,
-              name: p.name,
-              slug: p.slug,
-              price: Number(p.price),
-              original_price: p.original_price
-                ? Number(p.original_price)
-                : undefined,
-              discount_percent: p.discount_percent,
-              weight: p.weight,
-              thumbnail: p.thumbnail || "/images/categories/almonds.png",
-              rating: Number(p.rating),
-              review_count: p.review_count,
-              category: p.category
-                ? { name: p.category.name, slug: p.category.slug }
-                : { name: "Almonds", slug: "almonds" },
-            }));
-            setRelated(relFormatted);
-          } else {
-            const staticRelated = STATIC_PRODUCTS.filter(
-              (p) =>
-                p.category.slug === formatted.category.slug &&
-                p.id !== formatted.id,
-            ).slice(0, 4);
-            setRelated(staticRelated);
-          }
+  // Process data from RTK Query
+  useEffect(() => {
+    const processData = () => {
+      setLoading(true);
+      if (productData && productData.success !== false && !isError) {
+        const raw = productData.data;
+        const formatted = {
+          id: raw.id,
+          name: raw.name,
+          slug: raw.slug,
+          price: Number(raw.price),
+          original_price: raw.original_price ? Number(raw.original_price) : undefined,
+          discount_percent: raw.discount_percent,
+          weight: raw.weight,
+          thumbnail: raw.thumbnail || "/images/categories/almonds.png",
+          rating: Number(raw.rating),
+          review_count: raw.review_count,
+          short_description: raw.short_description || "Naturally rich and wholesome organic harvest.",
+          description: raw.description || "Premium hand-selected selection directly from organic valley orchards.",
+          benefits: Array.isArray(raw.benefits) ? raw.benefits : ["Rich in Nutrients", "Wholesome Goodness"],
+          nutrition_facts: raw.nutrition_facts || {
+            calories: "500 kcal",
+            protein: "15g",
+            fat: "45g",
+            carbs: "25g",
+            fiber: "8g",
+          },
+          storage_instructions: raw.storage_instructions || "Store in a cool, dry place. Keep in an airtight container once opened.",
+          category: raw.category
+            ? { name: raw.category.name, slug: raw.category.slug }
+            : { name: "Almonds", slug: "almonds" },
+        };
+        setProduct(formatted);
+
+        if (productData.related && productData.related.length > 0) {
+          const relFormatted = productData.related.map((p) => ({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            price: Number(p.price),
+            original_price: p.original_price ? Number(p.original_price) : undefined,
+            discount_percent: p.discount_percent,
+            weight: p.weight,
+            thumbnail: p.thumbnail || "/images/categories/almonds.png",
+            rating: Number(p.rating),
+            review_count: p.review_count,
+            category: p.category
+              ? { name: p.category.name, slug: p.category.slug }
+              : { name: "Almonds", slug: "almonds" },
+          }));
+          setRelated(relFormatted);
         } else {
-          loadFallback();
+          const staticRelated = STATIC_PRODUCTS.filter(
+            (p) => p.category.slug === formatted.category.slug && p.id !== formatted.id,
+          ).slice(0, 4);
+          setRelated(staticRelated);
         }
-      } catch (err) {
-        console.error(
-          "Failed to load product details, using static fallback:",
-          err,
-        );
+      } else if (isError || (productData && productData.success === false)) {
         loadFallback();
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     const loadFallback = () => {
-      const p =
-        STATIC_PRODUCTS.find((p) => p.slug === slug) || STATIC_PRODUCTS[0];
+      const p = STATIC_PRODUCTS.find((p) => p.slug === slug) || STATIC_PRODUCTS[0];
       setProduct(p);
       const staticRelated = STATIC_PRODUCTS.filter(
-        (relatedProd) =>
-          relatedProd.category.slug === p.category.slug &&
-          relatedProd.id !== p.id,
+        (relatedProd) => relatedProd.category.slug === p.category.slug && relatedProd.id !== p.id,
       ).slice(0, 4);
       setRelated(staticRelated);
     };
 
-    fetchProduct();
-  }, [slug]);
+    if (!queryLoading) {
+      processData();
+    }
+  }, [productData, queryLoading, isError, slug]);
 
   const isWishlisted = useAppSelector(selectIsInWishlist(product?.id || 0));
 

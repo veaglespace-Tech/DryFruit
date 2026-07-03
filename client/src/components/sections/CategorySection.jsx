@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSplitText, useStagger } from "@/lib/gsap";
-import { publicApi } from "@/lib/api";
+import { useGetPublicCategoriesQuery } from "@/store/api/apiSlice";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,45 +74,37 @@ export default function CategorySection() {
   const sectionRef = useRef(null);
   const titleRef = useSplitText({ delay: 0.1 });
   const gridRef = useStagger(".category-item-anim", { stagger: 0.08 });
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(STATIC_CATEGORIES);
+  const { data: serverCategories, isSuccess, isError } = useGetPublicCategoriesQuery();
 
   useEffect(() => {
-    const loadCategories = async () => {
-      try {
-        const res = await publicApi.getCategories();
-        if (res.data && res.data.length > 0) {
-          const colors = [
-            "#F0DCCC",
-            "#F4E4CE",
-            "#E8F5E9",
-            "#FBF4EC",
-            "#FFF3E0",
-            "#FCE4EC",
-            "#F3E5F5",
-            "#FCE4EC",
-          ];
-          const formatted = res.data.map((cat, index) => ({
-            name: cat.name,
-            slug: cat.slug,
-            description: cat.description || "Premium handpicked collection",
-            image: cat.image || `/images/categories/${cat.slug}.png`,
-            count:
-              cat.product_count !== undefined
-                ? `${cat.product_count} Products`
-                : "View Products",
-            color: colors[index % colors.length],
-          }));
-          setCategories(formatted);
-        } else {
-          setCategories(STATIC_CATEGORIES);
-        }
-      } catch (err) {
-        console.error("Failed to load categories, using fallback:", err);
-        setCategories(STATIC_CATEGORIES);
-      }
-    };
-    loadCategories();
-  }, []);
+    if (isSuccess && serverCategories && serverCategories.length > 0) {
+      const colors = [
+        "#F0DCCC",
+        "#F4E4CE",
+        "#E8F5E9",
+        "#FBF4EC",
+        "#FFF3E0",
+        "#FCE4EC",
+        "#F3E5F5",
+        "#FCE4EC",
+      ];
+      const formatted = serverCategories.map((cat, index) => ({
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description || "Premium handpicked collection",
+        image: cat.image || `/images/categories/${cat.slug}.png`,
+        count:
+          cat.product_count !== undefined
+            ? `${cat.product_count} Products`
+            : "View Products",
+        color: colors[index % colors.length],
+      }));
+      setCategories(formatted);
+    } else if (isError) {
+      setCategories(STATIC_CATEGORIES);
+    }
+  }, [serverCategories, isSuccess, isError]);
 
   return (
     <section ref={sectionRef} className="section-padding bg-background">

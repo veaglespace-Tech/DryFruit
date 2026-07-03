@@ -1,45 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ShoppingBag, Calendar, MessageSquare, Trash2 } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import { useGetContactsQuery, useUpdateContactStatusMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminOrdersPage() {
-  const [leads, setLeads] = useState([]);
   const [selectedLead, setSelectedLead] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  const fetchLeads = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getContacts({ type: "order" });
-      if (res.data?.success) {
-        setLeads(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load order leads");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: leadsData, isLoading: loading } = useGetContactsQuery({ type: "order" });
+  const [updateContactStatus] = useUpdateContactStatusMutation();
 
-  useEffect(() => {
-    fetchLeads();
-  }, []);
+  const leads = leadsData?.data || leadsData || [];
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      const res = await adminApi.updateContactStatus(id, { status });
-      if (res.data?.success) {
-        setLeads((prev) =>
-          prev.map((lead) => (lead.id === id ? { ...lead, status } : lead)),
-        );
-        if (selectedLead && selectedLead.id === id) {
-          setSelectedLead((prev) => (prev ? { ...prev, status } : null));
-        }
-        toast.success(`Order status updated to ${status}`);
+      await updateContactStatus({ id, data: { status } }).unwrap();
+      if (selectedLead && selectedLead.id === id) {
+        setSelectedLead((prev) => (prev ? { ...prev, status } : null));
       }
+      toast.success(`Order status updated to ${status}`);
     } catch (err) {
       toast.error("Failed to update order status");
     }
@@ -48,8 +28,7 @@ export default function AdminOrdersPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to close this order lead?")) {
       try {
-        await adminApi.updateContactStatus(id, { status: "closed" });
-        setLeads((prev) => prev.filter((lead) => lead.id !== id));
+        await updateContactStatus({ id, data: { status: "closed" } }).unwrap();
         if (selectedLead && selectedLead.id === id) setSelectedLead(null);
         toast.success("Order marked as closed");
       } catch (err) {

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { publicApi } from "@/lib/api";
+import { useUserRegisterMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 import { registrationFormSchema } from "@/lib/validation";
 
@@ -28,7 +28,7 @@ export default function UserRegisterPage() {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [userRegister, { isLoading: loading }] = useUserRegisterMutation();
 
   useEffect(() => {
     const token = localStorage.getItem("shreepad_user_token");
@@ -69,23 +69,22 @@ export default function UserRegisterPage() {
       return;
     }
 
-    setLoading(true);
     try {
-      const res = await publicApi.register({
+      const res = await userRegister({
         name,
         email,
         password,
         phone,
         address,
-      });
-      localStorage.setItem("shreepad_user_token", res.data.token);
-      localStorage.setItem("shreepad_user", JSON.stringify(res.data.user));
+      }).unwrap();
+      localStorage.setItem("shreepad_user_token", res.token);
+      localStorage.setItem("shreepad_user", JSON.stringify(res.user));
       toast.success("Registration successful! Welcome to the family 🌿");
       router.push("/user/dashboard");
     } catch (err) {
       toast.error(
-        err.response?.data?.message ||
-          "Something went wrong. Please check fields.",
+        err.data?.message ||
+        "Something went wrong. Please check fields.",
       );
       // Shake animation
       const tl = gsap.timeline();
@@ -95,7 +94,6 @@ export default function UserRegisterPage() {
         .to(formRef.current, { x: 8, duration: 0.08 })
         .to(formRef.current, { x: 0, duration: 0.08 });
     }
-    setLoading(false);
   };
 
   return (

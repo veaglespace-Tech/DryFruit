@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { MessageSquare, Plus, Trash2, Star } from "lucide-react";
-import { adminApi } from "@/lib/api";
+import {
+  useGetAdminTestimonialsQuery,
+  useCreateTestimonialMutation,
+  useDeleteTestimonialMutation,
+} from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 
 export default function AdminTestimonialsPage() {
-  const [testimonials, setTestimonials] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: testimonialsData, isLoading: loading } = useGetAdminTestimonialsQuery();
+  const [createTestimonial] = useCreateTestimonialMutation();
+  const [deleteTestimonial] = useDeleteTestimonialMutation();
+
+  const testimonials = testimonialsData?.data || testimonialsData || [];
 
   // Form State for new Testimonial
   const [name, setName] = useState("");
@@ -16,24 +23,6 @@ export default function AdminTestimonialsPage() {
   const [rating, setRating] = useState(5);
   const [file, setFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-
-  const fetchTestimonials = async () => {
-    try {
-      setLoading(true);
-      const res = await adminApi.getTestimonials();
-      if (res.data?.success) {
-        setTestimonials(res.data.data);
-      }
-    } catch (e) {
-      toast.error("Failed to load testimonials");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTestimonials();
-  }, []);
 
   const handleAddTestimonial = async (e) => {
     e.preventDefault();
@@ -50,18 +39,15 @@ export default function AdminTestimonialsPage() {
         formData.append("avatar", file);
       }
 
-      const res = await adminApi.createTestimonial(formData);
-      if (res.data?.success) {
-        toast.success("Testimonial added successfully!");
-        setName("");
-        setRole("");
-        setComment("");
-        setRating(5);
-        setFile(null);
-        fetchTestimonials();
-      }
+      await createTestimonial(formData).unwrap();
+      toast.success("Testimonial added successfully!");
+      setName("");
+      setRole("");
+      setComment("");
+      setRating(5);
+      setFile(null);
     } catch (err) {
-      toast.error("Failed to create testimonial");
+      toast.error(err.data?.message || "Failed to create testimonial");
     } finally {
       setSubmitting(false);
     }
@@ -70,11 +56,8 @@ export default function AdminTestimonialsPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this testimonial?")) {
       try {
-        const res = await adminApi.deleteTestimonial(id);
-        if (res.data?.success) {
-          toast.success("Testimonial deleted");
-          setTestimonials((prev) => prev.filter((t) => t.id !== id));
-        }
+        await deleteTestimonial(id).unwrap();
+        toast.success("Testimonial deleted");
       } catch (err) {
         toast.error("Failed to delete testimonial");
       }

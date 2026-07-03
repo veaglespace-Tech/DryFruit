@@ -13,7 +13,7 @@ import {
   Edit2,
   Leaf,
 } from "lucide-react";
-import { publicApi } from "@/lib/api";
+import { useGetUserProfileQuery, useUpdateUserProfileMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -46,10 +46,11 @@ const MOCK_INQUIRIES = [
 
 export default function UserDashboard() {
   const router = useRouter();
+  const { data: profileData, isLoading: isFetchingProfile } = useGetUserProfileQuery();
+  const [updateProfile, { isLoading: updatingProfile }] = useUpdateUserProfileMutation();
   const [profile, setProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("orders");
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // Edit fields
   const [name, setName] = useState("");
@@ -61,21 +62,20 @@ export default function UserDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("shreepad_user_token");
-    const userData = localStorage.getItem("shreepad_user");
-
     if (!token) {
       router.push("/user/login");
       return;
     }
-
-    if (userData) {
-      const parsed = JSON.parse(userData);
-      setProfile(parsed);
-      setName(parsed.name || "");
-      setPhone(parsed.phone || "");
-      setAddress(parsed.address || "");
-    }
   }, [router]);
+
+  useEffect(() => {
+    if (profileData?.user) {
+      setProfile(profileData.user);
+      setName(profileData.user.name || "");
+      setPhone(profileData.user.phone || "");
+      setAddress(profileData.user.address || "");
+    }
+  }, [profileData]);
 
   useGSAP(
     () => {
@@ -116,22 +116,30 @@ export default function UserDashboard() {
       return;
     }
 
-    setLoading(true);
     try {
       const payload = { name, phone, address };
       if (password) payload.password = password;
 
-      const res = await publicApi.updateProfile(payload);
-      setProfile(res.data.user);
-      localStorage.setItem("shreepad_user", JSON.stringify(res.data.user));
+      const res = await updateProfile(payload).unwrap();
+      setProfile(res.user);
+      localStorage.setItem("shreepad_user", JSON.stringify(res.user));
       setIsEditing(false);
       setPassword("");
       toast.success("Profile details updated successfully! 🌿");
     } catch (err) {
-      toast.error("Failed to update profile. Please try again.");
+      toast.error(err.data?.message || "Failed to update profile. Please try again.");
     }
-    setLoading(false);
   };
+
+  const loading = updatingProfile;
+
+  if (isFetchingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-10 h-10 border-4 border-primary-DEFAULT/30 border-t-primary-DEFAULT rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!profile) return null;
 
@@ -230,11 +238,10 @@ export default function UserDashboard() {
                       setActiveTab(tab.id);
                       if (tab.id !== "profile") setIsEditing(false);
                     }}
-                    className={`flex items-center gap-2 pb-4 px-6 font-heading font-semibold text-sm md:text-base border-b-2 transition-all ${
-                      activeTab === tab.id
+                    className={`flex items-center gap-2 pb-4 px-6 font-heading font-semibold text-sm md:text-base border-b-2 transition-all ${activeTab === tab.id
                         ? "border-primary-DEFAULT text-primary-DEFAULT"
                         : "border-transparent text-text-muted hover:text-primary-DEFAULT"
-                    }`}
+                      }`}
                   >
                     <Icon size={16} />
                     {tab.label}
@@ -274,13 +281,12 @@ export default function UserDashboard() {
                             ₹{inq.total}
                           </span>
                           <span
-                            className={`px-2.5 py-1 rounded-full text-xxs font-button font-bold capitalize ${
-                              inq.status === "delivered"
+                            className={`px-2.5 py-1 rounded-full text-xxs font-button font-bold capitalize ${inq.status === "delivered"
                                 ? "bg-green-50 text-green-700"
                                 : inq.status === "shipped"
                                   ? "bg-blue-50 text-blue-700"
                                   : "bg-yellow-50 text-yellow-700"
-                            }`}
+                              }`}
                           >
                             {inq.status}
                           </span>
