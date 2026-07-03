@@ -18,7 +18,7 @@ export default function UserLoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("nutriroots_user_token");
+    const token = localStorage.getItem("shreepad_user_token");
     if (token) router.push("/user/dashboard");
   }, [router]);
 
@@ -38,8 +38,8 @@ export default function UserLoginPage() {
     setLoading(true);
     try {
       const res = await publicApi.login({ email, password });
-      localStorage.setItem("nutriroots_user_token", res.data.token);
-      localStorage.setItem("nutriroots_user", JSON.stringify(res.data.user));
+      localStorage.setItem("shreepad_user_token", res.data.token);
+      localStorage.setItem("shreepad_user", JSON.stringify(res.data.user));
       toast.success(`Welcome back, ${res.data.user.name}! 🌿`);
       router.push("/user/dashboard");
     } catch (err) {

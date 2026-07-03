@@ -4,9 +4,9 @@ import Footer from "@/components/layout/Footer";
 import ContactSection from "@/components/sections/ContactSection";
 
 export const metadata = {
-  title: "Contact Us | NutriRoots Premium Dry Fruits",
+  title: "Contact Us | Shreepad Enterprises Premium Dry Fruits",
   description:
-    "Get in touch with NutriRoots. Have a question, want to place a bulk order, or need support? Send us a message or chat via WhatsApp.",
+    "Get in touch with Shreepad Enterprises. Have a question, want to place a bulk order, or need support? Send us a message or chat via WhatsApp.",
 };
 
 export default function ContactPage() {
@@ -26,7 +26,7 @@ export default function ContactPage() {
               className="font-heading text-primary mt-2 mb-4"
               style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 800 }}
             >
-              Contact NutriRoots
+              Contact Shreepad Enterprises
             </h1>
             <div className="section-divider mx-auto" />
             <p className="body-lead max-w-xl mx-auto mt-4">

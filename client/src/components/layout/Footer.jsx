@@ -102,11 +102,11 @@ export default function Footer() {
                 WhatsApp Us
               </a>
               <a
-                href="mailto:hello@nutriroots.com"
+                href="mailto:hello@shreepadenterprises.com"
                 className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm"
               >
                 <Mail size={16} className="flex-shrink-0 text-accent-DEFAULT" />
-                hello@nutriroots.com
+                hello@shreepadenterprises.com
               </a>
               <p className="flex items-start gap-3 text-white/90 text-sm">
                 <MapPin
@@ -122,22 +122,22 @@ export default function Footer() {
               {[
                 {
                   icon: Share2,
-                  href: "https://instagram.com/nutriroots",
+                  href: "https://instagram.com/shreepadenterprises",
                   label: "Instagram",
                 },
                 {
                   icon: Globe,
-                  href: "https://facebook.com/nutriroots",
+                  href: "https://facebook.com/shreepadenterprises",
                   label: "Facebook",
                 },
                 {
                   icon: LinkIcon,
-                  href: "https://twitter.com/nutriroots",
+                  href: "https://twitter.com/shreepadenterprises",
                   label: "Twitter",
                 },
                 {
                   icon: MessageCircle,
-                  href: "https://youtube.com/nutriroots",
+                  href: "https://youtube.com/shreepadenterprises",
                   label: "YouTube",
                 },
               ].map(({ icon: Icon, href, label }) => (

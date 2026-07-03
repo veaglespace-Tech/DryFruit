@@ -211,6 +211,7 @@ export default function HeroSection() {
               src={nut.src}
               alt="Floating nut"
               fill
+              sizes="100px"
               className="object-contain rounded-full"
               style={{ filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))" }}
             />

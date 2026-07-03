@@ -9,9 +9,9 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${capitalized} | Premium Quality Dry Fruits`,
-    description: `Shop premium ${capitalized} from NutriRoots. 100% natural, farm fresh, chemical-free. Read reviews, nutritional facts and health benefits.`,
+    description: `Shop premium ${capitalized} from Shreepad Enterprises. 100% natural, farm fresh, chemical-free. Read reviews, nutritional facts and health benefits.`,
     openGraph: {
-      title: `${capitalized} | NutriRoots`,
+      title: `${capitalized} | Shreepad Enterprises`,
       description: `Buy premium quality ${capitalized} online. 100% natural, high nutrition.`,
     },
   };

@@ -29,7 +29,9 @@ router.put('/faqs/:id', protect, updateFAQ);
 router.delete('/faqs/:id', protect, deleteFAQ);
 
 // Contacts
-router.post('/contact', submitContact);
+const { validateBody } = require('../middleware/validate.middleware');
+const { contactFormSchema } = require('../utils/validation');
+router.post('/contact', validateBody(contactFormSchema), submitContact);
 router.get('/contacts', protect, getContacts);
 router.put('/contacts/:id', protect, updateContactStatus);
 

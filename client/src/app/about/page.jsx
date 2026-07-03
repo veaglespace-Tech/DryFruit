@@ -6,9 +6,9 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
-  title: "About Our Story | NutriRoots Premium Dry Fruits",
+  title: "About Our Story | Shreepad Enterprises Premium Dry Fruits",
   description:
-    "Learn about the legacy of NutriRoots. Sourced directly from global orchards, our products are 100% natural, chemical-free, and laboratory tested.",
+    "Learn about the legacy of Shreepad Enterprises. Sourced directly from global orchards, our products are 100% natural, chemical-free, and laboratory tested.",
 };
 
 export default function AboutPage() {
@@ -28,7 +28,7 @@ export default function AboutPage() {
               className="font-heading text-primary-DEFAULT mt-2 mb-4"
               style={{ fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 800 }}
             >
-              The NutriRoots Story
+              The Shreepad Enterprises Story
             </h1>
             <div className="section-divider mx-auto" />
             <p className="body-lead max-w-xl mx-auto mt-4">
@@ -54,7 +54,7 @@ export default function AboutPage() {
                   Sourced Sincerity, Savor Purity.
                 </h2>
                 <p className="text-text-muted font-body leading-relaxed text-sm md:text-base">
-                  At NutriRoots, we believe premium food is a fundamental human
+                  At Shreepad Enterprises, we believe premium food is a fundamental human
                   right. Guided by this simplicity, we travel to remote orchards
                   and pristine valleys globally to bring you raw, unprocessed,
                   and highly nutritious dried fruits and nuts.
@@ -99,7 +99,7 @@ export default function AboutPage() {
               <div className="relative aspect-video lg:aspect-square rounded-3xl overflow-hidden border border-border-DEFAULT shadow-luxury-xl bg-white">
                 <Image
                   src="/images/hero/hero-bg.png"
-                  alt="NutriRoots premium orchards"
+                  alt="Shreepad Enterprises premium orchards"
                   fill
                   className="object-cover"
                 />

@@ -6,7 +6,7 @@ const adapter = new PrismaMariaDb({
   port: parseInt(process.env.DB_PORT) || 3306,
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS,
-  database: process.env.DB_NAME || 'nutriroots_db',
+  database: process.env.DB_NAME || 'shreepad_db',
   connectionLimit: 10,
 });
 

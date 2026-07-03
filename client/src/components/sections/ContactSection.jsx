@@ -16,12 +16,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useFadeLeft, useFadeRight } from "@/lib/gsap";
 import { publicApi } from "@/lib/api";
 import toast from "react-hot-toast";
+import { contactFormSchema } from "@/lib/validation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
   const sectionRef = useRef(null);
-  const leftRef = useFadeLeft({ delay: 0.1 });
+  const leftRef = useFadeLeft({ delay: 0.2 });
   const rightRef = useFadeRight({ delay: 0.2 });
 
   const [formData, setFormData] = useState({
@@ -40,6 +41,14 @@ export default function ContactSection() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Zod validation
+    const validation = contactFormSchema.safeParse(formData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
     setSubmitting(true);
     try {
       await publicApi.submitContact(formData);
@@ -109,9 +118,9 @@ export default function ContactSection() {
                 {
                   icon: Mail,
                   title: "Email Us",
-                  value: "hello@nutriroots.com",
+                  value: "hello@shreepadenterprises.com",
                   desc: "We reply within 24 hours",
-                  href: "mailto:hello@nutriroots.com",
+                  href: "mailto:hello@shreepadenterprises.com",
                   color: "#D4A95A",
                 },
                 {
@@ -187,7 +196,7 @@ export default function ContactSection() {
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                title="NutriRoots Location"
+                title="Shreepad Enterprises Location"
               />
             </div>
           </div>

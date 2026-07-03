@@ -82,7 +82,7 @@ export default function AdminDashboard() {
   const [adminName, setAdminName] = useState("Admin");
 
   useEffect(() => {
-    const admin = localStorage.getItem("nutriroots_admin");
+    const admin = localStorage.getItem("shreepad_admin");
     if (admin) setAdminName(JSON.parse(admin).name);
   }, []);
 
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
           {adminName} 🌿
         </h1>
         <p className="text-text-muted font-body text-sm mt-1">
-          Here&apos;s what&apos;s happening with NutriRoots today.
+          Here&apos;s what&apos;s happening with Shreepad Enterprises today.
         </p>
       </div>
 
@@ -262,7 +262,7 @@ export default function AdminDashboard() {
               Website is Live! 🚀
             </p>
             <p className="text-white/70 font-body text-sm">
-              Your NutriRoots store is live and accepting inquiries.
+              Your Shreepad Enterprises store is live and accepting inquiries.
             </p>
           </div>
           <Link

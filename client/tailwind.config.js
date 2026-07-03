@@ -145,7 +145,7 @@ const config = {
   daisyui: {
     themes: [
       {
-        nutriroots: {
+        shreepad: {
           primary: "#6B3E26",
           secondary: "#A97142",
           accent: "#D4A95A",

@@ -7,7 +7,7 @@ export default function AdminLandingRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("nutriroots_admin_token");
+    const token = localStorage.getItem("shreepad_admin_token");
     if (token) {
       router.replace("/admin/dashboard");
     } else {

@@ -143,7 +143,7 @@ export default function QualityProcess() {
           </h2>
           <div className="section-divider mx-auto" />
           <p className="body-lead max-w-2xl mx-auto mt-4">
-            Every NutriRoots product follows a meticulous 6-step process to
+            Every Shreepad Enterprises product follows a meticulous 6-step process to
             ensure you receive only the finest quality.
           </p>
         </div>
@@ -151,7 +151,7 @@ export default function QualityProcess() {
         {/* Desktop Timeline */}
         <div className="hidden lg:block relative mb-8">
           {/* Progress Line */}
-          <div className="absolute top-16 left-[8%] right-[8%] h-0.5 bg-border">
+          <div className="absolute top-7 left-[8.33%] right-[8.33%] h-0.5 bg-border">
             <div
               ref={lineRef}
               className="h-full bg-gradient-to-r from-primary via-secondary to-accent"

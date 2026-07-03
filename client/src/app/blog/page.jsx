@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
-  title: "Organic Food & Health Blogs | NutriRoots",
+  title: "Organic Food & Health Blogs | Shreepad Enterprises",
   description:
     "Discover health tips, nut recipes, and organic eating guides curated by nutrition specialists.",
 };

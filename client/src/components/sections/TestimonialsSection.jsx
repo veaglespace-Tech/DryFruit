@@ -18,7 +18,7 @@ const testimonials = [
     location: "Mumbai, Maharashtra",
     avatar: "/images/testimonials/customer-1.png",
     review:
-      "NutriRoots has completely transformed my snacking habits! The quality of their almonds and cashews is simply unmatched. I can taste the freshness in every single bite. I've been recommending them to all my clients and they all love it!",
+      "Shreepad Enterprises has completely transformed my snacking habits! The quality of their almonds and cashews is simply unmatched. I can taste the freshness in every single bite. I've been recommending them to all my clients and they all love it!",
     rating: 5,
     product: "Premium California Almonds",
   },
@@ -29,7 +29,7 @@ const testimonials = [
     location: "Pune, Maharashtra",
     avatar: "/images/testimonials/customer-1.png",
     review:
-      "As a fitness enthusiast who is very particular about nutrition quality, NutriRoots consistently delivers the absolute best. The Kashmiri walnuts are absolutely premium - you can see and taste the difference from day one. Outstanding quality!",
+      "As a fitness enthusiast who is very particular about nutrition quality, Shreepad Enterprises consistently delivers the absolute best. The Kashmiri walnuts are absolutely premium - you can see and taste the difference from day one. Outstanding quality!",
     rating: 5,
     product: "Kashmiri Walnut Kernels",
   },
@@ -40,7 +40,7 @@ const testimonials = [
     location: "Ahmedabad, Gujarat",
     avatar: "/images/testimonials/customer-1.png",
     review:
-      "The Medjool dates from NutriRoots are absolutely divine! So plump, naturally sweet, and incredibly fresh. I've been ordering for 6 months and the quality never ever disappoints. Perfect for my whole family, from kids to grandparents!",
+      "The Medjool dates from Shreepad Enterprises are absolutely divine! So plump, naturally sweet, and incredibly fresh. I've been ordering for 6 months and the quality never ever disappoints. Perfect for my whole family, from kids to grandparents!",
     rating: 5,
     product: "Medjool Dates Premium",
   },
@@ -51,7 +51,7 @@ const testimonials = [
     location: "Surat, Gujarat",
     avatar: "/images/testimonials/customer-1.png",
     review:
-      "As a nutritionist, I recommend NutriRoots to all my patients. Their products are genuinely natural, chemical-free, and of hospital-grade quality. The lab reports they share are transparent and trustworthy. Simply the best!",
+      "As a nutritionist, I recommend Shreepad Enterprises to all my patients. Their products are genuinely natural, chemical-free, and of hospital-grade quality. The lab reports they share are transparent and trustworthy. Simply the best!",
     rating: 5,
     product: "Royal Mixed Nuts Deluxe",
   },
@@ -62,7 +62,7 @@ const testimonials = [
     location: "Bangalore, Karnataka",
     avatar: "/images/testimonials/customer-1.png",
     review:
-      "I ordered the gift hamper for Diwali and my entire family was blown away by the packaging and quality. NutriRoots made me look like a thoughtful gift-giver! The pistachios were particularly extraordinary. Will definitely order again.",
+      "I ordered the gift hamper for Diwali and my entire family was blown away by the packaging and quality. Shreepad Enterprises made me look like a thoughtful gift-giver! The pistachios were particularly extraordinary. Will definitely order again.",
     rating: 5,
     product: "Iranian Roasted Pistachios",
   },
@@ -156,7 +156,7 @@ export default function TestimonialsSection() {
             style={{ background: "linear-gradient(90deg, #D4A95A, #A97142)" }}
           />
           <p className="text-white/90 max-w-2xl mx-auto mt-4 font-body">
-            Thousands of happy customers trust NutriRoots for their daily
+            Thousands of happy customers trust Shreepad Enterprises for their daily
             nutritional needs. Here are some of their stories.
           </p>
         </div>
@@ -194,6 +194,7 @@ export default function TestimonialsSection() {
                     src={active.avatar}
                     alt={active.name}
                     fill
+                    sizes="64px"
                     className="object-cover"
                   />
                 </div>

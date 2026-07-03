@@ -6,7 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata = {
-  title: "Shop Categories | NutriRoots Premium Dry Fruits",
+  title: "Shop Categories | Shreepad Enterprises Premium Dry Fruits",
   description:
     "Explore our collections of natural almonds, whole cashews, roasted pistachios, brain-healthy walnuts, plump dates, and berries.",
 };

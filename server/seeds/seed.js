@@ -8,20 +8,20 @@ const seed = async () => {
 
   // Create Admin
   const adminExists = await prisma.admin.findUnique({
-    where: { email: 'admin@nutriroots.com' },
+    where: { email: 'admin@shreepadenterprises.com' },
   });
   if (!adminExists) {
     const hashedPassword = await hashPassword('Admin@123');
     await prisma.admin.create({
       data: {
         name: 'Super Admin',
-        email: 'admin@nutriroots.com',
+        email: 'admin@shreepadenterprises.com',
         password: hashedPassword,
         role: 'super_admin',
       },
     });
   }
-  console.log('✅ Admin created: admin@nutriroots.com / Admin@123');
+  console.log('✅ Admin created: admin@shreepadenterprises.com / Admin@123');
 
   // Create Categories
   const categories = [
@@ -58,7 +58,7 @@ const seed = async () => {
       benefits: ['Rich in Vitamin E', 'High in Protein', 'Boosts Heart Health', 'Great for Skin'],
       nutrition_facts: { calories: 579, protein: '21g', fat: '50g', carbs: '22g', fiber: '12g', sugar: '4g' },
       storage_instructions: 'Store in a cool, dry place. Refrigerate for extended shelf life.',
-      meta_title: 'Buy Premium California Almonds Online | NutriRoots',
+      meta_title: 'Buy Premium California Almonds Online | Shreepad Enterprises',
       meta_description: 'Premium hand-selected California almonds. Rich in Vitamin E, magnesium. Order online and get fresh delivery to your doorstep.',
     },
     {
@@ -72,7 +72,7 @@ const seed = async () => {
       benefits: ['Rich in Zinc', 'Boosts Immunity', 'Heart Healthy', 'High in Iron'],
       nutrition_facts: { calories: 553, protein: '18g', fat: '44g', carbs: '30g', fiber: '3g', sugar: '6g' },
       storage_instructions: 'Store in an airtight container. Best consumed within 6 months.',
-      meta_title: 'Buy Premium W240 Cashews Online | NutriRoots',
+      meta_title: 'Buy Premium W240 Cashews Online | Shreepad Enterprises',
       meta_description: 'W240 grade premium whole cashews from Konkan coast. Creamy, buttery flavor. Best quality at best price.',
     },
     {
@@ -86,7 +86,7 @@ const seed = async () => {
       benefits: ['Rich in Antioxidants', 'Boosts Eye Health', 'Weight Management', 'High in Fiber'],
       nutrition_facts: { calories: 562, protein: '20g', fat: '45g', carbs: '28g', fiber: '10g', sugar: '8g' },
       storage_instructions: 'Keep in a sealed container away from direct sunlight.',
-      meta_title: 'Buy Iranian Pistachios Online | NutriRoots',
+      meta_title: 'Buy Iranian Pistachios Online | Shreepad Enterprises',
       meta_description: 'Premium Iranian roasted pistachios from Rafsanjan. Naturally vibrant green, rich in antioxidants.',
     },
     {
@@ -100,7 +100,7 @@ const seed = async () => {
       benefits: ['Brain Health', 'Rich in Omega-3', 'Anti-inflammatory', 'Heart Protective'],
       nutrition_facts: { calories: 654, protein: '15g', fat: '65g', carbs: '14g', fiber: '7g', sugar: '3g' },
       storage_instructions: 'Refrigerate in an airtight container. Consume within 3 months.',
-      meta_title: 'Buy Kashmiri Walnut Kernels Online | NutriRoots',
+      meta_title: 'Buy Kashmiri Walnut Kernels Online | Shreepad Enterprises',
       meta_description: 'Premium Kashmiri walnut kernels, rich in Omega-3. Sourced from pristine Kashmir valleys.',
     },
     {
@@ -114,7 +114,7 @@ const seed = async () => {
       benefits: ['Instant Energy', 'Rich in Iron', 'Bone Health', 'Natural Sweetener'],
       nutrition_facts: { calories: 277, protein: '2g', fat: '0.2g', carbs: '75g', fiber: '7g', sugar: '66g' },
       storage_instructions: 'Store at room temperature or refrigerate. Best within 6 months.',
-      meta_title: 'Buy Premium Medjool Dates Online | NutriRoots',
+      meta_title: 'Buy Premium Medjool Dates Online | Shreepad Enterprises',
       meta_description: 'Premium Medjool dates, plump and naturally sweet. Rich in iron and minerals. Order fresh online.',
     },
     {
@@ -128,7 +128,7 @@ const seed = async () => {
       benefits: ['Rich in Iron', 'Natural Energy', 'Digestive Health', 'Bone Strength'],
       nutrition_facts: { calories: 299, protein: '3g', fat: '0.5g', carbs: '79g', fiber: '4g', sugar: '59g' },
       storage_instructions: 'Store in a cool, dry place. Refrigerate after opening.',
-      meta_title: 'Buy Golden Raisins Online | NutriRoots',
+      meta_title: 'Buy Golden Raisins Online | Shreepad Enterprises',
       meta_description: 'Premium sun-dried golden raisins. Natural sweetness, rich in iron and energy.',
     },
     {
@@ -142,7 +142,7 @@ const seed = async () => {
       benefits: ['Complete Nutrition', 'Heart Healthy', 'Brain Booster', 'Premium Quality'],
       nutrition_facts: { calories: 600, protein: '18g', fat: '52g', carbs: '25g', fiber: '7g', sugar: '5g' },
       storage_instructions: 'Store in an airtight container in a cool, dry place.',
-      meta_title: 'Buy Royal Mixed Nuts Online | NutriRoots',
+      meta_title: 'Buy Royal Mixed Nuts Online | Shreepad Enterprises',
       meta_description: 'Luxurious blend of premium almonds, cashews, pistachios, and walnuts. Perfect gift option.',
     },
     {
@@ -156,7 +156,7 @@ const seed = async () => {
       benefits: ['Antioxidant Rich', 'Immune Booster', 'Vision Health', 'Anti-aging'],
       nutrition_facts: { calories: 308, protein: '4g', fat: '1g', carbs: '74g', fiber: '8g', sugar: '55g' },
       storage_instructions: 'Store in a sealed container away from moisture and heat.',
-      meta_title: 'Buy Superberry Blend Online | NutriRoots',
+      meta_title: 'Buy Superberry Blend Online | Shreepad Enterprises',
       meta_description: 'Premium antioxidant-rich superberry blend. Cranberries, blueberries, and goji berries combined.',
     },
   ];
@@ -214,9 +214,9 @@ const seed = async () => {
 
   // Create Testimonials
   const testimonials = [
-    { name: 'Priya Sharma', designation: 'Health & Wellness Coach', location: 'Mumbai', review: 'NutriRoots has completely transformed my snacking habits! The quality of their almonds and cashews is simply unmatched. I can taste the freshness in every bite. Highly recommend to everyone!', rating: 5, sort_order: 1 },
-    { name: 'Rajesh Mehta', designation: 'Fitness Entrepreneur', location: 'Pune', review: 'As a fitness enthusiast, I am very particular about the quality of nuts I consume. NutriRoots consistently delivers the best quality. The Kashmiri walnuts are absolutely premium!', rating: 5, sort_order: 2 },
-    { name: 'Anita Desai', designation: 'Homemaker & Food Blogger', location: 'Ahmedabad', review: 'The Medjool dates from NutriRoots are absolutely divine! So plump, sweet, and fresh. I have been ordering for 6 months and the quality never disappoints. Perfect for my whole family!', rating: 5, sort_order: 3 },
+    { name: 'Priya Sharma', designation: 'Health & Wellness Coach', location: 'Mumbai', review: 'Shreepad Enterprises has completely transformed my snacking habits! The quality of their almonds and cashews is simply unmatched. I can taste the freshness in every bite. Highly recommend to everyone!', rating: 5, sort_order: 1 },
+    { name: 'Rajesh Mehta', designation: 'Fitness Entrepreneur', location: 'Pune', review: 'As a fitness enthusiast, I am very particular about the quality of nuts I consume. Shreepad Enterprises consistently delivers the best quality. The Kashmiri walnuts are absolutely premium!', rating: 5, sort_order: 2 },
+    { name: 'Anita Desai', designation: 'Homemaker & Food Blogger', location: 'Ahmedabad', review: 'The Medjool dates from Shreepad Enterprises are absolutely divine! So plump, sweet, and fresh. I have been ordering for 6 months and the quality never disappoints. Perfect for my whole family!', rating: 5, sort_order: 3 },
   ];
 
   for (const t of testimonials) {
@@ -229,16 +229,16 @@ const seed = async () => {
 
   // Create Settings
   const settings = [
-    { key: 'site_name', value: 'NutriRoots', label: 'Site Name' },
+    { key: 'site_name', value: 'Shreepad Enterprises', label: 'Site Name' },
     { key: 'site_tagline', value: 'Nature\'s Premium Dry Fruits & Nuts', label: 'Site Tagline' },
     { key: 'phone', value: '+91 98765 43210', label: 'Phone Number' },
     { key: 'whatsapp', value: '+919876543210', label: 'WhatsApp Number' },
-    { key: 'email', value: 'hello@nutriroots.com', label: 'Email Address' },
+    { key: 'email', value: 'hello@shreepadenterprises.com', label: 'Email Address' },
     { key: 'address', value: '123, Green Valley Road, Pune, Maharashtra 411001', label: 'Address' },
     { key: 'map_embed', value: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.654!2d73.856!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDMxJzEzLjMiTiA3M8KwNTEnMjEuNiJF!5e0!3m2!1sen!2sin!4v1234567890', label: 'Google Maps Embed URL' },
-    { key: 'instagram', value: 'https://instagram.com/nutriroots', label: 'Instagram URL' },
-    { key: 'facebook', value: 'https://facebook.com/nutriroots', label: 'Facebook URL' },
-    { key: 'twitter', value: 'https://twitter.com/nutriroots', label: 'Twitter URL' },
+    { key: 'instagram', value: 'https://instagram.com/shreepadenterprises', label: 'Instagram URL' },
+    { key: 'facebook', value: 'https://facebook.com/shreepadenterprises', label: 'Facebook URL' },
+    { key: 'twitter', value: 'https://twitter.com/shreepadenterprises', label: 'Twitter URL' },
     { key: 'announcement', value: '🌿 Free delivery on orders above ₹999 | Use code FIRST10 for 10% off your first order!', label: 'Announcement Bar Text' },
   ];
 
@@ -252,7 +252,7 @@ const seed = async () => {
   console.log('✅ Settings seeded');
 
   console.log('\n🎉 Database seeded successfully!');
-  console.log('Admin Login: admin@nutriroots.com / Admin@123');
+  console.log('Admin Login: admin@shreepadenterprises.com / Admin@123');
   process.exit(0);
 };
 

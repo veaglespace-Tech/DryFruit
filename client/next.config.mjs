@@ -2,7 +2,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost', port: '5000', pathname: '/uploads/**' },
-      { protocol: 'https', hostname: '*.nutriroots.com' },
+      { protocol: 'https', hostname: '*.shreepadenterprises.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
     formats: ['image/avif', 'image/webp'],

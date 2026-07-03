@@ -38,7 +38,7 @@ const faqs = [
     id: 5,
     question: "How do I place a bulk order?",
     answer:
-      "For bulk orders (10kg+), please contact us via WhatsApp (+91 98765 43210) or email us at hello@nutriroots.com. We offer competitive pricing for bulk purchases and corporate orders, with dedicated account management support.",
+      "For bulk orders (10kg+), please contact us via WhatsApp (+91 98765 43210) or email us at hello@shreepadenterprises.com. We offer competitive pricing for bulk purchases and corporate orders, with dedicated account management support.",
   },
   {
     id: 6,

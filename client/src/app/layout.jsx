@@ -84,7 +84,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="nutriroots" suppressHydrationWarning>
+    <html lang="en" data-theme="shreepad" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

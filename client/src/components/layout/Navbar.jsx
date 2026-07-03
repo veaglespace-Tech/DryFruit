@@ -78,10 +78,10 @@ export default function Navbar() {
   const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem("nutriroots_user");
+    const userData = localStorage.getItem("shreepad_user");
     if (userData) setUser(JSON.parse(userData));
 
-    const adminData = localStorage.getItem("nutriroots_admin");
+    const adminData = localStorage.getItem("shreepad_admin");
     if (adminData) setAdmin(JSON.parse(adminData));
   }, []);
 

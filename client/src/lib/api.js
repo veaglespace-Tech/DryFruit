@@ -14,8 +14,8 @@ api.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined") {
       const token =
-        localStorage.getItem("nutriroots_admin_token") ||
-        localStorage.getItem("nutriroots_user_token");
+        localStorage.getItem("shreepad_admin_token") ||
+        localStorage.getItem("shreepad_user_token");
       if (token) config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -28,8 +28,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("nutriroots_admin_token");
-      localStorage.removeItem("nutriroots_user_token");
+      localStorage.removeItem("shreepad_admin_token");
+      localStorage.removeItem("shreepad_user_token");
       if (
         window.location.pathname.startsWith("/admin") &&
         window.location.pathname !== "/admin/login"

@@ -17,6 +17,7 @@ import { publicApi } from "@/lib/api";
 import toast from "react-hot-toast";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { profileUpdateSchema } from "@/lib/validation";
 
 // Mock user inquiry/order history logs for listing
 const MOCK_INQUIRIES = [
@@ -59,8 +60,8 @@ export default function UserDashboard() {
   const dashboardRef = useRef(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("nutriroots_user_token");
-    const userData = localStorage.getItem("nutriroots_user");
+    const token = localStorage.getItem("shreepad_user_token");
+    const userData = localStorage.getItem("shreepad_user");
 
     if (!token) {
       router.push("/user/login");
@@ -94,14 +95,27 @@ export default function UserDashboard() {
   );
 
   const handleLogout = () => {
-    localStorage.removeItem("nutriroots_user_token");
-    localStorage.removeItem("nutriroots_user");
+    localStorage.removeItem("shreepad_user_token");
+    localStorage.removeItem("shreepad_user");
     toast.success("Logged out successfully");
     router.push("/user/login");
   };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+
+    // Zod validation
+    const validation = profileUpdateSchema.safeParse({
+      name,
+      phone,
+      address,
+      password,
+    });
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
     setLoading(true);
     try {
       const payload = { name, phone, address };
@@ -109,7 +123,7 @@ export default function UserDashboard() {
 
       const res = await publicApi.updateProfile(payload);
       setProfile(res.data.user);
-      localStorage.setItem("nutriroots_user", JSON.stringify(res.data.user));
+      localStorage.setItem("shreepad_user", JSON.stringify(res.data.user));
       setIsEditing(false);
       setPassword("");
       toast.success("Profile details updated successfully! 🌿");
@@ -134,7 +148,7 @@ export default function UserDashboard() {
             <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center border border-white/20">
               <Leaf size={18} className="text-accent-DEFAULT" />
             </div>
-            <span className="font-heading text-lg font-bold">NutriRoots</span>
+            <span className="font-heading text-lg font-bold">Shreepad Enterprises</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link

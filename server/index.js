@@ -5,11 +5,11 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
-const { connectDB } = require('./src/config/db');
-const authRoutes = require('./src/routes/auth.routes');
-const categoryRoutes = require('./src/routes/category.routes');
-const productRoutes = require('./src/routes/product.routes');
-const miscRoutes = require('./src/routes/misc.routes');
+const { connectDB } = require('./config/db');
+const authRoutes = require('./routes/auth.routes');
+const categoryRoutes = require('./routes/category.routes');
+const productRoutes = require('./routes/product.routes');
+const miscRoutes = require('./routes/misc.routes');
 
 const app = express();
 
@@ -37,7 +37,7 @@ app.use('/api', miscRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'NutriRoots API is running 🌿', timestamp: new Date().toISOString() });
+  res.json({ success: true, message: 'Shreepad Enterprises API is running 🌿', timestamp: new Date().toISOString() });
 });
 
 // 404 handler
@@ -56,7 +56,7 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`\n🚀 NutriRoots Server running on port ${PORT}`);
+  console.log(`\n🚀 Shreepad Enterprises Server running on port ${PORT}`);
   console.log(`📡 API: http://localhost:${PORT}/api`);
   console.log(`🌿 Environment: ${process.env.NODE_ENV || 'development'}\n`);
 });

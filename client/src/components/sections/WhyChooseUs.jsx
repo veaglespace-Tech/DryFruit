@@ -163,7 +163,7 @@ export default function WhyChooseUs() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border mb-4">
             <span className="text-primary text-xs font-button font-semibold uppercase tracking-widest">
-              Why NutriRoots
+              Why Shreepad
             </span>
           </div>
           <h2
@@ -171,7 +171,7 @@ export default function WhyChooseUs() {
             className="font-heading text-primary mb-4"
             style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700 }}
           >
-            The NutriRoots Difference
+            The Shreepad Difference
           </h2>
           <div className="section-divider mx-auto" />
           <p className="body-lead max-w-2xl mx-auto mt-4">

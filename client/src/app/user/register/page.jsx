@@ -17,6 +17,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { publicApi } from "@/lib/api";
 import toast from "react-hot-toast";
+import { registrationFormSchema } from "@/lib/validation";
 
 export default function UserRegisterPage() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function UserRegisterPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("nutriroots_user_token");
+    const token = localStorage.getItem("shreepad_user_token");
     if (token) router.push("/user/dashboard");
   }, [router]);
 
@@ -47,6 +48,27 @@ export default function UserRegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Zod validation
+    const validation = registrationFormSchema.safeParse({
+      name,
+      email,
+      password,
+      phone,
+      address,
+    });
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      // Shake animation
+      const tl = gsap.timeline();
+      tl.to(formRef.current, { x: -10, duration: 0.08 })
+        .to(formRef.current, { x: 10, duration: 0.08 })
+        .to(formRef.current, { x: -8, duration: 0.08 })
+        .to(formRef.current, { x: 8, duration: 0.08 })
+        .to(formRef.current, { x: 0, duration: 0.08 });
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await publicApi.register({
@@ -56,8 +78,8 @@ export default function UserRegisterPage() {
         phone,
         address,
       });
-      localStorage.setItem("nutriroots_user_token", res.data.token);
-      localStorage.setItem("nutriroots_user", JSON.stringify(res.data.user));
+      localStorage.setItem("shreepad_user_token", res.data.token);
+      localStorage.setItem("shreepad_user", JSON.stringify(res.data.user));
       toast.success("Registration successful! Welcome to the family 🌿");
       router.push("/user/dashboard");
     } catch (err) {

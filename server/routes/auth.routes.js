@@ -10,10 +10,13 @@ router.get('/me', protect, getMe);
 router.put('/password', protect, updatePassword);
 
 // User Auth
-router.post('/user/register', registerUser);
+const { validateBody } = require('../middleware/validate.middleware');
+const { registrationFormSchema, profileUpdateSchema } = require('../utils/validation');
+
+router.post('/user/register', validateBody(registrationFormSchema), registerUser);
 router.post('/user/login', loginUser);
 router.get('/user/me', protectUser, getUserProfile);
-router.put('/user/me', protectUser, updateUserProfile);
+router.put('/user/me', protectUser, validateBody(profileUpdateSchema), updateUserProfile);
 
 module.exports = router;
 

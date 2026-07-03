@@ -42,8 +42,8 @@ export default function AdminLayout({ children }) {
   useEffect(() => {
     if (pathname === "/admin" || pathname === "/admin/login") return;
 
-    const token = localStorage.getItem("nutriroots_admin_token");
-    const adminData = localStorage.getItem("nutriroots_admin");
+    const token = localStorage.getItem("shreepad_admin_token");
+    const adminData = localStorage.getItem("shreepad_admin");
 
     if (!token) {
       router.push("/admin/login");
@@ -56,8 +56,8 @@ export default function AdminLayout({ children }) {
   }, [pathname, router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("nutriroots_admin_token");
-    localStorage.removeItem("nutriroots_admin");
+    localStorage.removeItem("shreepad_admin_token");
+    localStorage.removeItem("shreepad_admin");
     router.push("/admin/login");
   };
 

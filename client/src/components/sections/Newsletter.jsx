@@ -169,7 +169,7 @@ export default function Newsletter() {
                   You&apos;re in! 🎉
                 </p>
                 <p className="text-text-muted font-body text-sm">
-                  Welcome to the NutriRoots family. Check your email for a
+                  Welcome to the Shreepad Enterprises family. Check your email for a
                   special welcome offer!
                 </p>
               </div>

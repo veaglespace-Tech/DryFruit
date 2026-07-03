@@ -32,8 +32,8 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       const res = await adminApi.login(email, password);
-      localStorage.setItem("nutriroots_admin_token", res.data.token);
-      localStorage.setItem("nutriroots_admin", JSON.stringify(res.data.admin));
+      localStorage.setItem("shreepad_admin_token", res.data.token);
+      localStorage.setItem("shreepad_admin", JSON.stringify(res.data.admin));
       toast.success(`Welcome back, ${res.data.admin.name}! 🌿`);
       router.push("/admin/dashboard");
     } catch (err) {
@@ -88,7 +88,7 @@ export default function AdminLoginPage() {
               />
             </div>
             <h1 className="font-heading text-2xl font-bold text-primary-DEFAULT">
-              NutriRoots Admin
+              Shreepad Enterprises Admin
             </h1>
             <p className="text-text-muted font-body text-sm mt-1">
               Sign in to your dashboard
@@ -161,7 +161,7 @@ export default function AdminLoginPage() {
               Demo Credentials:
             </p>
             <p className="text-xs font-body text-text-muted">
-              Email: admin@nutriroots.com
+              Email: admin@shreepadenterprises.com
             </p>
             <p className="text-xs font-body text-text-muted">
               Password: Admin@123

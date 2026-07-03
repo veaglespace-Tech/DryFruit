@@ -24,6 +24,7 @@ import {
 } from "@/store/slices/cartSlice";
 import toast from "react-hot-toast";
 import { publicApi } from "@/lib/api";
+import { checkoutFormSchema } from "@/lib/validation";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -43,6 +44,20 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (cartItems.length === 0) return;
+
+    // Zod validation
+    const validation = checkoutFormSchema.safeParse({
+      name,
+      email,
+      phone,
+      address,
+      notes,
+    });
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+
     setSubmitting(true);
 
     try {

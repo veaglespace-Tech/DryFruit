@@ -113,7 +113,7 @@ export default function ProductCard({ product }) {
         </button>
 
         {/* Product Image */}
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
           <Image
             src={product.thumbnail || "/images/categories/mixed-nuts.png"}
             alt={product.name}
