@@ -159,6 +159,7 @@ export default function FAQSection() {
                 className="faq-item faq-accordion overflow-hidden"
               >
                 <button
+                  type="button"
                   className="w-full flex items-center justify-between p-5 md:p-6 text-left transition-colors hover:bg-background"
                   onClick={() => toggle(faq.id)}
                   aria-expanded={openId === faq.id}

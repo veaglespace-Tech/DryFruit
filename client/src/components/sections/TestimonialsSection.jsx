@@ -225,6 +225,7 @@ export default function TestimonialsSection() {
         {/* Controls */}
         <div className="flex items-center justify-center gap-4">
           <button
+            type="button"
             onClick={() => goTo(activeIndex - 1)}
             className="w-11 h-11 rounded-full border border-white/30 bg-white/10 flex items-center justify-center text-white hover:bg-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
             aria-label="Previous testimonial"
@@ -236,6 +237,7 @@ export default function TestimonialsSection() {
           <div className="flex gap-2">
             {testimonials.map((_, i) => (
               <button
+                type="button"
                 key={i}
                 onClick={() => goTo(i)}
                 className="w-2.5 h-2.5 rounded-full transition-all duration-300"
@@ -250,6 +252,7 @@ export default function TestimonialsSection() {
           </div>
 
           <button
+            type="button"
             onClick={() => goTo(activeIndex + 1)}
             className="w-11 h-11 rounded-full border border-white/30 bg-white/10 flex items-center justify-center text-white hover:bg-accent-DEFAULT hover:border-accent-DEFAULT transition-all duration-200"
             aria-label="Next testimonial"

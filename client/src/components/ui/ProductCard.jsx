@@ -101,6 +101,7 @@ export default function ProductCard({ product }) {
 
         {/* Wishlist Button */}
         <button
+          type="button"
           ref={heartRef}
           onClick={handleWishlist}
           className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white shadow-card flex items-center justify-center transition-all duration-200 hover:shadow-card-hover"
@@ -134,6 +135,7 @@ export default function ProductCard({ product }) {
             <Eye size={18} />
           </Link>
           <button
+            type="button"
             onClick={handleAddToCart}
             className="w-11 h-11 rounded-full bg-white text-primary flex items-center justify-center shadow-lg hover:bg-primary hover:text-white transition-colors"
             aria-label="Add to cart"
@@ -216,6 +218,7 @@ export default function ProductCard({ product }) {
 
         {/* Add to Cart Button */}
         <button
+          type="button"
           onClick={handleAddToCart}
           className="w-full mt-3 py-2.5 rounded-xl bg-primary-50 text-primary font-button font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-primary/20 hover:border-primary"
         >
