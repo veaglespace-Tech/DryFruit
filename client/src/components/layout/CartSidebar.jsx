@@ -255,10 +255,11 @@ export default function CartSidebar() {
                   nuts to your cart yet.
                 </p>
                 <button
+                  type="button"
                   onClick={handleClose}
                   className="btn-primary-luxury text-sm px-6 py-2.5"
                 >
-                  Start Shopping
+                  <span>Start Shopping</span>
                 </button>
               </div>
             )}

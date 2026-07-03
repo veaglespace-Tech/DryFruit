@@ -208,9 +208,11 @@ export default function CheckoutPage() {
                         disabled={submitting || cartItems.length === 0}
                         className="btn-primary-luxury w-full justify-center py-3.5 mt-2 text-sm"
                       >
-                        {submitting
-                          ? "Processing Inquiry..."
-                          : `Submit Pre-Order Inquiry (₹${grandTotal.toLocaleString()})`}
+                        <span>
+                          {submitting
+                            ? "Processing Inquiry..."
+                            : `Submit Pre-Order Inquiry (₹${grandTotal.toLocaleString()})`}
+                        </span>
                       </button>
                     </form>
                   </div>
