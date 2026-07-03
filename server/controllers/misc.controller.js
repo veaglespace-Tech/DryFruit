@@ -1,5 +1,6 @@
 const { prisma } = require('../config/db');
 const asyncHandler = require('../middleware/async.middleware');
+const sendEmail = require('../utils/sendEmail');
 
 // =========== BANNERS ===========
 const getBanners = asyncHandler(async (req, res) => {
@@ -151,6 +152,70 @@ const submitContact = asyncHandler(async (req, res) => {
       ip_address: req.ip,
     },
   });
+
+  // Send emails in the background (don't block the API response)
+  const isOrder = subject && subject.includes('Pre-Order');
+  const adminEmail = process.env.ADMIN_EMAIL || 'hello@shreepadenterprises.com';
+
+  // Email to Admin
+  const adminSubject = isOrder ? `🚨 New Pre-Order Request from ${name}` : `📧 New Contact Inquiry from ${name}`;
+  const adminHtml = `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e9e9e9; border-radius: 12px; background-color: #FFFDF8;">
+      <div style="background-color: #6B3E26; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+        <h2 style="color: #ffffff; margin: 0; font-family: serif;">${isOrder ? 'New Pre-Order Alert' : 'New Web Inquiry'}</h2>
+        <p style="color: #D4A95A; margin: 5px 0 0 0; font-size: 14px;">Shreepad Enterprises Administration</p>
+      </div>
+      <div style="padding: 20px; color: #333333; line-height: 1.6;">
+        <p>Hello Admin,</p>
+        <p>You have received a new ${isOrder ? 'pre-order inquiry' : 'message'} from the website.</p>
+        <div style="background-color: #f7f3ed; padding: 15px; border-radius: 8px; margin: 20px 0;">
+          <h4 style="margin: 0 0 10px 0; color: #3D1F0E;">Details:</h4>
+          <p style="margin: 5px 0;"><strong>Name:</strong> ${name}</p>
+          <p style="margin: 5px 0;"><strong>Email:</strong> ${email || 'Not provided'}</p>
+          <p style="margin: 5px 0;"><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+          <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+          <p style="margin: 5px 0;"><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  sendEmail({
+    to: adminEmail,
+    subject: adminSubject,
+    html: adminHtml,
+  }).catch(err => console.error('Error sending email to Admin:', err));
+
+  // Email to User (if email is provided)
+  if (email) {
+    const userSubject = isOrder ? `🛒 Pre-Order Received - Shreepad Enterprises` : `🌿 Message Received - Shreepad Enterprises`;
+    const userHtml = `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e9e9e9; border-radius: 12px; background-color: #FFFDF8;">
+        <div style="background-color: #3D1F0E; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h2 style="color: #D4A95A; margin: 0; font-family: serif;">Shreepad Enterprises</h2>
+          <p style="color: #ffffff; margin: 5px 0 0 0; font-size: 14px;">Premium Dry Fruits & Nuts</p>
+        </div>
+        <div style="padding: 20px; color: #333333; line-height: 1.6;">
+          <p>Dear <strong>${name}</strong>,</p>
+          <p>Thank you for reaching out to Shreepad Enterprises. We have received your ${isOrder ? 'pre-order inquiry' : 'message'} and are currently processing it.</p>
+          <div style="background-color: #f7f3ed; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <h4 style="margin: 0 0 10px 0; color: #6B3E26;">Your Request Details:</h4>
+            <p style="margin: 5px 0;"><strong>Subject:</strong> ${subject}</p>
+            <p style="margin: 5px 0;"><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
+          </div>
+          <p>Our sales representative will get in touch with you shortly (usually within 24 hours) via phone or email to confirm your order details and delivery schedule.</p>
+          <p>Best regards,<br><strong>Shreepad Enterprises Team</strong></p>
+        </div>
+      </div>
+    `;
+
+    sendEmail({
+      to: email,
+      subject: userSubject,
+      html: userHtml,
+    }).catch(err => console.error('Error sending email to User:', err));
+  }
+
   res.status(201).json({ success: true, message: 'Your message has been received. We will get back to you soon!' });
 });
 

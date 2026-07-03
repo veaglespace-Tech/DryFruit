@@ -312,10 +312,10 @@ export default function CheckoutPage() {
                   <span>Back to Homepage</span>
                 </Link>
                 <Link
-                  href="/user/dashboard"
+                  href="/products"
                   className="px-6 py-3 border border-border-DEFAULT text-text-muted hover:bg-background rounded-xl font-button text-xs transition-all"
                 >
-                  Check Dashboard
+                  Continue Shopping
                 </Link>
               </div>
             </div>
