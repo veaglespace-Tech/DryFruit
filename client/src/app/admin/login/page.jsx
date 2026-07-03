@@ -105,6 +105,7 @@ export default function AdminLoginPage() {
                 required
                 id="admin-email"
                 className="!py-4"
+                suppressHydrationWarning
               />
 
               <label htmlFor="admin-email">Email Address</label>
@@ -124,6 +125,7 @@ export default function AdminLoginPage() {
                 required
                 id="admin-password"
                 className="!py-4 pr-12"
+                suppressHydrationWarning
               />
 
               <label htmlFor="admin-password">Password</label>
@@ -131,6 +133,7 @@ export default function AdminLoginPage() {
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary-DEFAULT transition-colors"
+                suppressHydrationWarning
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -141,6 +144,7 @@ export default function AdminLoginPage() {
               type="submit"
               disabled={loading}
               className="btn-primary-luxury w-full justify-center py-3.5 mt-2"
+              suppressHydrationWarning
             >
               <span className="flex items-center gap-2">
                 {loading ? (
