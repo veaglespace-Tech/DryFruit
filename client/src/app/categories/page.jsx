@@ -120,7 +120,7 @@ export default function CategoriesPage() {
                 <Link
                   key={cat.slug}
                   href={`/products?category=${cat.slug}`}
-                  className="group flex flex-col justify-between p-5 rounded-3xl border border-border-DEFAULT bg-white hover:shadow-luxury-lg hover:border-accent-DEFAULT/30 transition-all duration-400"
+                  className="group flex flex-col justify-between p-5 rounded-3xl border border-border-DEFAULT hover:shadow-luxury-lg hover:border-accent-DEFAULT/30 transition-all duration-400"
                   style={{ backgroundColor: cat.bg }}
                 >
                   <div className="space-y-4">

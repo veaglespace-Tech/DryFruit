@@ -113,6 +113,7 @@ export default function CartSidebar() {
               </h2>
             </div>
             <button
+              type="button"
               onClick={handleClose}
               className="p-2 rounded-full hover:bg-background text-text-muted hover:text-primary-DEFAULT transition-all"
               aria-label="Close cart"
@@ -186,6 +187,7 @@ export default function CartSidebar() {
                           {item.name}
                         </Link>
                         <button
+                          type="button"
                           onClick={() => handleRemove(item.id)}
                           className="text-text-muted hover:text-red-500 transition-colors p-1"
                           aria-label="Remove item"
@@ -202,6 +204,7 @@ export default function CartSidebar() {
                       {/* Qty Controls */}
                       <div className="flex items-center border border-border-DEFAULT rounded-lg bg-background">
                         <button
+                          type="button"
                           onClick={() =>
                             handleUpdateQty(item.id, item.quantity, -1)
                           }
@@ -214,6 +217,7 @@ export default function CartSidebar() {
                           {item.quantity}
                         </span>
                         <button
+                          type="button"
                           onClick={() =>
                             handleUpdateQty(item.id, item.quantity, 1)
                           }

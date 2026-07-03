@@ -310,14 +310,14 @@ export default function CheckoutPage() {
               </div>
 
               <div className="pt-6 border-t border-border-light flex flex-wrap justify-center gap-4">
-                <Link href="/" className="btn-primary-luxury text-xs px-6 py-3">
+                <Link href="/" className="btn-primary-luxury">
                   <span>Back to Homepage</span>
                 </Link>
                 <Link
                   href="/products"
-                  className="px-6 py-3 border border-border-DEFAULT text-text-muted hover:bg-background rounded-xl font-button text-xs transition-all"
+                  className="btn-outline-luxury"
                 >
-                  Continue Shopping
+                  <span>Continue Shopping</span>
                 </Link>
               </div>
             </div>

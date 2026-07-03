@@ -286,7 +286,7 @@ export default function ProductsPageClient() {
                   placeholder="Search products..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-border bg-surface font-body text-sm outline-none focus:border-accent transition-colors"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-border bg-surface font-body text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200"
                 />
 
                 {search && (
@@ -359,7 +359,7 @@ export default function ProductsPageClient() {
                                 Math.max(0, parseInt(e.target.value) || 0),
                               )
                             }
-                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs"
+                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs focus:border-accent focus:ring-2 focus:ring-accent/15 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -379,7 +379,7 @@ export default function ProductsPageClient() {
                                 Math.max(0, parseInt(e.target.value) || 0),
                               )
                             }
-                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs"
+                            className="w-full pl-6 pr-1.5 py-1.5 rounded-lg border border-border bg-background outline-none text-xs focus:border-accent focus:ring-2 focus:ring-accent/15 transition-all duration-200"
                           />
                         </div>
                       </div>
@@ -497,7 +497,7 @@ export default function ProductsPageClient() {
                       key={cat}
                       onClick={() => setSelectedCategory(cat)}
                       className={`flex items-center gap-2.5 px-4 py-2 rounded-2xl border text-sm font-button font-semibold transition-all duration-300 flex-shrink-0 ${isActive
-                          ? "bg-[#3D2314] text-white border-[#3D2314] shadow-md shadow-[#3D2314]/25 scale-102"
+                          ? "bg-[#3D2314] text-white border-[#3D2314] shadow-md shadow-[#3D2314]/25 scale-[1.02]"
                           : "bg-white hover:bg-[#FDFBF7] hover:border-[#D4A95A]/50 text-[#3D2314] border-border"
                         }`}
                     >

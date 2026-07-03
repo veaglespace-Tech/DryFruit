@@ -218,6 +218,7 @@ export default function Navbar() {
                 <li key={link.label} className="relative group">
                   {link.submenu ? (
                     <button
+                      type="button"
                       className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200"
                       style={{
                         color: isActive(link.href)
@@ -283,6 +284,7 @@ export default function Navbar() {
             <div className="flex items-center gap-1.5 sm:gap-2">
               {/* Search */}
               <button
+                type="button"
                 onClick={() => dispatch(setSearchOpen(true))}
                 className={`p-2 rounded-full transition-all duration-200 ${
                   isMobileNavOpen || !isDarkHeader
@@ -322,6 +324,7 @@ export default function Navbar() {
 
               {/* Cart */}
               <button
+                type="button"
                 onClick={() => dispatch(toggleCart())}
                 className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent shadow-luxury overflow-visible"
                 aria-label={`Cart (${cartCount} items)`}
@@ -355,6 +358,7 @@ export default function Navbar() {
 
               {/* Mobile Hamburger */}
               <button
+                type="button"
                 onClick={() => dispatch(toggleMobileNav())}
                 className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
                   isMobileNavOpen || !isDarkHeader

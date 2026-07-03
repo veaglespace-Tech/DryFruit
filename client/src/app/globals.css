@@ -356,13 +356,14 @@ a {
   font-family: var(--font-body);
   font-size: 0.9375rem;
   color: var(--color-text);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   outline: none;
 }
 
 .form-floating input:focus,
 .form-floating textarea:focus {
   border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 169, 90, 0.15);
 }
 
 .form-floating label {

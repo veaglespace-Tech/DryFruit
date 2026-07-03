@@ -141,7 +141,7 @@ export default function AboutPage() {
             <div className="flex justify-center pt-2">
               <Link
                 href="/products"
-                className="btn-primary-luxury bg-accent-DEFAULT hover:bg-secondary-DEFAULT text-white group"
+                className="btn-accent-luxury group"
               >
                 <span className="flex items-center gap-2">
                   Browse Catalog

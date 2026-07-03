@@ -240,12 +240,9 @@ export default function TestimonialsSection() {
                 type="button"
                 key={i}
                 onClick={() => goTo(i)}
-                className="w-2.5 h-2.5 rounded-full transition-all duration-300"
-                style={{
-                  background:
-                    i === activeIndex ? "#D4A95A" : "rgba(255,255,255,0.5)",
-                  transform: i === activeIndex ? "scale(1.4)" : "scale(1)",
-                }}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "bg-accent-DEFAULT scale-125" : "bg-white/50 scale-100"
+                }`}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
             ))}

@@ -96,6 +96,7 @@ export default function SearchOverlay() {
             Search Products
           </h3>
           <button
+            type="button"
             onClick={handleClose}
             className="p-1.5 rounded-full hover:bg-background text-text-muted transition-colors border border-border"
             aria-label="Close search"
@@ -137,6 +138,7 @@ export default function SearchOverlay() {
           <div className="flex flex-wrap gap-2">
             {POPULAR_SUGGESTIONS.map((item) => (
               <button
+                type="button"
                 key={item.label}
                 onClick={() => {
                   handleClose();

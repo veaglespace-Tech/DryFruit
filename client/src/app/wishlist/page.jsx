@@ -82,6 +82,7 @@ export default function WishlistPage() {
                       />
 
                       <button
+                        type="button"
                         onClick={() => handleRemove(item.id)}
                         className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white shadow-card flex items-center justify-center text-text-muted hover:text-red-500 transition-colors"
                         aria-label="Remove from wishlist"
@@ -89,7 +90,7 @@ export default function WishlistPage() {
                         <Trash2 size={14} />
                       </button>
                     </div>
-
+ 
                     {/* Content */}
                     <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
                       <div>
@@ -102,12 +103,13 @@ export default function WishlistPage() {
                           </h3>
                         </Link>
                       </div>
-
+ 
                       <div className="space-y-3 pt-2">
                         <div className="font-heading text-base font-bold text-primary-DEFAULT">
                           ₹{item.price.toLocaleString()}
                         </div>
                         <button
+                          type="button"
                           onClick={() => handleAddToCart(item)}
                           className="w-full py-2 rounded-xl bg-primary-50 hover:bg-primary-DEFAULT text-primary-DEFAULT hover:text-white transition-all text-xs font-button font-semibold flex items-center justify-center gap-1.5 border border-primary-DEFAULT/10"
                         >
