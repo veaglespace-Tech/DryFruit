@@ -1,16 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
-const { PrismaMariaDb } = require('@prisma/adapter-mariadb');
-
-const adapter = new PrismaMariaDb({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT) || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME || 'shreepad_db',
-  connectionLimit: 10,
-});
-
-const prisma = new PrismaClient({ adapter });
+// Initialize Prisma Client
+// It automatically connects using the DATABASE_URL from your .env file
+const prisma = new PrismaClient();
 
 const connectDB = async () => {
   try {
