@@ -397,22 +397,6 @@ export default function ProductDetailClient({ slug }) {
 
   const isWishlisted = useAppSelector(selectIsInWishlist(product?.id || 0));
 
-  if (loading || !product) {
-    return (
-      <>
-        <AnnouncementBar />
-        <Navbar />
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-primary-DEFAULT border-t-transparent animate-spin"></div>
-          <p className="font-body text-xs text-text-muted animate-pulse">
-            Loading Product Details...
-          </p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
   useGSAP(
     () => {
       gsap.fromTo(
@@ -428,6 +412,22 @@ export default function ProductDetailClient({ slug }) {
     },
     { scope: detailsRef },
   );
+
+  if (loading || !product) {
+    return (
+      <>
+        <AnnouncementBar />
+        <Navbar />
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+          <div className="w-12 h-12 rounded-full border-4 border-primary-DEFAULT border-t-transparent animate-spin"></div>
+          <p className="font-body text-xs text-text-muted animate-pulse">
+            Loading Product Details...
+          </p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   const handleAddToCart = () => {
     dispatch(
