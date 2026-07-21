@@ -173,8 +173,8 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ paddingTop: "110px" }}
+      id="hero"
+      className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20 sm:pt-24 md:pt-[110px]"
     >
       {/* Background Image with Parallax */}
       <div ref={bgRef} className="absolute inset-0 z-0 scale-110">
@@ -220,7 +220,7 @@ export default function HeroSection() {
       ))}
 
       {/* Content */}
-      <div className="container-luxury relative z-20 py-20">
+      <div className="container-luxury relative z-20 py-10 sm:py-16 md:py-20">
         <div className="max-w-3xl">
           {/* Badge */}
           <div className="hero-badge inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm mb-6">

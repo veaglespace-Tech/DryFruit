@@ -157,11 +157,11 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-3 sm:p-4">
         {/* Category */}
         <Link
           href={`/products?category=${product.category.slug}`}
-          className="text-xs font-button font-semibold text-accent uppercase tracking-wider hover:text-secondary transition-colors"
+          className="text-[10px] sm:text-xs font-button font-semibold text-accent uppercase tracking-wider hover:text-secondary transition-colors"
           onClick={(e) => e.stopPropagation()}
         >
           {product.category.name}
@@ -169,23 +169,23 @@ export default function ProductCard({ product }) {
 
         {/* Name */}
         <Link href={`/products/${product.slug}`}>
-          <h3 className="font-heading text-base font-semibold text-primary mt-1 mb-0.5 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
+          <h3 className="font-heading text-sm sm:text-base font-semibold text-primary mt-0.5 mb-0.5 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
 
         {/* Weight */}
-        <p className="text-xs text-text-muted font-body mb-2">
+        <p className="text-[11px] sm:text-xs text-text-muted font-body mb-2">
           {product.weight}
         </p>
 
         {/* Rating */}
-        <div className="flex items-center gap-1.5 mb-3">
+        <div className="flex items-center gap-1 mb-2.5 sm:mb-3">
           <div className="stars flex gap-0.5">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                size={12}
+                size={11}
                 className={
                   i < Math.round(product.rating)
                     ? "fill-amber-400 text-amber-400"
@@ -194,40 +194,32 @@ export default function ProductCard({ product }) {
               />
             ))}
           </div>
-          <span className="text-xs text-text-muted font-body">
+          <span className="text-[11px] sm:text-xs text-text-muted font-body">
             ({product.review_count})
           </span>
         </div>
 
-        {/* Price Row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <span className="font-heading text-xl font-bold text-primary">
-              ₹{product.price.toLocaleString()}
-            </span>
+        {/* Price & Add to Cart */}
+        <div className="flex items-center justify-between gap-1 pt-2.5 border-t border-border-DEFAULT">
+          <div className="flex flex-wrap items-baseline gap-1 sm:gap-1.5">
+            <span className="font-heading text-sm sm:text-base font-bold text-primary">₹{product.price}</span>
             {product.original_price && (
-              <span className="text-sm text-text-muted line-through font-body">
-                ₹{product.original_price.toLocaleString()}
+              <span className="text-[11px] sm:text-xs text-text-muted line-through font-body">
+                ₹{product.original_price}
               </span>
             )}
           </div>
-          {savings > 0 && (
-            <span className="text-xs text-green-600 font-button font-semibold">
-              Save ₹{savings}
-            </span>
-          )}
-        </div>
 
-        {/* Add to Cart Button */}
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className="w-full mt-3 py-2.5 rounded-xl bg-primary-50 text-primary font-button font-semibold text-sm hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2 border border-primary/20 hover:border-primary"
-          suppressHydrationWarning
-        >
-          <ShoppingBag size={16} />
-          Add to Cart
-        </button>
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary text-white flex items-center justify-center transition-all duration-200 hover:bg-accent hover:scale-105 active:scale-95 shadow-sm flex-shrink-0"
+            aria-label="Add to cart"
+            suppressHydrationWarning
+          >
+            <ShoppingBag size={15} />
+          </button>
+        </div>
       </div>
     </div>
   );

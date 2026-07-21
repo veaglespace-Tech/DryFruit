@@ -12,6 +12,8 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
   },
+  // Allow mobile/network access in dev
+  allowedDevOrigins: ['192.168.0.109', '192.168.1.1', '172.22.255.105', '10.0.0.1'],
   compress: true,
   poweredByHeader: false,
   async headers() {
@@ -29,3 +31,4 @@ const nextConfig = {
 };
 
 export default nextConfig;
+

@@ -199,48 +199,45 @@ export default function FeaturedProducts({
   return (
     <section className="section-padding bg-surface">
       <div className="container-luxury">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent-DEFAULT/20 mb-4">
-              <span className="text-accent-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
-                {filter === "best_seller" ? "🔥 Top Sellers" : "⭐ Featured"}
-              </span>
-            </div>
-            <h2
-              ref={titleRef}
-              className="font-heading text-primary-DEFAULT"
-              style={{
-                fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
-                fontWeight: 700,
-              }}
-            >
-              {title}
-            </h2>
-            <div
-              className="section-divider mt-3 ml-0"
-            />
-            <p className="body-lead max-w-xl">{subtitle}</p>
+        {/* Section Header — centered like CategorySection */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent-DEFAULT/20 mb-4">
+            <span className="text-accent-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
+              {filter === "best_seller" ? "🔥 Top Sellers" : "⭐ Featured"}
+            </span>
           </div>
-          <Link
-            href="/products"
-            className="btn-outline-luxury flex-shrink-0 self-start md:self-auto"
+          <h2
+            ref={titleRef}
+            className="font-heading text-primary-DEFAULT mb-4"
+            style={{
+              fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
+              fontWeight: 700,
+            }}
           >
-            <span>View All Products</span>
-            <ArrowRight size={16} />
-          </Link>
+            {title}
+          </h2>
+          <div className="section-divider mx-auto" />
+          <p className="body-lead max-w-xl mx-auto mt-4">{subtitle}</p>
         </div>
 
         {/* Product Grid */}
         <div
           ref={gridRef}
-          className="flex overflow-x-auto md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-6 scrollbar-thin scroll-smooth"
+          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6"
         >
           {products.map((product) => (
-            <div key={product.id} className="flex-shrink-0 w-[200px] sm:w-[240px] md:w-auto">
+            <div key={product.id} className="w-full">
               <ProductCard product={product} />
             </div>
           ))}
+        </div>
+
+        {/* View All CTA — centered like CategorySection */}
+        <div className="text-center mt-12">
+          <Link href="/products" className="btn-outline-luxury inline-flex">
+            <span>View All Products</span>
+            <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
     </section>

@@ -130,22 +130,22 @@ export default function CategorySection() {
           </p>
         </div>
 
-        {/* Circular Category Grid (Decorative & Classic) */}
+        {/* Circular Category Grid */}
         <div
           ref={gridRef}
-          className="flex overflow-x-auto md:grid md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-6 justify-start md:justify-center scrollbar-thin scroll-smooth"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8 justify-items-center"
         >
           {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="category-item-anim group flex flex-col items-center text-center flex-shrink-0 w-32 sm:w-36 md:w-auto"
+              className="category-item-anim group flex flex-col items-center text-center w-full max-w-[160px]"
               aria-label={`Browse ${cat.name}`}
             >
               {/* Outer circular stamp border with gold offset shadow */}
-              <div className="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full border-4 border-[#3D2314] bg-[#FDFBF7] flex items-center justify-center overflow-hidden transition-all duration-300 shadow-[6px_6px_0px_#D4A95A] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_#D4A95A]">
+              <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full border-4 border-[#3D2314] bg-[#FDFBF7] flex items-center justify-center overflow-hidden transition-all duration-300 shadow-[4px_4px_0px_#D4A95A] sm:shadow-[6px_6px_0px_#D4A95A] group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-[2px_2px_0px_#D4A95A]">
                 {/* Inner dotted decorative ring */}
-                <div className="absolute inset-2 rounded-full border border-dashed border-[#D4A95A]/60 pointer-events-none" />
+                <div className="absolute inset-1.5 sm:inset-2 rounded-full border border-dashed border-[#D4A95A]/60 pointer-events-none" />
 
                 {/* Product Image */}
                 <div className="relative w-[75%] h-[75%] rounded-full overflow-hidden bg-white/40">
@@ -160,7 +160,7 @@ export default function CategorySection() {
               </div>
 
               {/* Title & Count */}
-              <h3 className="font-heading text-xs sm:text-sm md:text-base font-bold text-[#3D2314] mt-4 mb-0.5 group-hover:text-[#D4A95A] transition-colors duration-200">
+              <h3 className="font-heading text-xs sm:text-sm md:text-base font-bold text-[#3D2314] mt-3 sm:mt-4 mb-0.5 group-hover:text-[#D4A95A] transition-colors duration-200">
                 {cat.name}
               </h3>
               <p className="text-text-muted text-[10px] md:text-xs font-body font-medium">

@@ -16,17 +16,38 @@ const messages = [
 
 export default function AnnouncementBar() {
   const marqueeRef = useRef(null);
+  const tweenRef = useRef(null);
 
   useEffect(() => {
     if (!marqueeRef.current) return;
     const el = marqueeRef.current;
-    const totalWidth = el.scrollWidth / 2;
-    gsap.to(el, {
-      x: -totalWidth,
-      duration: 30,
-      ease: "none",
-      repeat: -1,
-    });
+
+    const initMarquee = () => {
+      if (tweenRef.current) tweenRef.current.kill();
+      const halfWidth = el.scrollWidth / 2;
+      tweenRef.current = gsap.fromTo(
+        el,
+        { x: 0 },
+        {
+          x: -halfWidth,
+          duration: 16,
+          ease: "none",
+          repeat: -1,
+        }
+      );
+    };
+
+    // Initial calculation after load
+    const timeout = setTimeout(initMarquee, 100);
+
+    // Recalculate on window resize for fluid responsiveness
+    window.addEventListener("resize", initMarquee);
+
+    return () => {
+      clearTimeout(timeout);
+      window.removeEventListener("resize", initMarquee);
+      if (tweenRef.current) tweenRef.current.kill();
+    };
   }, []);
 
   const allMessages = [...messages, ...messages];
@@ -56,15 +77,15 @@ export default function AnnouncementBar() {
           </a>
         </div>
 
-        {/* Marquee */}
-        <div className="flex-1 overflow-hidden">
+        {/* Marquee Container */}
+        <div className="flex-1 overflow-hidden relative">
           <div
             ref={marqueeRef}
-            className="flex items-center gap-0 whitespace-nowrap will-change-transform"
+            className="flex items-center whitespace-nowrap will-change-transform"
           >
             {allMessages.map((msg, i) => (
-              <span key={i} className="flex items-center gap-2 px-8">
-                <span>{msg}</span>
+              <span key={i} className="inline-flex items-center gap-2 px-4 sm:px-8 text-[11px] sm:text-xs font-body font-medium text-white/90">
+                {msg}
               </span>
             ))}
           </div>

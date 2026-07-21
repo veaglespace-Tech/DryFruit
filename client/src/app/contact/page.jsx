@@ -14,9 +14,9 @@ export default function ContactPage() {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main style={{ paddingTop: "110px" }}>
+      <main className="pt-24 md:pt-[110px]">
         {/* Breadcrumb banner */}
-        <div className="py-10 md:py-12 bg-[#F5EDE0] text-center relative overflow-hidden">
+        <div className="py-6 md:py-12 bg-[#F5EDE0] text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-2xl" />
           <div className="container-luxury relative z-10">
             <span className="text-xs font-button font-bold text-accent uppercase tracking-widest">

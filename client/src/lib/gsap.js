@@ -7,6 +7,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+// Suppress "GSAP target null not found" warnings in dev (safe - just noise)
+gsap.config({ nullTargetWarn: false });
+
 export { gsap, ScrollTrigger };
 
 // ========================

@@ -29,6 +29,9 @@ import { selectCartCount } from "@/store/slices/cartSlice";
 
 gsap.registerPlugin(useGSAP);
 
+// Suppress "GSAP target null" warnings globally (safe — just noise in dev)
+gsap.config({ nullTargetWarn: false });
+
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
@@ -92,27 +95,38 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
   const isHidden = useRef(false);
 
-  // Scroll behavior
+  // Scroll behavior — hide on scroll down, show on scroll up
   useEffect(() => {
     const handleScroll = () => {
+      if (!navRef.current) return;
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 50);
 
-      // Hide navbar on scroll down, show on scroll up
+      // Only trigger after 200px scroll
       if (currentScrollY > 200) {
         if (currentScrollY > lastScrollY.current && !isHidden.current) {
+          // Scrolling DOWN → hide navbar
           gsap.to(navRef.current, {
             y: "-100%",
             duration: 0.3,
             ease: "power2.in",
+            overwrite: true,
           });
           isHidden.current = true;
         } else if (currentScrollY < lastScrollY.current && isHidden.current) {
+          // Scrolling UP → show navbar
           gsap.to(navRef.current, {
             y: "0%",
             duration: 0.4,
             ease: "power2.out",
+            overwrite: true,
           });
+          isHidden.current = false;
+        }
+      } else {
+        // Near top — always show
+        if (isHidden.current) {
+          gsap.to(navRef.current, { y: "0%", duration: 0.3, overwrite: true });
           isHidden.current = false;
         }
       }
@@ -177,10 +191,10 @@ export default function Navbar() {
               ? "navbar-glass shadow-luxury"
               : "bg-transparent"
         }`}
-        style={{ top: isScrolled ? "0px" : "36px" }}
+        style={{ top: isScrolled ? "0px" : "34px" }}
       >
         <div className="container-luxury">
-          <div className="flex items-center justify-between h-20">
+          <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo */}
             <Link
               href="/"
@@ -230,6 +244,7 @@ export default function Navbar() {
                       onMouseEnter={() => setActiveDropdown(link.label)}
                       onMouseLeave={() => setActiveDropdown(null)}
                       aria-expanded={activeDropdown === link.label}
+                      suppressHydrationWarning
                     >
                       {link.label}
                       <ChevronDown
@@ -293,6 +308,7 @@ export default function Navbar() {
                 }`}
                 style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label="Search"
+                suppressHydrationWarning
               >
                 <Search size={20} />
               </button>
@@ -302,7 +318,12 @@ export default function Navbar() {
                 href="https://wa.me/917709747803"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden md:flex items-center gap-1 p-2 rounded-full transition-all duration-200 text-green-600 hover:bg-green-50"
+                className={`hidden md:flex items-center gap-1 p-2 rounded-full transition-all duration-200 ${
+                  isMobileNavOpen || !isDarkHeader
+                    ? "hover:bg-green-50"
+                    : "hover:bg-white/10"
+                }`}
+                style={{ color: isMobileNavOpen || !isDarkHeader ? "#16a34a" : "rgba(255,255,255,0.95)" }}
                 aria-label="WhatsApp"
               >
                 <MessageCircle size={20} />
@@ -368,6 +389,7 @@ export default function Navbar() {
                 style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
                 aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileNavOpen}
+                suppressHydrationWarning
               >
                 {isMobileNavOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -380,16 +402,16 @@ export default function Navbar() {
       <div
         ref={mobileMenuRef}
         className={`fixed inset-0 z-30 bg-white flex flex-col ${isMobileNavOpen ? "" : "pointer-events-none"}`}
-        style={{ paddingTop: "110px", transform: "translateX(100%)" }}
+        style={{ paddingTop: "96px", transform: "translateX(100%)" }}
       >
-        <div className="flex-1 overflow-y-auto px-6 py-6">
+        <div className="overflow-y-auto px-5 py-4">
           {/* Nav Links */}
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {navLinks.map((link) => (
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-body transition-all ${
+                  className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-base font-body transition-all ${
                     isActive(link.href)
                       ? "bg-orange-50 text-[#3D2314] font-semibold"
                       : "text-text-DEFAULT hover:bg-background hover:text-[#3D2314]"
@@ -404,7 +426,7 @@ export default function Navbar() {
           </ul>
 
           {/* Contact Actions */}
-          <div className="mt-8 pt-6 border-t border-border-DEFAULT space-y-3">
+          <div className="mt-4 pt-4 border-t border-border-DEFAULT space-y-2">
             <a
               href="https://wa.me/917709747803"
               className="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 rounded-xl font-body font-medium"
@@ -421,7 +443,6 @@ export default function Navbar() {
               <Phone size={20} />
               +91 98609 41171
             </a>
-
           </div>
         </div>
       </div>

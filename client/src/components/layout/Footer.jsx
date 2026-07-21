@@ -22,13 +22,13 @@ const quickLinks = [
 ];
 
 const categories = [
-  { label: "Premium Almonds", href: "/products?category=almonds" },
-  { label: "Cashews", href: "/products?category=cashews" },
-  { label: "Pistachios", href: "/products?category=pistachios" },
-  { label: "Walnuts", href: "/products?category=walnuts" },
-  { label: "Medjool Dates", href: "/products?category=dates" },
-  { label: "Mixed Nuts", href: "/products?category=mixed-nuts" },
-  { label: "Dried Berries", href: "/products?category=dried-berries" },
+  { label: "Dry Fruits & Seeds", href: "/products?category=dry-fruits-seeds" },
+  { label: "Oils & Ghee", href: "/products?category=oils-ghee" },
+  { label: "Tea, Coffee & Beverages", href: "/products?category=tea-coffee-beverages" },
+  { label: "Atta, Rice & Dal", href: "/products?category=atta-rice-dal" },
+  { label: "Masala, Spices & Salt", href: "/products?category=masala-spices-salt" },
+  { label: "Breakfast Essentials", href: "/products?category=breakfast-essentials" },
+  { label: "Sauces & Spreads", href: "/products?category=sauces-instant-foods" },
 ];
 
 const company = [
@@ -37,7 +37,6 @@ const company = [
   { label: "Sustainability", href: "/about#sustainability" },
   { label: "Gift Hampers", href: "/products?type=gifts" },
   { label: "Bulk Orders", href: "/contact#bulk" },
-  { label: "Admin Panel", href: "/admin" },
 ];
 
 export default function Footer() {
@@ -46,10 +45,10 @@ export default function Footer() {
   return (
     <footer className="bg-[#3D2314] text-white" ref={ref}>
       {/* Main Footer */}
-      <div className="container-luxury py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="container-luxury py-10 sm:py-14 md:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
           {/* Brand Column */}
-          <div className="lg:col-span-1">
+          <div className="sm:col-span-1">
             <Link href="/" className="flex items-center gap-3 group mb-6">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-white flex items-center justify-center border border-white/20 shadow-sm">
                 <img
@@ -99,19 +98,24 @@ export default function Footer() {
                 WhatsApp Us
               </a>
               <a
-                href="mailto:hello@shreepadenterprises.com"
+                href="mailto:shreepadenterprises.tech@gmail.com"
                 className="flex items-center gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm"
               >
                 <Mail size={16} className="flex-shrink-0 text-accent-DEFAULT" />
-                hello@shreepadenterprises.com
+                shreepadenterprises.tech@gmail.com
               </a>
-              <p className="flex items-start gap-3 text-white/90 text-sm">
+              <a
+                href="https://maps.google.com/?q=Pune,+Maharashtra+411001"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-white/90 hover:text-accent-DEFAULT transition-colors text-sm"
+              >
                 <MapPin
                   size={16}
                   className="flex-shrink-0 text-accent-DEFAULT mt-0.5"
                 />
-                123, Green Valley Road, Pune, Maharashtra 411001
-              </p>
+                Pune, Maharashtra 411001 (Click for Live Location)
+              </a>
             </div>
 
             {/* Social Media */}
@@ -228,9 +232,13 @@ export default function Footer() {
                 type="email"
                 placeholder="Your email address"
                 className="flex-1 px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 text-sm font-body outline-none focus:border-accent-DEFAULT transition-colors"
+                suppressHydrationWarning
               />
 
-              <button className="px-4 py-2.5 bg-accent-DEFAULT hover:bg-secondary-DEFAULT text-white rounded-xl transition-colors flex-shrink-0">
+              <button
+                className="px-4 py-2.5 bg-accent-DEFAULT hover:bg-secondary-DEFAULT text-white rounded-xl transition-colors flex-shrink-0"
+                suppressHydrationWarning
+              >
                 <ArrowRight size={18} />
               </button>
             </div>
@@ -256,29 +264,46 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="container-luxury py-5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/70 text-sm font-body text-center">
-              &copy; {new Date().getFullYear()} Shreepad Enterprises. All rights
-              reserved.
+      <div className="border-t border-white/10 bg-black/20">
+        <div className="container-luxury py-5 sm:py-6">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4 text-center lg:text-left">
+            {/* Copyright */}
+            <p className="text-white/70 font-body text-[clamp(11px,1.2vw,13px)] leading-tight">
+              &copy; {new Date().getFullYear()} <span className="font-semibold text-white">Shreepad Enterprises</span>. All rights reserved.
             </p>
-            <div className="flex items-center gap-1 text-white/70 text-sm font-body">
-              Made with <Heart size={14} className="text-red-400 mx-1" /> for
-              healthy living
+
+            {/* Designed & Developed Credit */}
+            <div className="flex items-center justify-center gap-1 sm:gap-1.5 font-body text-white/80 text-[clamp(10px,1.1vw,12px)] whitespace-nowrap">
+              <span>Designed & Developed by</span>
+              <a
+                href="https://veaglespace.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center gap-1 font-semibold text-[#D4A95A] hover:text-white transition-colors duration-300 py-0.5 px-2 rounded-lg bg-white/5 border border-white/10 hover:border-[#D4A95A]/50 hover:bg-[#D4A95A]/10 shadow-sm"
+              >
+                <span className="bg-gradient-to-r from-[#D4A95A] via-[#F3E5F5] to-[#D4A95A] bg-clip-text text-transparent group-hover:text-white transition-all">
+                  VeagleSpace Technology Pvt. Ltd.
+                </span>
+                <span className="text-[10px] opacity-70 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300">
+                  ↗
+                </span>
+              </a>
             </div>
-            <div className="flex items-center gap-6">
-              {["Privacy Policy", "Terms of Service", "Refund Policy"].map(
-                (item) => (
-                  <Link
-                    key={item}
-                    href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                    className="text-white/70 hover:text-white/95 text-xs font-body transition-colors"
-                  >
-                    {item}
-                  </Link>
-                ),
-              )}
+
+            {/* Links */}
+            <div className="flex items-center justify-center gap-4 sm:gap-6 text-[clamp(11px,1.1vw,13px)]">
+              {[
+                { label: "Privacy Policy", href: "/privacy-policy" },
+                { label: "Terms of Service", href: "/terms-of-service" },
+              ].map(({ label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="text-white/70 hover:text-white/95 font-body transition-colors"
+                >
+                  {label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

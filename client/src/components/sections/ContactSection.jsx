@@ -72,7 +72,7 @@ export default function ContactSection() {
       className="section-padding bg-surface overflow-hidden"
     >
       <div className="container-luxury">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border-DEFAULT mb-4">
             <span className="text-primary-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
               Get in Touch
@@ -116,63 +116,65 @@ export default function ContactSection() {
                 {
                   icon: Mail,
                   title: "Email Us",
-                  value: "hello@shreepadenterprises.com",
+                  value: "shreepadenterprises.tech@gmail.com",
                   desc: "We reply within 24 hours",
-                  href: "mailto:hello@shreepadenterprises.com",
+                  href: "mailto:shreepadenterprises.tech@gmail.com",
                   color: "#D4A95A",
                 },
                 {
                   icon: MapPin,
                   title: "Visit Us",
                   value: "Pune, Maharashtra 411001",
-                  desc: "123, Green Valley Road",
-                  href: "#map",
+                  desc: "Click to open live map location",
+                  href: "https://maps.google.com/?q=Pune,+Maharashtra+411001",
                   color: "#A97142",
                 },
               ].map(({ icon: Icon, title, value, desc, href, color }) => (
                 <a
                   key={title}
                   href={href}
-                  className="flex items-center gap-4 p-5 rounded-2xl border border-border-DEFAULT bg-background hover:shadow-luxury hover:border-accent-DEFAULT/30 transition-all duration-300 group"
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-5 rounded-2xl border border-border-DEFAULT bg-background hover:shadow-luxury hover:border-accent-DEFAULT/30 transition-all duration-300 group overflow-hidden w-full"
                 >
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
                     style={{ backgroundColor: `${color}15` }}
                   >
-                    <Icon size={22} style={{ color }} />
+                    <Icon size={20} style={{ color }} />
                   </div>
-                  <div>
-                    <p className="font-button font-semibold text-sm text-text-DEFAULT">
+                  <div className="min-w-0 flex-1 overflow-hidden">
+                    <p className="font-button font-semibold text-xs sm:text-sm text-text-DEFAULT">
                       {title}
                     </p>
-                    <p className="font-heading font-semibold text-primary-DEFAULT">
+                    <p className="font-heading font-semibold text-xs sm:text-base text-primary-DEFAULT break-all leading-snug">
                       {value}
                     </p>
-                    <p className="text-xs text-text-muted font-body">{desc}</p>
+                    <p className="text-[11px] sm:text-xs text-text-muted font-body truncate">{desc}</p>
                   </div>
                 </a>
               ))}
             </div>
 
             {/* Hours */}
-            <div className="p-5 rounded-2xl border border-border-DEFAULT bg-primary-50">
+            <div className="p-4 sm:p-5 rounded-2xl border border-border-DEFAULT bg-primary-50">
               <div className="flex items-center gap-2 mb-3">
-                <Clock size={18} className="text-primary-DEFAULT" />
-                <span className="font-heading font-semibold text-primary-DEFAULT">
+                <Clock size={18} className="text-primary-DEFAULT flex-shrink-0" />
+                <span className="font-heading font-semibold text-sm sm:text-base text-primary-DEFAULT">
                   Business Hours
                 </span>
               </div>
-              <div className="space-y-1.5 text-sm font-body">
+              <div className="space-y-2 text-xs sm:text-sm font-body">
                 {[
                   { day: "Tuesday - Sunday", time: "10:30 AM - 1:30 PM | 5:30 PM - 9:30 PM" },
                   { day: "Monday", time: "Closed" },
                 ].map(({ day, time }) => (
                   <div
                     key={day}
-                    className="flex justify-between text-text-muted"
+                    className="flex flex-col sm:flex-row sm:justify-between text-text-muted gap-0.5"
                   >
-                    <span>{day}</span>
-                    <span className="font-semibold text-primary-DEFAULT">
+                    <span className="font-medium">{day}</span>
+                    <span className="font-semibold text-primary-DEFAULT text-[11px] sm:text-sm">
                       {time}
                     </span>
                   </div>
@@ -184,16 +186,16 @@ export default function ContactSection() {
             <div
               id="map"
               className="mt-6 rounded-2xl overflow-hidden border border-border-DEFAULT shadow-card"
-              style={{ height: "220px" }}
+              style={{ height: "240px" }}
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.654!2d73.856!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15131.932971842858!2d73.84742784863282!3d18.52043029999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c069eb070001%3A0x28975855f309a909!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                title="Shreepad Enterprises Location"
+                title="Shreepad Enterprises Live Location Pune"
               />
             </div>
           </div>

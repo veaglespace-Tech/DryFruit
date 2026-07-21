@@ -8,20 +8,20 @@ const seed = async () => {
 
   // Create Admin
   const adminExists = await prisma.admin.findUnique({
-    where: { email: 'admin@shreepadenterprises.com' },
+    where: { email: 'shreepadenterprises.tech@gmail.com' },
   });
   if (!adminExists) {
     const hashedPassword = await hashPassword('Admin@123');
     await prisma.admin.create({
       data: {
         name: 'Super Admin',
-        email: 'admin@shreepadenterprises.com',
+        email: 'shreepadenterprises.tech@gmail.com',
         password: hashedPassword,
         role: 'super_admin',
       },
     });
   }
-  console.log('✅ Admin created: admin@shreepadenterprises.com / Admin@123');
+  console.log('✅ Admin created: shreepadenterprises.tech@gmail.com / Admin@123');
 
   // Create Categories
   const categories = [
@@ -252,7 +252,7 @@ const seed = async () => {
   console.log('✅ Settings seeded');
 
   console.log('\n🎉 Database seeded successfully!');
-  console.log('Admin Login: admin@shreepadenterprises.com / Admin@123');
+  console.log('Admin Login: shreepadenterprises.tech@gmail.com / Admin@123');
   process.exit(0);
 };
 
