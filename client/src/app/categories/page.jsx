@@ -74,13 +74,20 @@ export default function CategoriesPage() {
   useEffect(() => {
     async function loadCategories() {
       try {
-        const res = await fetch("http://localhost:5000/api/categories?active=true");
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL ||
+          (typeof window !== "undefined"
+            ? `http://${window.location.hostname}:5000/api`
+            : "http://localhost:5000/api");
+
+        const res = await fetch(`${baseUrl}/categories?active=true`);
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.success && data.data && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           setCategories(data.data);
         }
       } catch (err) {
-        console.error("Failed to load categories from server:", err);
+        // Fallback gracefully without breaking UI
       } finally {
         setLoading(false);
       }

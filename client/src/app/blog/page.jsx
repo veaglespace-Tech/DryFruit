@@ -44,13 +44,20 @@ export default function BlogPage() {
   useEffect(() => {
     async function loadBlogs() {
       try {
-        const res = await fetch("http://localhost:5000/api/blogs");
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL ||
+          (typeof window !== "undefined"
+            ? `http://${window.location.hostname}:5000/api`
+            : "http://localhost:5000/api");
+
+        const res = await fetch(`${baseUrl}/blogs`);
+        if (!res.ok) return;
         const data = await res.json();
-        if (data.success && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
           setBlogs(data.data);
         }
       } catch (err) {
-        console.error("Failed to load real blogs from server:", err);
+        // Fallback gracefully without breaking UI
       } finally {
         setLoading(false);
       }
