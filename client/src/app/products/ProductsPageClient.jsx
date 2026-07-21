@@ -226,9 +226,6 @@ export default function ProductsPageClient() {
     const matchRating = p.rating >= minRating;
     return matchPrice && matchRating;
   });
-      return matchSearch && matchCat && matchPrice && matchRating;
-    });
-  }
 
   return (
     <>
