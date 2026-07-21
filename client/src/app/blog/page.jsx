@@ -71,24 +71,22 @@ export default function BlogPage() {
       <Navbar />
       <main style={{ paddingTop: "110px" }}>
         {/* Header */}
-        <div className="py-10 md:py-12 bg-background border-b border-border-DEFAULT">
-          <div className="container-luxury">
-            <div className="max-w-2xl">
-              <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest">
-                Learn & Grow
-              </span>
-              <h1
-                className="font-heading text-primary-DEFAULT mt-2 mb-4"
-                style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 700 }}
-              >
-                Wellness & Nutrition Blog
-              </h1>
-              <div className="section-divider mt-3 ml-0" />
-              <p className="text-text-muted font-body leading-relaxed text-sm md:text-base">
-                Tips, guides, and nutrition insights to help you build healthier
-                daily eating habits.
-              </p>
-            </div>
+        <div className="py-10 md:py-14 bg-background border-b border-border-DEFAULT text-center">
+          <div className="container-luxury max-w-xl mx-auto">
+            <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest">
+              Learn & Grow
+            </span>
+            <h1
+              className="font-heading text-primary-DEFAULT mt-2 mb-3"
+              style={{ fontSize: "clamp(2.25rem, 5vw, 3.25rem)", fontWeight: 700 }}
+            >
+              Wellness & Nutrition Blog
+            </h1>
+            <div className="section-divider mx-auto my-3" />
+            <p className="text-text-muted font-body text-sm md:text-base leading-relaxed">
+              Tips, guides, and nutrition insights to help you build healthier
+              daily eating habits.
+            </p>
           </div>
         </div>
 
