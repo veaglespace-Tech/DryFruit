@@ -80,42 +80,42 @@ export default function AnnouncementBar() {
         }
       `}</style>
 
-      <div className="announcement-bar-container relative z-50 bg-gradient-to-r from-primary-DEFAULT via-[#1b3325] to-primary-DEFAULT border-b border-accent-DEFAULT/30 shadow-sm text-white overflow-hidden select-none">
+      <div className="announcement-bar-container relative z-50 bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 border-b border-accent-500/30 shadow-sm text-primary-50 overflow-hidden select-none">
         <div className="flex items-center h-9">
-          {/* Quick Direct Action Badges (Left) */}
-          <div className="flex-shrink-0 flex items-center gap-2.5 px-3 sm:px-4 h-full bg-primary-DEFAULT/90 border-r border-accent-DEFAULT/30 z-10 shadow-md">
+          {/* Quick Direct Action Badges (Left) - Matching Brand Palette */}
+          <div className="flex-shrink-0 flex items-center gap-2.5 px-3 sm:px-4 h-full bg-primary-900/80 border-r border-accent-500/30 z-10 shadow-md">
             <a
               href={`tel:${phone.replace(/\s+/g, "")}`}
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-accent-light hover:text-white transition-colors group"
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-accent-200 hover:text-white transition-colors group"
               title="Call Us Now"
             >
-              <Phone size={11} className="text-accent-DEFAULT group-hover:scale-110 transition-transform" />
+              <Phone size={11} className="text-accent-400 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">Call</span>
             </a>
-            <span className="text-accent-DEFAULT/40 text-[10px]">|</span>
+            <span className="text-accent-500/40 text-[10px]">|</span>
             <a
               href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors group"
+              className="flex items-center gap-1.5 text-[11px] font-semibold text-accent-300 hover:text-accent-100 transition-colors group"
               title="WhatsApp Us"
             >
-              <MessageCircle size={11} className="text-emerald-400 group-hover:scale-110 transition-transform" />
+              <MessageCircle size={11} className="text-accent-400 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
           </div>
 
-          {/* Butter-Smooth 60FPS Continuous Infinite Ticker */}
+          {/* Butter-Smooth 60FPS Continuous Infinite Ticker with Warm Gold Styling */}
           <div className="flex-1 overflow-hidden relative flex items-center h-full">
             <div className="animate-continuous-marquee items-center py-1">
               {repeatedMessages.map((msg, i) => (
                 <div
                   key={i}
-                  className="inline-flex items-center gap-2.5 px-6 text-[11px] sm:text-xs font-medium tracking-wide text-white/95 whitespace-nowrap"
+                  className="inline-flex items-center gap-2.5 px-6 text-[11px] sm:text-xs font-medium tracking-wide text-primary-50/95 whitespace-nowrap"
                 >
-                  <Sparkles size={10} className="text-accent-DEFAULT flex-shrink-0 animate-pulse" />
+                  <Sparkles size={10} className="text-accent-400 flex-shrink-0 animate-pulse" />
                   <span>{msg}</span>
-                  <span className="text-accent-DEFAULT/50 font-serif ml-3">✦</span>
+                  <span className="text-accent-400/50 font-serif ml-3">✦</span>
                 </div>
               ))}
             </div>
