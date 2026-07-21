@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, SlidersHorizontal, X, Leaf, Star } from "lucide-react";
+import { Search, SlidersHorizontal, X, Leaf, Star, Sparkles } from "lucide-react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -235,16 +235,10 @@ export default function ProductsPageClient() {
         {/* Page Header */}
         <div className="py-10 md:py-14 bg-background border-b border-border-DEFAULT">
           <div className="container-luxury text-center">
-            {/* Breadcrumb */}
-            <div className="flex items-center justify-center gap-2 text-xs font-body text-text-muted mb-4">
-              <a href="/" className="hover:text-primary-DEFAULT transition-colors">
-                Home
-              </a>
-              <span>/</span>
-              <span className="text-primary-DEFAULT font-semibold">
-                Products
-              </span>
-            </div>
+            {/* Top Tagline Badge */}
+            <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest flex items-center justify-center gap-1.5 mb-1">
+              <Sparkles size={14} /> Premium Organic Store
+            </span>
 
             {/* Heading & Subtitle */}
             <div className="max-w-xl mx-auto">
