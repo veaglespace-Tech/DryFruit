@@ -248,56 +248,58 @@ export default function ProductsPageClient() {
       <Navbar />
       <main style={{ paddingTop: "110px" }}>
         {/* Page Header */}
-        <div className="py-10 md:py-12 bg-background border-b border-border">
-          <div className="container-luxury">
-            <div className="flex items-center gap-2 text-sm font-body text-text-muted mb-4">
-              <a href="/" className="hover:text-primary transition-colors">
+        <div className="py-10 md:py-14 bg-background border-b border-border-DEFAULT">
+          <div className="container-luxury text-center">
+            {/* Breadcrumb */}
+            <div className="flex items-center justify-center gap-2 text-xs font-body text-text-muted mb-4">
+              <a href="/" className="hover:text-primary-DEFAULT transition-colors">
                 Home
               </a>
               <span>/</span>
-              <span className="text-primary font-semibold">
+              <span className="text-primary-DEFAULT font-semibold">
                 Products
               </span>
             </div>
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div>
-                <h1
-                  className="font-heading text-primary mb-2"
-                  style={{
-                    fontSize: "clamp(2rem, 4vw, 3rem)",
-                    fontWeight: 700,
-                  }}
+
+            {/* Heading & Subtitle */}
+            <div className="max-w-xl mx-auto">
+              <h1
+                className="font-heading text-primary-DEFAULT mb-2"
+                style={{
+                  fontSize: "clamp(2.25rem, 5vw, 3.25rem)",
+                  fontWeight: 700,
+                }}
+              >
+                All Products
+              </h1>
+              <div className="section-divider mx-auto my-3" />
+              <p className="text-text-muted font-body text-sm md:text-base">
+                Discover our full collection of natural, premium dry fruits & nuts ({filtered.length} items found)
+              </p>
+            </div>
+
+            {/* Centered Search Bar directly below Heading */}
+            <div className="relative max-w-md md:max-w-lg mx-auto mt-6 md:mt-8">
+              <Search
+                size={20}
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-accent-DEFAULT"
+              />
+              <input
+                type="search"
+                placeholder="Search premium almonds, cashews, raisins, pistachios..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-border-DEFAULT bg-white font-body text-sm outline-none focus:border-accent-DEFAULT focus:ring-4 focus:ring-accent-DEFAULT/10 shadow-card transition-all duration-300"
+              />
+
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-surface text-text-muted hover:text-primary-DEFAULT transition-colors"
                 >
-                  All Products
-                </h1>
-                <p className="text-text-muted font-body">
-                  {filtered.length} products found
-                </p>
-              </div>
-
-              {/* Search */}
-              <div className="relative w-full md:w-80">
-                <Search
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted"
-                />
-                <input
-                  type="search"
-                  placeholder="Search products..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-border bg-surface font-body text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200"
-                />
-
-                {search && (
-                  <button
-                    onClick={() => setSearch("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2"
-                  >
-                    <X size={16} className="text-text-muted" />
-                  </button>
-                )}
-              </div>
+                  <X size={18} />
+                </button>
+              )}
             </div>
           </div>
         </div>
