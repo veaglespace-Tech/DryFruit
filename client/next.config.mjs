@@ -9,9 +9,6 @@ const nextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  experimental: {
-    optimizeCss: true,
-  },
   // Allow mobile/network access in dev
   allowedDevOrigins: ['192.168.0.109', '192.168.1.1', '172.22.255.105', '10.0.0.1'],
   compress: true,
