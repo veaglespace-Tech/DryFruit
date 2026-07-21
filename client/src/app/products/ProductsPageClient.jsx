@@ -192,7 +192,7 @@ export default function ProductsPageClient() {
     : STATIC_CATEGORIES;
 
   const rawProducts = (() => {
-    if (serverProducts && serverProducts.length > 0) {
+    if (Array.isArray(serverProducts)) {
       return serverProducts.map((p) => ({
         id: p.id,
         name: p.name,
@@ -209,35 +209,23 @@ export default function ProductsPageClient() {
           : { name: "Almonds", slug: "almonds" },
       }));
     }
-    // Fallback: filter static products
-    return STATIC_PRODUCTS.filter((p) => {
-      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-      const matchCat = selectedCategory === "All" || p.category.name === selectedCategory;
-      return matchSearch && matchCat;
-    }).sort((a, b) => {
-      if (sortBy === "price_asc") return a.price - b.price;
-      if (sortBy === "price_desc") return b.price - a.price;
-      if (sortBy === "rating") return b.rating - a.rating;
-      if (sortBy === "popularity") return b.review_count - a.review_count;
-      return b.id - a.id;
-    });
+    // Only fallback if backend error
+    if (productsError) {
+      return STATIC_PRODUCTS.filter((p) => {
+        const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
+        const matchCat = selectedCategory === "All" || p.category.name === selectedCategory;
+        return matchSearch && matchCat;
+      });
+    }
+    return [];
   })();
 
   // Compute final filtered results client-side for ultra-reactive updates on sliders
-  let filtered = rawProducts.filter((p) => {
+  const filtered = rawProducts.filter((p) => {
     const matchPrice = p.price >= minPrice && p.price <= maxPrice;
     const matchRating = p.rating >= minRating;
     return matchPrice && matchRating;
   });
-
-  // Fallback to statically filtered lists if offline or DB is empty
-  if (rawProducts.length === 0 && !loading) {
-    filtered = STATIC_PRODUCTS.filter((p) => {
-      const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-      const matchCat =
-        selectedCategory === "All" || p.category.name === selectedCategory;
-      const matchPrice = p.price >= minPrice && p.price <= maxPrice;
-      const matchRating = p.rating >= minRating;
       return matchSearch && matchCat && matchPrice && matchRating;
     });
   }

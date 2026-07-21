@@ -166,7 +166,7 @@ export default function FeaturedProducts({
     const isSuccess = isBestSeller ? isBestSellerSuccess : isFeaturedSuccess;
     const isError = isBestSeller ? isBestSellerError : isFeaturedError;
 
-    if (isSuccess && liveData && liveData.length > 0) {
+    if (isSuccess && Array.isArray(liveData)) {
       const formatted = liveData.map((p) => ({
         id: p.id,
         name: p.name,
