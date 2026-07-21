@@ -73,16 +73,11 @@ export default function AdminLoginPage() {
         <div className="bg-white rounded-3xl shadow-luxury-xl p-8 md:p-10">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div
-              className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
-              style={{
-                background: "linear-gradient(135deg, #6B3E26, #A97142)",
-              }}
-            >
-              <Leaf
-                size={32}
-                className="text-accent-DEFAULT"
-                style={{ color: "#D4A95A" }}
+            <div className="w-16 h-16 rounded-full overflow-hidden bg-white mx-auto flex items-center justify-center border border-border-DEFAULT/30 shadow-luxury mb-4">
+              <img
+                src="/images/logo.png"
+                alt="Shreepad Enterprises Logo"
+                className="w-full h-full object-cover scale-110"
               />
             </div>
             <h1 className="font-heading text-2xl font-bold text-primary-DEFAULT">
@@ -156,19 +151,6 @@ export default function AdminLoginPage() {
               </span>
             </button>
           </form>
-
-          {/* Demo credentials */}
-          <div className="mt-6 p-4 rounded-xl bg-primary-50 border border-border-DEFAULT">
-            <p className="text-xs font-button font-semibold text-primary-DEFAULT mb-1">
-              Demo Credentials:
-            </p>
-            <p className="text-xs font-body text-text-muted">
-              Email: admin@shreepadenterprises.com
-            </p>
-            <p className="text-xs font-body text-text-muted">
-              Password: Admin@123
-            </p>
-          </div>
 
           <p className="text-center text-xs text-text-muted font-body mt-4">
             <a
