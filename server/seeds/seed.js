@@ -233,7 +233,7 @@ const seed = async () => {
     { key: 'site_tagline', value: 'Nature\'s Premium Dry Fruits & Nuts', label: 'Site Tagline' },
     { key: 'phone', value: '+91 98609 41171', label: 'Phone Number' },
     { key: 'whatsapp', value: '+91 77097 47803', label: 'WhatsApp Number' },
-    { key: 'email', value: 'hello@shreepadenterprises.com', label: 'Email Address' },
+    { key: 'email', value: 'shreepadenterprises.tech@gmail.com', label: 'Email Address' },
     { key: 'address', value: '123, Green Valley Road, Pune, Maharashtra 411001', label: 'Address' },
     { key: 'map_embed', value: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.654!2d73.856!3d18.520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDMxJzEzLjMiTiA3M8KwNTEnMjEuNiJF!5e0!3m2!1sen!2sin!4v1234567890', label: 'Google Maps Embed URL' },
     { key: 'instagram', value: 'https://instagram.com/shreepadenterprises', label: 'Instagram URL' },
@@ -250,6 +250,51 @@ const seed = async () => {
     });
   }
   console.log('✅ Settings seeded');
+
+  // Seed Blogs
+  const blogs = [
+    {
+      title: "Top 5 Health Benefits of Kashmiri Walnuts",
+      slug: "top-5-health-benefits-of-kashmiri-walnuts",
+      excerpt: "Discover why Kashmir walnuts are regarded as brain superfoods, packed with rich Omega-3 fatty acids and heart-protective anti-oxidants.",
+      content: "Kashmiri walnuts are known world over for their exceptional taste, crunch, and nutritional density. Rich in alpha-linolenic acid (ALA), an essential omega-3 fatty acid, eating a handful of raw walnuts daily promotes cardiovascular health, supports cognitive focus, and improves gut microflora.",
+      image: "/images/categories/walnuts.png",
+      category: "Health & Nutrition",
+      author: "Shreepad Nutritionist",
+      read_time: "4 min read",
+      is_published: true,
+    },
+    {
+      title: "How to Store Your Dry Fruits to Maintain Crunch",
+      slug: "how-to-store-your-dry-fruits-to-maintain-crunch",
+      excerpt: "Crunchiness matters. Learn the best moisture-proofing storage secrets to preserve raw nuts quality for more than 12 months.",
+      content: "Moisture and warmth are the primary enemies of nut freshness. Always store raw almonds, cashews, and walnuts in glass airtight containers inside a cool pantry or refrigerator. For long term storage exceeding 6 months, freezing nuts in sealed freezer bags preserves their natural essential oils completely.",
+      image: "/images/categories/cashews.png",
+      category: "Storage & Care",
+      author: "Shreepad Team",
+      read_time: "3 min read",
+      is_published: true,
+    },
+    {
+      title: "Dates: The Perfect Natural Alternative to Sugar",
+      slug: "dates-the-perfect-natural-alternative-to-sugar",
+      excerpt: "Break your sweet tooth addiction. Find out how Medjool dates satisfy dessert cravings naturally while providing high potassium and iron.",
+      content: "Medjool dates are nature's candy. Unlike refined white sugar which causes sharp blood insulin spikes, dates provide complex carbohydrates accompanied by dietary fiber, potassium, magnesium, and vitamin B6.",
+      image: "/images/categories/dates.png",
+      category: "Recipes & Food",
+      author: "Dr. Ananya Sharma",
+      read_time: "5 min read",
+      is_published: true,
+    },
+  ];
+
+  for (const b of blogs) {
+    const blogExists = await prisma.blog.findUnique({ where: { slug: b.slug } });
+    if (!blogExists) {
+      await prisma.blog.create({ data: b });
+    }
+  }
+  console.log('✅ Blogs seeded');
 
   console.log('\n🎉 Database seeded successfully!');
   console.log('Admin Login: shreepadenterprises.tech@gmail.com / Admin@123');

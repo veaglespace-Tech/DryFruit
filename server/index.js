@@ -46,10 +46,13 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Static files (uploaded images)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+const blogRoutes = require('./routes/blog.routes');
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/blogs', blogRoutes);
 app.use('/api', miscRoutes);
 
 // Health check
