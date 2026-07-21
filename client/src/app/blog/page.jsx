@@ -33,12 +33,11 @@ const FALLBACK_POSTS = [
     created_at: "2026-06-02T00:00:00.000Z",
     read_time: "5 min read",
     category: "Recipes",
-    image: "/images/categories/dates.png",
   },
 ];
 
 export default function BlogPage() {
-  const [blogs, setBlogs] = useState(FALLBACK_POSTS);
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,11 +52,11 @@ export default function BlogPage() {
         const res = await fetch(`${baseUrl}/blogs`);
         if (!res.ok) return;
         const data = await res.json();
-        if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+        if (data.success && Array.isArray(data.data)) {
           setBlogs(data.data);
         }
       } catch (err) {
-        // Fallback gracefully without breaking UI
+        setBlogs([]);
       } finally {
         setLoading(false);
       }

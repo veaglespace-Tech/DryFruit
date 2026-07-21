@@ -101,52 +101,7 @@ const seed = async () => {
       create: { key: s.key, value: s.value, label: s.label },
     });
   }
-  console.log('✅ Settings seeded');
-
-  // Seed Blogs
-  const blogs = [
-    {
-      title: "Top 5 Health Benefits of Kashmiri Walnuts",
-      slug: "top-5-health-benefits-of-kashmiri-walnuts",
-      excerpt: "Discover why Kashmir walnuts are regarded as brain superfoods, packed with rich Omega-3 fatty acids and heart-protective anti-oxidants.",
-      content: "Kashmiri walnuts are known world over for their exceptional taste, crunch, and nutritional density. Rich in alpha-linolenic acid (ALA), an essential omega-3 fatty acid, eating a handful of raw walnuts daily promotes cardiovascular health, supports cognitive focus, and improves gut microflora.",
-      image: "/images/categories/walnuts.png",
-      category: "Health & Nutrition",
-      author: "Shreepad Nutritionist",
-      read_time: "4 min read",
-      is_published: true,
-    },
-    {
-      title: "How to Store Your Dry Fruits to Maintain Crunch",
-      slug: "how-to-store-your-dry-fruits-to-maintain-crunch",
-      excerpt: "Crunchiness matters. Learn the best moisture-proofing storage secrets to preserve raw nuts quality for more than 12 months.",
-      content: "Moisture and warmth are the primary enemies of nut freshness. Always store raw almonds, cashews, and walnuts in glass airtight containers inside a cool pantry or refrigerator. For long term storage exceeding 6 months, freezing nuts in sealed freezer bags preserves their natural essential oils completely.",
-      image: "/images/categories/cashews.png",
-      category: "Storage & Care",
-      author: "Shreepad Team",
-      read_time: "3 min read",
-      is_published: true,
-    },
-    {
-      title: "Dates: The Perfect Natural Alternative to Sugar",
-      slug: "dates-the-perfect-natural-alternative-to-sugar",
-      excerpt: "Break your sweet tooth addiction. Find out how Medjool dates satisfy dessert cravings naturally while providing high potassium and iron.",
-      content: "Medjool dates are nature's candy. Unlike refined white sugar which causes sharp blood insulin spikes, dates provide complex carbohydrates accompanied by dietary fiber, potassium, magnesium, and vitamin B6.",
-      image: "/images/categories/dates.png",
-      category: "Recipes & Food",
-      author: "Dr. Ananya Sharma",
-      read_time: "5 min read",
-      is_published: true,
-    },
-  ];
-
-  for (const b of blogs) {
-    const blogExists = await prisma.blog.findUnique({ where: { slug: b.slug } });
-    if (!blogExists) {
-      await prisma.blog.create({ data: b });
-    }
-  }
-  console.log('✅ Blogs seeded');
+  console.log('✅ Settings seeded (No blogs seeded - admin manages blogs)');
 
   console.log('\n🎉 Database seeded successfully!');
   console.log('Admin Login: shreepadenterprises.tech@gmail.com / Admin@123');
