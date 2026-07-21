@@ -1,5 +1,5 @@
 const { prisma } = require('../config/db');
-const asyncHandler = require('../utils/asyncHandler');
+const asyncHandler = require('../middleware/async.middleware');
 
 // @desc    Get all blogs
 // @route   GET /api/blogs
