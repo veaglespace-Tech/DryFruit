@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Phone, MessageCircle } from "lucide-react";
 import gsap from "gsap";
 
-const messages = [
+const DEFAULT_MESSAGES = [
   "🌿 Free delivery on orders above ₹999",
   "✨ 100% Natural & Chemical Free",
   "🎁 Premium Gift Packaging Available",
@@ -17,6 +17,47 @@ const messages = [
 export default function AnnouncementBar() {
   const marqueeRef = useRef(null);
   const tweenRef = useRef(null);
+  const [messages, setMessages] = useState(DEFAULT_MESSAGES);
+  const [phone, setPhone] = useState("+91 98609 41171");
+  const [whatsapp, setWhatsapp] = useState("+91 77097 47803");
+
+  // Fetch live announcement & contact numbers from DB settings
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const baseUrl =
+          process.env.NEXT_PUBLIC_API_URL ||
+          (typeof window !== "undefined"
+            ? `http://${window.location.hostname}:5000/api`
+            : "http://localhost:5000/api");
+
+        const res = await fetch(`${baseUrl}/settings`);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.success && data.data) {
+          const s = data.data;
+          if (s.phone) setPhone(s.phone);
+          if (s.whatsapp) setWhatsapp(s.whatsapp);
+
+          if (s.announcement && s.announcement.trim().length > 0) {
+            // Split by pipe if multiple announcements provided, else single
+            const customList = s.announcement
+              .split("|")
+              .map((item) => item.trim())
+              .filter(Boolean);
+
+            if (customList.length > 0) {
+              setMessages(customList);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load announcement settings:", err);
+      }
+    }
+    fetchSettings();
+  }, []);
 
   useEffect(() => {
     if (!marqueeRef.current) return;
@@ -37,10 +78,7 @@ export default function AnnouncementBar() {
       );
     };
 
-    // Initial calculation after load
     const timeout = setTimeout(initMarquee, 100);
-
-    // Recalculate on window resize for fluid responsiveness
     window.addEventListener("resize", initMarquee);
 
     return () => {
@@ -48,7 +86,7 @@ export default function AnnouncementBar() {
       window.removeEventListener("resize", initMarquee);
       if (tweenRef.current) tweenRef.current.kill();
     };
-  }, []);
+  }, [messages]);
 
   const allMessages = [...messages, ...messages];
 
@@ -58,7 +96,7 @@ export default function AnnouncementBar() {
         {/* Left Icons */}
         <div className="flex-shrink-0 flex items-center gap-4 px-4 border-r border-white/20 py-1">
           <a
-            href="tel:+919860941171"
+            href={`tel:${phone.replace(/\s+/g, "")}`}
             className="flex items-center gap-1 text-white/90 hover:text-white transition-colors"
             aria-label="Call us"
           >
@@ -66,7 +104,7 @@ export default function AnnouncementBar() {
             <span className="hidden sm:inline text-xs">Call</span>
           </a>
           <a
-            href="https://wa.me/917709747803"
+            href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-white/90 hover:text-white transition-colors"
@@ -84,7 +122,10 @@ export default function AnnouncementBar() {
             className="flex items-center whitespace-nowrap will-change-transform"
           >
             {allMessages.map((msg, i) => (
-              <span key={i} className="inline-flex items-center gap-2 px-4 sm:px-8 text-[11px] sm:text-xs font-body font-medium text-white/90">
+              <span
+                key={i}
+                className="inline-flex items-center gap-2 px-4 sm:px-8 text-[11px] sm:text-xs font-body font-medium text-white/90"
+              >
                 {msg}
               </span>
             ))}
