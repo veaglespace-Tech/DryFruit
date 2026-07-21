@@ -185,16 +185,14 @@ export default function FeaturedProducts({
           : { name: "Almonds", slug: "almonds" },
       }));
       setProducts(formatted.slice(0, limit));
+    } else if (isSuccess && Array.isArray(liveData) && liveData.length === 0) {
+      setProducts([]);
     } else if (isError) {
-      const staticFallback =
-        filter === "best_seller"
-          ? FEATURED_PRODUCTS.filter((p) => p.is_best_seller).slice(0, limit)
-          : filter === "featured"
-            ? FEATURED_PRODUCTS.filter((p) => p.is_featured).slice(0, limit)
-            : FEATURED_PRODUCTS.slice(0, limit);
-      setProducts(staticFallback);
+      setProducts([]);
     }
   }, [filter, limit, featuredData, bestSellerData, isFeaturedSuccess, isBestSellerSuccess, isFeaturedError, isBestSellerError, isBestSeller]);
+
+  if (products.length === 0) return null;
 
   return (
     <section className="section-padding bg-surface">

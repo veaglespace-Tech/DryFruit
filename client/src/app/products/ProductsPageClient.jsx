@@ -209,14 +209,6 @@ export default function ProductsPageClient() {
           : { name: "Almonds", slug: "almonds" },
       }));
     }
-    // Only fallback if backend error
-    if (productsError) {
-      return STATIC_PRODUCTS.filter((p) => {
-        const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-        const matchCat = selectedCategory === "All" || p.category.name === selectedCategory;
-        return matchSearch && matchCat;
-      });
-    }
     return [];
   })();
 
