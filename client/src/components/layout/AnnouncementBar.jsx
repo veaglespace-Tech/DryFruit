@@ -72,7 +72,7 @@ export default function AnnouncementBar() {
         .animate-continuous-marquee {
           display: flex;
           width: max-content;
-          animation: continuousMarquee 32s linear infinite;
+          animation: continuousMarquee 30s linear infinite;
           will-change: transform;
         }
         .announcement-bar-container:hover .animate-continuous-marquee {
@@ -80,42 +80,44 @@ export default function AnnouncementBar() {
         }
       `}</style>
 
-      <div className="announcement-bar-container relative z-50 bg-gradient-to-r from-primary-800 via-primary-700 to-primary-800 border-b border-accent-500/30 shadow-sm text-primary-50 overflow-hidden select-none">
+      {/* Modern Luxury Satin Obsidian & Metallic Champagne Gold Marquee Bar */}
+      <div className="announcement-bar-container relative z-50 bg-[#1f130b] border-b border-[#D4A95A]/35 shadow-md overflow-hidden select-none">
         <div className="flex items-center h-9">
-          {/* Quick Direct Action Badges (Left) - Matching Brand Palette */}
-          <div className="flex-shrink-0 flex items-center gap-2.5 px-3 sm:px-4 h-full bg-primary-900/80 border-r border-accent-500/30 z-10 shadow-md">
+          {/* Left Action Buttons: Metallic Gold & Emerald Glass Badges */}
+          <div className="flex-shrink-0 flex items-center gap-2 px-3 sm:px-4 h-full bg-[#170e08] border-r border-[#D4A95A]/30 z-10">
             <a
               href={`tel:${phone.replace(/\s+/g, "")}`}
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-accent-200 hover:text-white transition-colors group"
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#D4A95A]/15 border border-[#D4A95A]/30 text-[11px] font-semibold text-[#F8EDCE] hover:bg-[#D4A95A]/30 hover:text-white transition-all shadow-sm group"
               title="Call Us Now"
             >
-              <Phone size={11} className="text-accent-400 group-hover:scale-110 transition-transform" />
+              <Phone size={10} className="text-[#D4A95A] group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">Call</span>
             </a>
-            <span className="text-accent-500/40 text-[10px]">|</span>
             <a
               href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-[11px] font-semibold text-accent-300 hover:text-accent-100 transition-colors group"
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30 text-[11px] font-semibold text-emerald-300 hover:bg-emerald-900/60 hover:text-emerald-200 transition-all shadow-sm group"
               title="WhatsApp Us"
             >
-              <MessageCircle size={11} className="text-accent-400 group-hover:scale-110 transition-transform" />
+              <MessageCircle size={10} className="text-emerald-400 group-hover:scale-110 transition-transform" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
           </div>
 
-          {/* Butter-Smooth 60FPS Continuous Infinite Ticker with Warm Gold Styling */}
-          <div className="flex-1 overflow-hidden relative flex items-center h-full">
+          {/* Smooth Continuous Marquee with Shimmering Champagne Gold Text & Pulsing Stars */}
+          <div className="flex-1 overflow-hidden relative flex items-center h-full bg-gradient-to-r from-[#1f130b] via-[#2d1b10] to-[#1f130b]">
             <div className="animate-continuous-marquee items-center py-1">
               {repeatedMessages.map((msg, i) => (
                 <div
                   key={i}
-                  className="inline-flex items-center gap-2.5 px-6 text-[11px] sm:text-xs font-medium tracking-wide text-primary-50/95 whitespace-nowrap"
+                  className="inline-flex items-center gap-3 px-6 text-[11px] sm:text-xs font-medium tracking-wide text-[#FDF8EE] whitespace-nowrap"
                 >
-                  <Sparkles size={10} className="text-accent-400 flex-shrink-0 animate-pulse" />
-                  <span>{msg}</span>
-                  <span className="text-accent-400/50 font-serif ml-3">✦</span>
+                  <Sparkles size={11} className="text-[#D4A95A] flex-shrink-0 animate-pulse drop-shadow-[0_0_4px_rgba(212,169,90,0.6)]" />
+                  <span className="bg-gradient-to-r from-[#FFFDF8] via-[#F8EDCE] to-[#F0DB9D] bg-clip-text text-transparent font-medium">
+                    {msg}
+                  </span>
+                  <span className="text-[#D4A95A]/60 font-serif ml-2 text-xs">✦</span>
                 </div>
               ))}
             </div>
