@@ -23,16 +23,15 @@ const seed = async () => {
   }
   console.log('✅ Admin created: shreepadenterprises.tech@gmail.com / Admin@123');
 
-  // Create Categories
+  // Create Categories (Official 7 Store Categories)
   const categories = [
-    { name: 'Almonds', slug: 'almonds', description: 'Premium California and Indian almonds, packed with nutrients', sort_order: 1 },
-    { name: 'Cashews', slug: 'cashews', description: 'Creamy, buttery cashews from the finest orchards', sort_order: 2 },
-    { name: 'Pistachios', slug: 'pistachios', description: 'Vibrant green pistachios, naturally shelled and roasted', sort_order: 3 },
-    { name: 'Walnuts', slug: 'walnuts', description: 'Brain-healthy walnuts, rich in Omega-3 fatty acids', sort_order: 4 },
-    { name: 'Dates', slug: 'dates', description: 'Premium Medjool and Ajwa dates, nature\'s candy', sort_order: 5 },
-    { name: 'Raisins', slug: 'raisins', description: 'Golden and black raisins, naturally sun-dried', sort_order: 6 },
-    { name: 'Mixed Nuts', slug: 'mixed-nuts', description: 'Curated premium nut blends for every occasion', sort_order: 7 },
-    { name: 'Dried Berries', slug: 'dried-berries', description: 'Antioxidant-rich dried cranberries, blueberries, and goji berries', sort_order: 8 },
+    { name: 'Dry Fruits & Seeds', slug: 'dry-fruits-seeds', description: 'Premium handpicked dry fruits, nuts, and healthy seeds', image: '/images/categories/dry-fruits-seeds.png', sort_order: 1 },
+    { name: 'Oils & Ghee', slug: 'oils-ghee', description: 'Cold-pressed oils and pure cow ghee for healthy cooking', image: '/images/categories/oils-ghee.png', sort_order: 2 },
+    { name: 'Tea, Coffee & Beverages', slug: 'tea-coffee-beverages', description: 'Refreshing premium leaf teas and gourmet instant coffees', image: '/images/categories/tea-coffee-beverages.png', sort_order: 3 },
+    { name: 'Atta, Rice & Dal', slug: 'atta-rice-dal', description: 'Organic unpolished flours, basmati rice, and protein-rich pulses', image: '/images/categories/atta-rice-dal.png', sort_order: 4 },
+    { name: 'Masala, Spices & Salt', slug: 'masala-spices-salt', description: 'Pure spice powders, whole spices, and rock salts', image: '/images/categories/masala-spices-salt.png', sort_order: 5 },
+    { name: 'Breakfast Essentials', slug: 'breakfast-essentials', description: 'Healthy millet muesli, ragi bites, and instant oats', image: '/images/categories/breakfast-essentials.png', sort_order: 6 },
+    { name: 'Sauces & Spreads', slug: 'sauces-instant-foods', description: 'Premium ready-to-eat meals, spreads, and cooking pastes', image: '/images/categories/sauces-instant-foods.png', sort_order: 7 },
   ];
 
   const createdCategories = {};
