@@ -73,8 +73,36 @@ export default function ContactSection() {
     >
       <div className="container-luxury">
         <div className="text-center mb-8 md:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border-DEFAULT mb-4">
-            <span className="text-primary-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
+          {/* Ultra-Modern Glassmorphic Badge Chip */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "7px 22px",
+              borderRadius: "100px",
+              background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(245,237,224,0.88) 100%)",
+              border: "1.5px solid rgba(212,169,90,0.35)",
+              boxShadow: "0 4px 20px rgba(212,169,90,0.15), inset 0 1px 2px rgba(255,255,255,0.8)",
+              backdropFilter: "blur(12px)",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <span style={{ position: "relative", display: "inline-flex", width: "8px", height: "8px" }}>
+              <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.75, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+              <span style={{ position: "relative", width: "8px", height: "8px", borderRadius: "50%", background: "#6B3E26" }} />
+            </span>
+            <Mail size={13} style={{ color: "#A97142" }} />
+            <span
+              style={{
+                fontFamily: "var(--font-button)",
+                fontSize: "11px",
+                fontWeight: 800,
+                color: "#3D2314",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
               Get in Touch
             </span>
           </div>
@@ -116,17 +144,17 @@ export default function ContactSection() {
                 {
                   icon: Mail,
                   title: "Email Us",
-                  value: "shreepadenterprises.tech@gmail.com",
+                  value: "Info@shreepadenterprisespune.com",
                   desc: "We reply within 24 hours",
-                  href: "mailto:shreepadenterprises.tech@gmail.com",
+                  href: "mailto:Info@shreepadenterprisespune.com",
                   color: "#D4A95A",
                 },
                 {
                   icon: MapPin,
                   title: "Visit Us",
-                  value: "Pune, Maharashtra 411001",
+                  value: "Shop No 4, Datta Nagar, Dighi, Pune 411015",
                   desc: "Click to open live map location",
-                  href: "https://maps.google.com/?q=Pune,+Maharashtra+411001",
+                  href: "https://maps.google.com/?q=Shop+No+4+Near+Datta+Nagar+Bus+Stop+Pune+Alandi+Rd+Dighi+PCMC+Pune+Maharashtra+411015",
                   color: "#A97142",
                 },
               ].map(({ icon: Icon, title, value, desc, href, color }) => (
@@ -189,15 +217,25 @@ export default function ContactSection() {
               style={{ height: "240px" }}
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15131.932971842858!2d73.84742784863282!3d18.52043029999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c069eb070001%3A0x28975855f309a909!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.178!2d73.8711!3d18.6178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9e5f5b3c5d3%3A0x1!2sShop+No+4%2C+Near+Datta+Nagar+Bus+Stop%2C+Pune-Alandi+Rd%2C+Dighi%2C+PCMC%2C+Pune%2C+Maharashtra+411015!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                title="Shreepad Enterprises Live Location Pune"
+                title="Shreepad Enterprises Live Location - Dighi Pune"
               />
             </div>
+            {/* Live Location Button */}
+            <a
+              href="https://maps.google.com/?q=Shop+No+4+Near+Datta+Nagar+Bus+Stop+Pune+Alandi+Rd+Dighi+PCMC+Pune+Maharashtra+411015"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary-50 border border-border-DEFAULT hover:bg-accent-DEFAULT/10 hover:border-accent-DEFAULT/40 transition-all text-sm font-button font-semibold text-primary-DEFAULT"
+            >
+              <MapPin size={15} className="text-accent-DEFAULT" />
+              Open Live Location in Google Maps ↗
+            </a>
           </div>
 
           {/* Right: Form */}

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { ArrowRight, Flame, Star, Award } from "lucide-react";
 import Link from "next/link";
-import { useStagger, useSplitText } from "@/lib/gsap";
+import { useStagger, useFadeUp } from "@/lib/gsap";
 import ProductCard from "@/components/ui/ProductCard";
 import { useGetFeaturedProductsQuery, useGetBestSellersQuery } from "@/store/api/apiSlice";
+import gsap from "gsap";
 
-// Static featured products data (fallback while API loads)
+// Static fallback products — used only if server is unavailable
 const FEATURED_PRODUCTS = [
   {
     id: 1,
@@ -23,8 +24,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Dry Fruits & Seeds", slug: "dry-fruits-seeds" },
-    short_description:
-      "Hand-selected California almonds, naturally rich and nutrient-dense",
+    short_description: "Hand-selected California almonds, naturally rich and nutrient-dense",
   },
   {
     id: 2,
@@ -40,8 +40,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Oils & Ghee", slug: "oils-ghee" },
-    short_description:
-      "Traditional granular pure cow ghee with rich aroma and delicious taste",
+    short_description: "Traditional granular pure cow ghee with rich aroma and delicious taste",
   },
   {
     id: 3,
@@ -57,8 +56,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Tea, Coffee & Beverages", slug: "tea-coffee-beverages" },
-    short_description:
-      "A premium blend of Assam teas with 15% long leaves for rich aroma",
+    short_description: "A premium blend of Assam teas with 15% long leaves for rich aroma",
   },
   {
     id: 4,
@@ -74,8 +72,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Atta, Rice & Dal", slug: "atta-rice-dal" },
-    short_description:
-      "Unpolished premium quality yellow pigeon peas, rich in protein",
+    short_description: "Unpolished premium quality yellow pigeon peas, rich in protein",
   },
   {
     id: 5,
@@ -91,8 +88,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Masala, Spices & Salt", slug: "masala-spices-salt" },
-    short_description:
-      "Pure turmeric powder with guaranteed minimum 3% curcumin content",
+    short_description: "Pure turmeric powder with guaranteed minimum 3% curcumin content",
   },
   {
     id: 6,
@@ -108,8 +104,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Breakfast Essentials", slug: "breakfast-essentials" },
-    short_description:
-      "Crunchy millet muesli loaded with ragi, oats, almonds, and dry fruits",
+    short_description: "Crunchy millet muesli loaded with ragi, oats, almonds, and dry fruits",
   },
   {
     id: 7,
@@ -125,8 +120,7 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: false,
     category: { name: "Sauces & Spreads", slug: "sauces-instant-foods" },
-    short_description:
-      "Ready-to-eat rich paneer butter masala, cooked with premium ingredients",
+    short_description: "Ready-to-eat rich paneer butter masala, cooked with premium ingredients",
   },
   {
     id: 8,
@@ -142,44 +136,54 @@ const FEATURED_PRODUCTS = [
     is_featured: true,
     is_best_seller: true,
     category: { name: "Dry Fruits & Seeds", slug: "dry-fruits-seeds" },
-    short_description:
-      "Premium W240 grade whole cashews - creamy, large, perfectly roasted",
+    short_description: "Premium W240 grade whole cashews - creamy, large, perfectly roasted",
   },
 ];
 
+const TABS = [
+  { key: "featured", label: "Featured", icon: <Award size={14} /> },
+  { key: "best_seller", label: "Best Sellers", icon: <Flame size={14} /> },
+];
+
 export default function FeaturedProducts({
-  title = "Featured Products",
-  subtitle = "Handpicked selection of our finest premium dry fruits and nuts, loved by thousands of happy customers.",
+  title = "Our Signature Harvest",
+  subtitle = "Hand-selected premium dry fruits, nuts, and organic superfoods sourced directly from the finest farms.",
   filter = "featured",
   limit = 8,
 }) {
-  const titleRef = useSplitText({ delay: 0.1 });
-  const gridRef = useStagger(".product-card", { stagger: 0.07 });
+  const titleRef = useFadeUp({ delay: 0.1 });
+  const gridRef = useStagger(".product-card", { stagger: 0.06 });
+  const [activeTab, setActiveTab] = useState(filter);
   const [products, setProducts] = useState(FEATURED_PRODUCTS);
+  const tabIndicatorRef = useRef(null);
+  const tabRefs = useRef([]);
 
-  const isBestSeller = filter === "best_seller";
-  const { data: featuredData, isSuccess: isFeaturedSuccess, isError: isFeaturedError } = useGetFeaturedProductsQuery(undefined, { skip: isBestSeller });
-  const { data: bestSellerData, isSuccess: isBestSellerSuccess, isError: isBestSellerError } = useGetBestSellersQuery(undefined, { skip: !isBestSeller });
+  const isBestSeller = activeTab === "best_seller";
+
+  const { data: featuredData, isSuccess: isFeaturedSuccess, isError: isFeaturedError } =
+    useGetFeaturedProductsQuery(undefined, { skip: isBestSeller });
+  const { data: bestSellerData, isSuccess: isBestSellerSuccess, isError: isBestSellerError } =
+    useGetBestSellersQuery(undefined, { skip: !isBestSeller });
 
   useEffect(() => {
     const liveData = isBestSeller ? bestSellerData : featuredData;
     const isSuccess = isBestSeller ? isBestSellerSuccess : isFeaturedSuccess;
     const isError = isBestSeller ? isBestSellerError : isFeaturedError;
 
-    if (isSuccess && Array.isArray(liveData)) {
+    if (isSuccess && Array.isArray(liveData) && liveData.length > 0) {
       const formatted = liveData.map((p) => ({
         id: p.id,
         name: p.name,
         slug: p.slug,
         price: Number(p.price),
-        original_price: p.original_price
-          ? Number(p.original_price)
-          : undefined,
+        original_price: p.original_price ? Number(p.original_price) : undefined,
         discount_percent: p.discount_percent,
         weight: p.weight,
         thumbnail: p.thumbnail || "/images/categories/almonds.png",
         rating: Number(p.rating),
         review_count: p.review_count,
+        is_featured: p.is_featured,
+        is_best_seller: p.is_best_seller,
         category: p.category
           ? { name: p.category.name, slug: p.category.slug }
           : { name: "Almonds", slug: "almonds" },
@@ -190,49 +194,187 @@ export default function FeaturedProducts({
     } else if (isError) {
       setProducts([]);
     }
-  }, [filter, limit, featuredData, bestSellerData, isFeaturedSuccess, isBestSellerSuccess, isFeaturedError, isBestSellerError, isBestSeller]);
+  }, [activeTab, limit, featuredData, bestSellerData, isFeaturedSuccess, isBestSellerSuccess, isFeaturedError, isBestSellerError, isBestSeller]);
+
+  // Animate grid on tab switch
+  const handleTabSwitch = (tabKey, index) => {
+    if (tabKey === activeTab) return;
+    if (gridRef.current) {
+      gsap.fromTo(
+        gridRef.current.querySelectorAll(".product-card"),
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, stagger: 0.05, duration: 0.4, ease: "power2.out" }
+      );
+    }
+    setActiveTab(tabKey);
+  };
 
   if (products.length === 0) return null;
 
+  const displayTitle = isBestSeller ? "Best Sellers" : title;
+  const displaySubtitle = isBestSeller
+    ? "Our top-rated products that customers keep coming back for."
+    : subtitle;
+
   return (
-    <section className="section-padding bg-surface">
-      <div className="container-luxury">
-        {/* Section Header — centered like CategorySection */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-50 border border-accent-DEFAULT/20 mb-4">
-            <span className="text-accent-DEFAULT text-xs font-button font-semibold uppercase tracking-widest">
-              {filter === "best_seller" ? "🔥 Top Sellers" : "⭐ Featured"}
-            </span>
-          </div>
-          <h2
-            ref={titleRef}
-            className="font-heading text-primary-DEFAULT mb-4"
+    <section
+      style={{
+        position: "relative",
+        paddingTop: "5rem",
+        paddingBottom: "6rem",
+        background: "#FFFDF8",
+        overflow: "hidden",
+      }}
+    >
+      {/* Subtle background texture */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `radial-gradient(circle at 20% 50%, rgba(212,169,90,0.05) 0%, transparent 50%),
+                            radial-gradient(circle at 80% 20%, rgba(107,62,38,0.04) 0%, transparent 50%)`,
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="container-luxury" style={{ position: "relative" }}>
+
+        {/* ── Section Header ── */}
+        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+
+          {/* Dynamic Ultra-Modern Button Badge */}
+          <div
             style={{
-              fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
-              fontWeight: 700,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "8px 24px",
+              borderRadius: "100px",
+              background: isBestSeller
+                ? "linear-gradient(135deg, #D97706 0%, #B45309 100%)"
+                : "linear-gradient(135deg, #3D2314 0%, #6B3E26 50%, #8C5332 100%)",
+              color: "white",
+              fontSize: "12px",
+              fontWeight: 800,
+              fontFamily: "var(--font-button)",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              boxShadow: isBestSeller
+                ? "0 8px 25px rgba(217,119,6,0.35), inset 0 1px 1px rgba(255,255,255,0.4)"
+                : "0 8px 25px rgba(107,62,38,0.35), inset 0 1px 1px rgba(255,255,255,0.3)",
+              border: "1.5px solid rgba(212,169,90,0.4)",
+              marginBottom: "1.5rem",
             }}
           >
-            {title}
+            {/* Live Gold Pulse Dot */}
+            <span style={{ position: "relative", display: "inline-flex", width: "7px", height: "7px" }}>
+              <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.8, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+              <span style={{ position: "relative", width: "7px", height: "7px", borderRadius: "50%", background: "#F59E0B" }} />
+            </span>
+            {isBestSeller ? <Flame size={14} style={{ color: "#F59E0B" }} /> : <Award size={14} style={{ color: "#D4A95A" }} />}
+            <span>{isBestSeller ? "Best Sellers" : "Signature Harvest"}</span>
+          </div>
+
+          {/* Main Heading */}
+          <h2
+            ref={titleRef}
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)",
+              fontWeight: 800,
+              color: "#3D2314",
+              marginBottom: "1rem",
+              lineHeight: 1.2,
+            }}
+          >
+            {isBestSeller ? (
+              <>
+                Our{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #D97706 0%, #F59E0B 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Best Sellers
+                </span>
+              </>
+            ) : (
+              <>
+                Our{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #6B3E26 0%, #A97142 50%, #D4A95A 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Signature Harvest
+                </span>
+              </>
+            )}
           </h2>
-          <div className="section-divider mx-auto" />
-          <p className="body-lead max-w-xl mx-auto mt-4">{subtitle}</p>
+
+          {/* Ornamental divider */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "1rem" }}>
+            <div style={{ width: "50px", height: "1px", background: "linear-gradient(to right, transparent, #D4A95A)" }} />
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A95A" }} />
+            <div style={{ width: "3px", height: "3px", borderRadius: "50%", background: "#A97142" }} />
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A95A" }} />
+            <div style={{ width: "50px", height: "1px", background: "linear-gradient(to left, transparent, #D4A95A)" }} />
+          </div>
+
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)", color: "#6B5B4E", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
+            {displaySubtitle}
+          </p>
         </div>
 
-        {/* Product Grid */}
+        {/* ── Product Grid ── */}
         <div
           ref={gridRef}
-          className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
+            gap: "20px",
+          }}
         >
           {products.map((product) => (
-            <div key={product.id} className="w-full">
-              <ProductCard product={product} />
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
-        {/* View All CTA — centered like CategorySection */}
-        <div className="text-center mt-12">
-          <Link href="/products" className="btn-outline-luxury inline-flex">
+        {/* ── View All CTA ── */}
+        <div style={{ textAlign: "center", marginTop: "3.5rem" }}>
+          <Link
+            href="/products"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              padding: "14px 32px",
+              background: "linear-gradient(135deg, #6B3E26, #A97142)",
+              color: "white",
+              fontFamily: "var(--font-button)",
+              fontWeight: 700,
+              fontSize: "15px",
+              borderRadius: "100px",
+              textDecoration: "none",
+              boxShadow: "0 6px 20px rgba(107,62,38,0.35)",
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 10px 28px rgba(107,62,38,0.45)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 6px 20px rgba(107,62,38,0.35)";
+            }}
+          >
             <span>View All Products</span>
             <ArrowRight size={16} />
           </Link>

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Quote, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -135,8 +135,36 @@ export default function TestimonialsSection() {
       <div className="container-luxury">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/20 bg-white/10 mb-4">
-            <span className="text-accent text-xs font-button font-semibold uppercase tracking-widest">
+          {/* Ultra-Modern Glassmorphic Dark Badge Chip */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "7px 22px",
+              borderRadius: "100px",
+              background: "rgba(255, 255, 255, 0.12)",
+              border: "1.5px solid rgba(212, 169, 90, 0.4)",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
+              backdropFilter: "blur(12px)",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <span style={{ position: "relative", display: "inline-flex", width: "8px", height: "8px" }}>
+              <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.8, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+              <span style={{ position: "relative", width: "8px", height: "8px", borderRadius: "50%", background: "#F59E0B" }} />
+            </span>
+            <Heart size={13} style={{ color: "#D4A95A", fill: "#D4A95A" }} />
+            <span
+              style={{
+                fontFamily: "var(--font-button)",
+                fontSize: "11px",
+                fontWeight: 800,
+                color: "#ffffff",
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+              }}
+            >
               Customer Love
             </span>
           </div>

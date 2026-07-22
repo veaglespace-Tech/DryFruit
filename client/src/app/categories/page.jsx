@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Gem } from "lucide-react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -96,9 +96,16 @@ export default function CategoriesPage() {
         {/* Header */}
         <div className="py-10 md:py-14 bg-background border-b border-border-DEFAULT text-center">
           <div className="container-luxury max-w-xl mx-auto">
-            <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest flex items-center justify-center gap-1.5 mb-1">
-              <Sparkles size={14} /> Our Curated Collections
-            </span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-accent-DEFAULT/40 shadow-sm backdrop-blur-md mb-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-DEFAULT opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-DEFAULT"></span>
+              </span>
+              <Gem size={14} className="text-accent-DEFAULT" />
+              <span className="text-xs font-button font-extrabold text-primary-DEFAULT uppercase tracking-widest">
+                Our Curated Collections
+              </span>
+            </div>
             <h1
               className="font-heading text-primary-DEFAULT mt-2 mb-3"
               style={{ fontSize: "clamp(2.25rem, 5vw, 3.25rem)", fontWeight: 700 }}

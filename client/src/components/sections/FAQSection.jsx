@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, HelpCircle } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -132,8 +132,36 @@ export default function FAQSection() {
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-border mb-4">
-              <span className="text-primary text-xs font-button font-semibold uppercase tracking-widest">
+            {/* Ultra-Modern Glassmorphic Badge Chip */}
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "7px 22px",
+                borderRadius: "100px",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(245,237,224,0.88) 100%)",
+                border: "1.5px solid rgba(212,169,90,0.35)",
+                boxShadow: "0 4px 20px rgba(212,169,90,0.15), inset 0 1px 2px rgba(255,255,255,0.8)",
+                backdropFilter: "blur(12px)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              <span style={{ position: "relative", display: "inline-flex", width: "8px", height: "8px" }}>
+                <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.75, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+                <span style={{ position: "relative", width: "8px", height: "8px", borderRadius: "50%", background: "#6B3E26" }} />
+              </span>
+              <HelpCircle size={13} style={{ color: "#A97142" }} />
+              <span
+                style={{
+                  fontFamily: "var(--font-button)",
+                  fontSize: "11px",
+                  fontWeight: 800,
+                  color: "#3D2314",
+                  letterSpacing: "0.14em",
+                  textTransform: "uppercase",
+                }}
+              >
                 Got Questions?
               </span>
             </div>

@@ -19,19 +19,13 @@ export default function HomePage() {
       <HeroSection />
       <CategorySection />
       <FeaturedProducts
-        title="Featured Products"
-        subtitle="Handpicked selection of our finest premium dry fruits and nuts, loved by thousands of happy customers."
+        title="Our Signature Harvest"
+        subtitle="Hand-selected premium dry fruits, nuts, and organic superfoods sourced directly from the finest farms."
         filter="featured"
         limit={8}
       />
 
       <WhyChooseUs />
-      <FeaturedProducts
-        title="Best Sellers"
-        subtitle="The products our customers can't get enough of. Tried, tested, and loved by thousands."
-        filter="best_seller"
-        limit={4}
-      />
 
       <QualityProcess />
       <TestimonialsSection />

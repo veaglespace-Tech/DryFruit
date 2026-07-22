@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Send, CheckCircle, Leaf } from "lucide-react";
+import { Send, CheckCircle } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -83,10 +83,14 @@ export default function Newsletter() {
 
       <div className="container-luxury relative">
         <div className="max-w-2xl mx-auto text-center">
-          {/* Leaf decoration */}
+          {/* Logo decoration */}
           <div className="flex justify-center mb-4">
-            <div className="w-14 h-14 rounded-full bg-primary-DEFAULT flex items-center justify-center shadow-luxury">
-              <Leaf size={28} className="text-accent-DEFAULT" />
+            <div className="w-16 h-16 rounded-full bg-white p-1 flex items-center justify-center shadow-luxury border-2 border-accent-DEFAULT/40 overflow-hidden">
+              <img
+                src="/images/logo.png"
+                alt="Shreepad Enterprises Logo"
+                className="w-full h-full object-cover scale-110"
+              />
             </div>
           </div>
 

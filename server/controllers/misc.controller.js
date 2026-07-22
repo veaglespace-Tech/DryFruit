@@ -154,10 +154,12 @@ const submitContact = asyncHandler(async (req, res) => {
   });
 
   // Send emails in the background (don't block the API response)
-  const isOrder = subject && subject.includes('Pre-Order');
-  const adminEmail = process.env.ADMIN_EMAIL || 'hello@shreepadenterprises.com';
+  const isOrder = (subject && subject.includes('Pre-Order')) || req.body.type === 'order';
+  const targetAdminEmail = isOrder
+    ? (process.env.ORDER_EMAIL || process.env.SMTP_USER || 'shreepadenterprises.tech@gmail.com')
+    : (process.env.ADMIN_EMAIL || 'Info@shreepadenterprisespune.com');
 
-  // Email to Admin
+  // Email to Admin / Shop Owner
   const adminSubject = isOrder ? `🚨 New Pre-Order Request from ${name}` : `📧 New Contact Inquiry from ${name}`;
   const adminHtml = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e9e9e9; border-radius: 12px; background-color: #FFFDF8;">
@@ -181,7 +183,7 @@ const submitContact = asyncHandler(async (req, res) => {
   `;
 
   sendEmail({
-    to: adminEmail,
+    to: targetAdminEmail,
     subject: adminSubject,
     html: adminHtml,
   }).catch(err => console.error('Error sending email to Admin:', err));

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, SlidersHorizontal, X, Leaf, Star, Sparkles } from "lucide-react";
+import { Search, SlidersHorizontal, X, Leaf, Star, ShieldCheck } from "lucide-react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -228,9 +228,16 @@ export default function ProductsPageClient() {
         <div className="py-10 md:py-14 bg-background border-b border-border-DEFAULT">
           <div className="container-luxury text-center">
             {/* Top Tagline Badge */}
-            <span className="text-xs font-button font-bold text-accent-DEFAULT uppercase tracking-widest flex items-center justify-center gap-1.5 mb-1">
-              <Sparkles size={14} /> Premium Organic Store
-            </span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-accent-DEFAULT/40 shadow-sm backdrop-blur-md mb-2">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-DEFAULT opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary-DEFAULT"></span>
+              </span>
+              <ShieldCheck size={14} className="text-accent-DEFAULT" />
+              <span className="text-xs font-button font-extrabold text-primary-DEFAULT uppercase tracking-widest">
+                Premium Organic Store
+              </span>
+            </div>
 
             {/* Heading & Subtitle */}
             <div className="max-w-xl mx-auto">

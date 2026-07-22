@@ -291,17 +291,22 @@ export const useSplitText = (options) => {
   useGSAP(
     () => {
       if (!ref.current) return;
-      const text = ref.current.textContent || "";
+
+      // Save original text so we can restore it on cleanup
+      const el = ref.current;
+      const originalHTML = el.innerHTML;
+
+      const text = el.textContent || "";
       const words = text.split(" ");
-      ref.current.innerHTML = words
+      el.innerHTML = words
         .map(
           (word) =>
             `<span class="word-wrap" style="overflow:hidden;display:inline-block;"><span class="word" style="display:inline-block;">${word}</span></span>`,
         )
         .join(" ");
 
-      const wordEls = ref.current.querySelectorAll(".word");
-      gsap.fromTo(
+      const wordEls = el.querySelectorAll(".word");
+      const tween = gsap.fromTo(
         wordEls,
         { y: "100%", opacity: 0 },
         {
@@ -311,9 +316,17 @@ export const useSplitText = (options) => {
           stagger: options?.stagger ?? 0.06,
           delay: options?.delay ?? 0,
           ease: "power4.out",
-          scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
         },
       );
+
+      // Cleanup: restore original HTML so React can reconcile cleanly
+      return () => {
+        tween.kill();
+        if (el) {
+          el.innerHTML = originalHTML;
+        }
+      };
     },
     { scope: ref },
   );
