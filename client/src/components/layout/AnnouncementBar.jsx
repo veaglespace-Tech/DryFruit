@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Phone, MessageCircle, Sparkles } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
 
 const DEFAULT_MESSAGES = [
   "🌿 Free delivery on orders above ₹999",
-  "✨ 100% Natural & Chemical Free Organic Products",
+  "100% Natural & Chemical Free Organic Products",
   "🎁 Premium Festive Gift Hampers Available",
   "📞 Call us directly: +91 98609 41171",
   "💚 Farm Fresh Konkan & Kashmiri Quality",
@@ -72,7 +72,7 @@ export default function AnnouncementBar() {
         .animate-continuous-marquee {
           display: flex;
           width: max-content;
-          animation: continuousMarquee 30s linear infinite;
+          animation: continuousMarquee 28s linear infinite;
           will-change: transform;
         }
         .announcement-bar-container:hover .animate-continuous-marquee {
@@ -81,43 +81,41 @@ export default function AnnouncementBar() {
       `}</style>
 
       {/* Modern Luxury Satin Obsidian & Metallic Champagne Gold Marquee Bar */}
-      <div className="announcement-bar-container relative z-50 bg-[#1f130b] border-b border-[#D4A95A]/35 shadow-md overflow-hidden select-none">
-        <div className="flex items-center h-9">
-          {/* Left Action Buttons: Metallic Gold & Emerald Glass Badges */}
-          <div className="flex-shrink-0 flex items-center gap-2 px-3 sm:px-4 h-full bg-[#170e08] border-r border-[#D4A95A]/30 z-10">
+      <div className="announcement-bar-container relative z-50 bg-[#140b05] border-b border-[#D4A95A]/40 shadow-lg overflow-hidden select-none">
+        <div className="flex items-center h-10">
+          
+          {/* Left Action Buttons: Ultra-High Contrast Badges */}
+          <div className="flex-shrink-0 flex items-center gap-2 px-3 sm:px-4 h-full bg-[#0a0502] border-r border-[#D4A95A]/30 z-10">
             <a
               href={`tel:${phone.replace(/\s+/g, "")}`}
-              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#D4A95A]/15 border border-[#D4A95A]/30 text-[11px] font-semibold text-[#F8EDCE] hover:bg-[#D4A95A]/30 hover:text-white transition-all shadow-sm group"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A95A] text-[#140b05] text-[11px] font-bold hover:bg-white hover:text-black transition-all shadow-md group"
               title="Call Us Now"
             >
-              <Phone size={10} className="text-[#D4A95A] group-hover:scale-110 transition-transform" />
-              <span className="hidden sm:inline">Call</span>
+              <Phone size={11} className="text-[#140b05] stroke-[3] group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline font-bold">Call</span>
             </a>
             <a
               href={`https://wa.me/${whatsapp.replace(/[^0-9]/g, "")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/50 border border-emerald-500/30 text-[11px] font-semibold text-emerald-300 hover:bg-emerald-900/60 hover:text-emerald-200 transition-all shadow-sm group"
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#25D366] text-white text-[11px] font-bold hover:bg-[#128C7E] transition-all shadow-md group"
               title="WhatsApp Us"
             >
-              <MessageCircle size={10} className="text-emerald-400 group-hover:scale-110 transition-transform" />
-              <span className="hidden sm:inline">WhatsApp</span>
+              <MessageCircle size={11} className="text-white stroke-[3] group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline font-bold">WhatsApp</span>
             </a>
           </div>
 
-          {/* Smooth Continuous Marquee with Shimmering Champagne Gold Text & Pulsing Stars */}
-          <div className="flex-1 overflow-hidden relative flex items-center h-full bg-gradient-to-r from-[#1f130b] via-[#2d1b10] to-[#1f130b]">
+          {/* Smooth Continuous Marquee with High-Contrast Text (No Sparkles/Stars) */}
+          <div className="flex-1 overflow-hidden relative flex items-center h-full bg-gradient-to-r from-[#140b05] via-[#1f1007] to-[#140b05]">
             <div className="animate-continuous-marquee items-center py-1">
               {repeatedMessages.map((msg, i) => (
                 <div
                   key={i}
-                  className="inline-flex items-center gap-3 px-6 text-[11px] sm:text-xs font-medium tracking-wide text-[#FDF8EE] whitespace-nowrap"
+                  className="inline-flex items-center gap-4 px-6 text-[11px] sm:text-xs font-semibold tracking-wide text-white whitespace-nowrap"
                 >
-                  <Sparkles size={11} className="text-[#D4A95A] flex-shrink-0 animate-pulse drop-shadow-[0_0_4px_rgba(212,169,90,0.6)]" />
-                  <span className="bg-gradient-to-r from-[#FFFDF8] via-[#F8EDCE] to-[#F0DB9D] bg-clip-text text-transparent font-medium">
-                    {msg}
-                  </span>
-                  <span className="text-[#D4A95A]/60 font-serif ml-2 text-xs">✦</span>
+                  <span className="text-[#FFFDF8] font-semibold">{msg}</span>
+                  <span className="text-[#D4A95A] font-bold mx-2">•</span>
                 </div>
               ))}
             </div>
