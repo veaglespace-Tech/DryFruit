@@ -176,61 +176,7 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* ── 2. Category Filter Pills Bar ── */}
-        <section
-          style={{
-            padding: "18px 0",
-            background: "#FDF9F3",
-            borderBottom: "1px solid rgba(212, 169, 90, 0.25)",
-          }}
-        >
-          <div className="container-luxury">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                gap: "10px",
-              }}
-            >
-              {[
-                { id: "all", label: "All Articles" },
-                { id: "nutrition", label: "Nutrition & Health" },
-                { id: "storage", label: "Storage Tips" },
-                { id: "recipes", label: "Recipes & Diet" },
-              ].map((tab) => {
-                const active = activeFilter === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveFilter(tab.id)}
-                    style={{
-                      padding: "8px 20px",
-                      borderRadius: "100px",
-                      fontSize: "12px",
-                      fontWeight: 700,
-                      fontFamily: "var(--font-button)",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                      background: active
-                        ? "linear-gradient(135deg, #3D2314 0%, #25130A 100%)"
-                        : "#FFFDF8",
-                      color: active ? "#D4A95A" : "#6B5A4E",
-                      border: active
-                        ? "1.5px solid #D4A95A"
-                        : "1.5px solid rgba(212, 169, 90, 0.3)",
-                      boxShadow: active ? "0 4px 14px rgba(61, 35, 20, 0.2)" : "none",
-                    }}
-                  >
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+
 
         {/* ── 3. Articles Grid Showcase ── */}
         <section style={{ padding: "clamp(50px, 7vw, 90px) 0", background: "#FFFDF8" }}>
