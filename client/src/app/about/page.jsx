@@ -24,8 +24,8 @@ export const metadata = {
 
 const STATS = [
   { value: "100%", label: "Farm Direct Sourcing" },
-  { value: "15+", label: "Premium Varieties" },
-  { value: "50,000+", label: "Happy Customer Families" },
+  { value: "250+", label: "Premium Varieties" },
+  { value: "10,000+", label: "Happy Customer Families" },
   { value: "0%", label: "Chemicals & Pesticides" },
 ];
 
