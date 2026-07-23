@@ -292,6 +292,7 @@ export default function FAQSection() {
                 key={cat.key}
                 type="button"
                 onClick={() => setSelectedCat(cat.key)}
+                suppressHydrationWarning
                 style={{
                   padding: "8px 20px",
                   borderRadius: "100px",

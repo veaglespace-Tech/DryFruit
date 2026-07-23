@@ -475,6 +475,7 @@ export default function Navbar() {
                 onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 aria-label={`Cart (${cartCount} items)`}
+                suppressHydrationWarning
               >
                 <ShoppingBag size={18} />
                 {cartCount > 0 && (
