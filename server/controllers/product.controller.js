@@ -177,7 +177,7 @@ const createProduct = asyncHandler(async (req, res) => {
     }
   }
 
-  // Auto-generate slug if not provided or empty
+  // Auto-generate slug if not provided or empty, and ensure uniqueness
   let productSlug = slug ? slug.trim() : '';
   if (!productSlug && name) {
     productSlug = name
@@ -188,9 +188,17 @@ const createProduct = asyncHandler(async (req, res) => {
   if (!productSlug) {
     productSlug = `product-${Date.now()}`;
   }
+  const existingSlug = await prisma.product.findUnique({ where: { slug: productSlug } });
+  if (existingSlug) {
+    productSlug = `${productSlug}-${Date.now()}`;
+  }
 
   // Ensure unique SKU
-  const productSku = sku && sku.trim() !== '' ? sku.trim() : `SKU-${Date.now()}`;
+  let productSku = sku && sku.trim() !== '' ? sku.trim() : `SKU-${Date.now()}`;
+  const existingSku = await prisma.product.findUnique({ where: { sku: productSku } });
+  if (existingSku) {
+    productSku = `${productSku}-${Date.now()}`;
+  }
 
   const numPrice = parseFloat(price);
   const numOriginalPrice = original_price ? parseFloat(original_price) : null;
