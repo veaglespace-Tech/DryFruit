@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSplitText, useStagger } from "@/lib/gsap";
 import { useGetPublicCategoriesQuery } from "@/store/api/apiSlice";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -299,7 +300,7 @@ function CategoryCard({ cat, index }) {
               }}
             >
               <Image
-                src={cat.image}
+                src={getImageUrl(cat.image, "/images/categories/dry-fruits-seeds.png")}
                 alt={cat.name}
                 fill
                 className="object-cover"

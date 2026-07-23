@@ -16,6 +16,7 @@ import {
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getImageUrl } from "@/lib/getImageUrl";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   selectCartItems,
@@ -229,7 +230,7 @@ export default function CheckoutPage() {
                       <div key={item.id} className="flex gap-3 items-center">
                         <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-border-light bg-background flex-shrink-0">
                           <img
-                            src={item.thumbnail}
+                            src={getImageUrl(item.thumbnail)}
                             alt={item.name}
                             className="w-full h-full object-cover"
                           />

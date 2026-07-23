@@ -10,6 +10,7 @@ import { selectIsInWishlist } from "@/store/slices/wishlistSlice";
 import toast from "react-hot-toast";
 import { useState, useRef } from "react";
 import { gsap } from "gsap";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function ProductCard({ product }) {
   const dispatch = useAppDispatch();
@@ -215,7 +216,7 @@ export default function ProductCard({ product }) {
         {/* Product Image */}
         <Link href={`/products/${product.slug}`} className="relative block w-full h-full">
           <Image
-            src={product.thumbnail || "/images/categories/mixed-nuts.png"}
+            src={getImageUrl(product.thumbnail, "/images/categories/mixed-nuts.png")}
             alt={product.name}
             fill
             className="object-cover"

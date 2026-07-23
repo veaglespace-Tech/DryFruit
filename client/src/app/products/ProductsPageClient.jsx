@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X, Leaf, Star, ShieldCheck } from "lucide-react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
@@ -9,8 +10,6 @@ import Image from "next/image";
 import ProductCard from "@/components/ui/ProductCard";
 import { useStagger } from "@/lib/gsap";
 import { useGetProductsQuery, useGetPublicCategoriesQuery } from "@/store/api/apiSlice";
-
-
 
 const STATIC_CATEGORIES = [
   "All",
@@ -41,6 +40,9 @@ const SLUG_MAP = {
 };
 
 export default function ProductsPageClient() {
+  const searchParams = useSearchParams();
+  const urlCategory = searchParams ? searchParams.get("category") : null;
+
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("newest");
@@ -50,6 +52,28 @@ export default function ProductsPageClient() {
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(1500);
   const [minRating, setMinRating] = useState(0);
+
+  const { data: serverCategories, isSuccess: catsSuccess } = useGetPublicCategoriesQuery();
+
+  useEffect(() => {
+    if (urlCategory) {
+      if (serverCategories && serverCategories.length > 0) {
+        const match = serverCategories.find(
+          (c) => c.slug === urlCategory || c.name.toLowerCase() === urlCategory.toLowerCase()
+        );
+        if (match) {
+          setSelectedCategory(match.name);
+          return;
+        }
+      }
+      const entry = Object.entries(SLUG_MAP).find(([name, slug]) => slug === urlCategory);
+      if (entry) {
+        setSelectedCategory(entry[0]);
+      } else {
+        setSelectedCategory(urlCategory);
+      }
+    }
+  }, [urlCategory, serverCategories]);
 
   // Build query params for RTK
   const productParams = {};

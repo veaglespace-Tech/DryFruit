@@ -30,6 +30,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import toast from "react-hot-toast";
 import { useGetProductBySlugQuery } from "@/store/api/apiSlice";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function ProductDetailClient({ slug }) {
   const router = useRouter();
@@ -226,7 +227,7 @@ export default function ProductDetailClient({ slug }) {
               <div className="product-gallery space-y-4">
                 <div className="relative aspect-square rounded-3xl overflow-hidden border border-border-DEFAULT shadow-luxury bg-white">
                   <Image
-                    src={product.thumbnail}
+                    src={getImageUrl(product.thumbnail, "/images/categories/mixed-nuts.png")}
                     alt={product.name}
                     fill
                     className="object-cover"
@@ -251,7 +252,7 @@ export default function ProductDetailClient({ slug }) {
                       }`}
                     >
                       <Image
-                        src={product.thumbnail}
+                        src={getImageUrl(product.thumbnail, "/images/categories/mixed-nuts.png")}
                         alt={`${product.name} view ${i}`}
                         fill
                         className="object-cover opacity-75 hover:opacity-100 transition-opacity"

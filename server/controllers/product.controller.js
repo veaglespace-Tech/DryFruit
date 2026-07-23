@@ -36,8 +36,18 @@ const getProducts = asyncHandler(async (req, res) => {
 
   const offset = (parseInt(page) - 1) * parseInt(limit);
 
-  const orderBy = {};
-  orderBy[sort] = order.toLowerCase();
+  let orderBy = { created_at: 'desc' };
+  if (sort === 'price') {
+    orderBy = { price: 'asc' };
+  } else if (sort === '-price') {
+    orderBy = { price: 'desc' };
+  } else if (sort === '-rating' || sort === 'rating') {
+    orderBy = { rating: 'desc' };
+  } else if (sort === '-popularity' || sort === 'popularity') {
+    orderBy = { review_count: 'desc' };
+  } else if (sort && sort !== 'created_at') {
+    orderBy = { [sort]: order.toLowerCase() === 'asc' ? 'asc' : 'desc' };
+  }
 
   const count = await prisma.product.count({ where });
   const products = await prisma.product.findMany({

@@ -13,6 +13,7 @@ import {
 } from "@/store/slices/wishlistSlice";
 import { addToCart } from "@/store/slices/cartSlice";
 import toast from "react-hot-toast";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function WishlistPage() {
   const dispatch = useAppDispatch();
@@ -75,7 +76,7 @@ export default function WishlistPage() {
                     {/* Top frame */}
                     <div className="relative aspect-square overflow-hidden bg-background">
                       <Image
-                        src={item.thumbnail}
+                        src={getImageUrl(item.thumbnail, "/images/categories/mixed-nuts.png")}
                         alt={item.name}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

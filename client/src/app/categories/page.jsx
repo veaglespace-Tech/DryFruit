@@ -7,6 +7,7 @@ import { ArrowRight, Gem, Sparkles, Leaf, ChevronRight } from "lucide-react";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 const FALLBACK_CATEGORIES = [
   {
@@ -316,7 +317,7 @@ export default function CategoriesPage() {
                         }}
                       >
                         <Image
-                          src={cat.image || `/images/categories/${cat.slug}.png`}
+                          src={getImageUrl(cat.image, `/images/categories/${cat.slug}.png`)}
                           alt={cat.name}
                           fill
                           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

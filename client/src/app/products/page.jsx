@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ProductsPageClient from "./ProductsPageClient";
 
 export const metadata = {
@@ -11,5 +12,13 @@ export const metadata = {
 };
 
 export default function ProductsPage() {
-  return <ProductsPageClient />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFDF8]">
+        <div className="w-10 h-10 border-4 border-[#D4A95A] border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <ProductsPageClient />
+    </Suspense>
+  );
 }

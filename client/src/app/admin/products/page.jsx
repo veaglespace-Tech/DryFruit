@@ -9,6 +9,7 @@ import {
   useDeleteProductMutation,
 } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function AdminProductsPage() {
   const { data: productsData, isLoading: loading } = useGetAdminProductsQuery({ all: "true" });
@@ -158,7 +159,7 @@ export default function AdminProductsPage() {
                         <div className="w-10 h-10 rounded-xl overflow-hidden border border-border-DEFAULT flex-shrink-0 bg-background">
                           {product.thumbnail ? (
                             <img
-                              src={product.thumbnail}
+                              src={getImageUrl(product.thumbnail)}
                               alt={product.name}
                               className="w-full h-full object-cover"
                             />

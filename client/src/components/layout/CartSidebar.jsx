@@ -27,6 +27,7 @@ import {
   selectCartIsOpen,
 } from "@/store/slices/cartSlice";
 import { gsap } from "gsap";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export default function CartSidebar() {
   const dispatch = useAppDispatch();
@@ -201,9 +202,7 @@ export default function CartSidebar() {
                   {/* Thumbnail */}
                   <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-[#FDF9F3] border border-[#D4A95A]/15 flex-shrink-0">
                     <Image
-                      src={
-                        item.thumbnail || "/images/categories/mixed-nuts.png"
-                      }
+                      src={getImageUrl(item.thumbnail, "/images/categories/mixed-nuts.png")}
                       alt={item.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
