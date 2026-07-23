@@ -550,29 +550,7 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* Mobile Menu Toggle */}
-              <button
-                type="button"
-                onClick={() => dispatch(toggleMobileNav())}
-                className="lg:hidden"
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  borderRadius: "50%",
-                  background: "rgba(255, 255, 255, 0.08)",
-                  border: "1px solid rgba(212, 169, 90, 0.3)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#FFFDF8",
-                  cursor: "pointer",
-                }}
-                aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileNavOpen}
-                suppressHydrationWarning
-              >
-                {isMobileNavOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
+              {/* Mobile Menu Toggle Removed as requested */}
 
             </div>
           </div>
