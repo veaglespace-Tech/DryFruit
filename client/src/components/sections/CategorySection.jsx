@@ -581,17 +581,22 @@ export default function CategorySection() {
           </p>
         </div>
 
-        {/* Category Grid */}
+        {/* Category Container: Horizontal scroll on small/mobile screens, Grid on desktop */}
         <div
           ref={gridRef}
+          className="flex md:grid overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-5 md:gap-6 pb-6 md:pb-0 no-scrollbar px-1 md:px-0"
           style={{
-            display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "24px",
+            WebkitOverflowScrolling: "touch",
           }}
         >
           {categories.map((cat, index) => (
-            <CategoryCard key={cat.slug} cat={cat} index={index} />
+            <div
+              key={cat.slug}
+              className="flex-shrink-0 w-[260px] sm:w-[280px] md:w-auto snap-start"
+            >
+              <CategoryCard cat={cat} index={index} />
+            </div>
           ))}
         </div>
 
@@ -608,7 +613,7 @@ export default function CategorySection() {
         </div>
       </div>
 
-      {/* CSS Animations */}
+      {/* CSS Animations & Utilities */}
       <style jsx>{`
         @keyframes floatParticle {
           from { transform: translateY(0px) rotate(0deg); opacity: 0.6; }
@@ -619,6 +624,13 @@ export default function CategorySection() {
         }
         a:hover .category-cta {
           gap: 10px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </section>
