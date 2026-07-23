@@ -7,14 +7,12 @@ import {
   Search,
   ShoppingBag,
   Heart,
-  Phone,
   MessageCircle,
   Menu,
   X,
   ChevronDown,
   Leaf,
-  User,
-  ShieldCheck,
+  Phone,
 } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -29,8 +27,6 @@ import {
 import { selectCartCount } from "@/store/slices/cartSlice";
 
 gsap.registerPlugin(useGSAP);
-
-// Suppress "GSAP target null" warnings globally (safe — just noise in dev)
 gsap.config({ nullTargetWarn: false });
 
 const navLinks = [
@@ -78,13 +74,9 @@ export default function Navbar() {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [user, setUser] = useState(null);
   const [admin, setAdmin] = useState(null);
 
   useEffect(() => {
-    const userData = localStorage.getItem("shreepad_user");
-    if (userData) setUser(JSON.parse(userData));
-
     const adminData = localStorage.getItem("shreepad_admin");
     if (adminData) setAdmin(JSON.parse(adminData));
   }, []);
@@ -94,17 +86,17 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
   const isHidden = useRef(false);
 
-  // Scroll behavior — hide on scroll down, show on scroll up
+  // Dynamic Scroll Handling (Hide on scroll down, show on scroll up)
   useEffect(() => {
     const handleScroll = () => {
       if (!navRef.current) return;
       const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 50);
+      setIsScrolled(currentScrollY > 40);
 
       if (currentScrollY > 200) {
         if (currentScrollY > lastScrollY.current && !isHidden.current) {
           gsap.to(navRef.current, {
-            y: "-100%",
+            y: "-120%",
             duration: 0.3,
             ease: "power2.in",
             overwrite: true,
@@ -113,7 +105,7 @@ export default function Navbar() {
         } else if (currentScrollY < lastScrollY.current && isHidden.current) {
           gsap.to(navRef.current, {
             y: "0%",
-            duration: 0.4,
+            duration: 0.35,
             ease: "power2.out",
             overwrite: true,
           });
@@ -132,40 +124,21 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // GSAP entrance
-  useGSAP(
-    () => {
-      if (!navRef.current) return;
-      gsap.fromTo(
-        navRef.current,
-        { y: -80, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          delay: 0.1,
-        }
-      );
-    },
-    { scope: navRef }
-  );
-
-  // Mobile menu animation
+  // Mobile menu drawer animation
   useEffect(() => {
     if (!mobileMenuRef.current) return;
     if (isMobileNavOpen) {
       gsap.fromTo(
         mobileMenuRef.current,
         { x: "100%", opacity: 0 },
-        { x: "0%", opacity: 1, duration: 0.4, ease: "power3.out" }
+        { x: "0%", opacity: 1, duration: 0.35, ease: "power3.out" }
       );
       document.body.style.overflow = "hidden";
     } else {
       gsap.to(mobileMenuRef.current, {
         x: "100%",
         opacity: 0,
-        duration: 0.3,
+        duration: 0.25,
         ease: "power3.in",
       });
       document.body.style.overflow = "";
@@ -179,40 +152,29 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className="fixed left-0 right-0 z-40 transition-all duration-500"
+        className="fixed left-0 right-0 z-40 transition-all duration-300"
         style={{
-          top: "0px",
-          background: "linear-gradient(135deg, rgba(45, 24, 14, 0.96) 0%, rgba(25, 13, 7, 0.98) 100%)",
-          borderBottom: "1.5px solid rgba(212, 169, 90, 0.35)",
-          boxShadow: "0 10px 35px rgba(0, 0, 0, 0.35)",
-          backdropFilter: "blur(16px)",
+          top: isScrolled ? "0px" : "40px",
+          background: "linear-gradient(135deg, rgba(38, 20, 11, 0.96) 0%, rgba(22, 11, 6, 0.98) 100%)",
+          borderBottom: "1px solid rgba(212, 169, 90, 0.35)",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.35)",
+          backdropFilter: "blur(14px)",
         }}
       >
-        {/* Top Metallic Gold Accent Line */}
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "2.5px",
-            background: "linear-gradient(90deg, #6B3E26 0%, #D4A95A 50%, #F59E0B 100%)",
-          }}
-        />
-
         <div className="container-luxury">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-16 sm:h-18">
 
             {/* ── Brand Logo ── */}
             <Link
               href="/"
-              style={{ display: "inline-flex", alignItems: "center", gap: "10px", textDecoration: "none" }}
+              className="flex items-center gap-2.5 group"
               aria-label="Shreepad Enterprises Home"
+              style={{ textDecoration: "none" }}
             >
               <div
                 style={{
-                  width: "44px",
-                  height: "44px",
+                  width: "42px",
+                  height: "42px",
                   borderRadius: "50%",
                   background: "#FFFDF8",
                   padding: "2px",
@@ -220,7 +182,7 @@ export default function Navbar() {
                   alignItems: "center",
                   justifyContent: "center",
                   border: "2px solid #D4A95A",
-                  boxShadow: "0 0 16px rgba(212, 169, 90, 0.45)",
+                  boxShadow: "0 0 14px rgba(212, 169, 90, 0.4)",
                   overflow: "hidden",
                   flexShrink: 0,
                 }}
@@ -235,12 +197,9 @@ export default function Navbar() {
                 <span
                   style={{
                     fontFamily: "var(--font-heading)",
-                    fontSize: "1.25rem",
+                    fontSize: "1.2rem",
                     fontWeight: 800,
-                    background: "linear-gradient(135deg, #FFFDF8 0%, #D4A95A 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
+                    color: "#FFFDF8",
                     lineHeight: 1.1,
                   }}
                 >
@@ -263,45 +222,37 @@ export default function Navbar() {
             </Link>
 
             {/* ── Desktop Navigation Links ── */}
-            <ul className="hidden lg:flex items-center gap-1.5" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            <ul className="hidden lg:flex items-center gap-1 xl:gap-2" style={{ listStyle: "none", margin: 0, padding: 0 }}>
               {navLinks.map((link) => {
                 const active = isActive(link.href);
                 return (
-                  <li key={link.label} className="relative group">
+                  <li key={link.label} className="relative">
                     {link.submenu ? (
                       <button
                         type="button"
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          gap: "5px",
-                          padding: "8px 18px",
+                          gap: "4px",
+                          padding: "6px 14px",
                           borderRadius: "100px",
                           fontSize: "13px",
                           fontWeight: 700,
                           fontFamily: "var(--font-button)",
                           cursor: "pointer",
-                          transition: "all 0.3s ease",
-                          background: active
-                            ? "linear-gradient(135deg, rgba(212,169,90,0.22) 0%, rgba(107,62,38,0.3) 100%)"
-                            : "transparent",
-                          border: active
-                            ? "1px solid rgba(212,169,90,0.45)"
-                            : "1px solid transparent",
-                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.9)",
+                          transition: "all 0.25s ease",
+                          background: "transparent",
+                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.92)",
+                          borderBottom: active ? "2px solid #D4A95A" : "2px solid transparent",
                         }}
                         onMouseEnter={(e) => {
                           setActiveDropdown(link.label);
-                          if (!active) {
-                            e.currentTarget.style.color = "#D4A95A";
-                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                          }
+                          e.currentTarget.style.color = "#D4A95A";
                         }}
-                        onMouseLeave={(e) => {
+                        onMouseLeave={() => {
                           setActiveDropdown(null);
                           if (!active) {
-                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
-                            e.currentTarget.style.background = "transparent";
+                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.92)";
                           }
                         }}
                         aria-expanded={activeDropdown === link.label}
@@ -309,9 +260,9 @@ export default function Navbar() {
                       >
                         <span>{link.label}</span>
                         <ChevronDown
-                          size={14}
+                          size={13}
                           style={{
-                            transition: "transform 0.3s ease",
+                            transition: "transform 0.25s ease",
                             transform: activeDropdown === link.label ? "rotate(180deg)" : "rotate(0deg)",
                             color: "#D4A95A",
                           }}
@@ -323,31 +274,22 @@ export default function Navbar() {
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          padding: "8px 18px",
+                          padding: "6px 14px",
                           borderRadius: "100px",
                           fontSize: "13px",
                           fontWeight: 700,
                           fontFamily: "var(--font-button)",
                           textDecoration: "none",
-                          transition: "all 0.3s ease",
-                          background: active
-                            ? "linear-gradient(135deg, rgba(212,169,90,0.22) 0%, rgba(107,62,38,0.3) 100%)"
-                            : "transparent",
-                          border: active
-                            ? "1px solid rgba(212,169,90,0.45)"
-                            : "1px solid transparent",
-                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.9)",
+                          transition: "all 0.25s ease",
+                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.92)",
+                          borderBottom: active ? "2px solid #D4A95A" : "2px solid transparent",
                         }}
                         onMouseEnter={(e) => {
-                          if (!active) {
-                            e.currentTarget.style.color = "#D4A95A";
-                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
-                          }
+                          e.currentTarget.style.color = "#D4A95A";
                         }}
                         onMouseLeave={(e) => {
                           if (!active) {
-                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
-                            e.currentTarget.style.background = "transparent";
+                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.92)";
                           }
                         }}
                       >
@@ -362,18 +304,18 @@ export default function Navbar() {
                           position: "absolute",
                           top: "100%",
                           left: 0,
-                          marginTop: "8px",
-                          width: "230px",
+                          marginTop: "6px",
+                          width: "220px",
                           background: "linear-gradient(145deg, #2D180E 0%, #190D07 100%)",
-                          borderRadius: "20px",
+                          borderRadius: "18px",
                           border: "1.5px solid rgba(212, 169, 90, 0.4)",
                           boxShadow: "0 18px 45px rgba(0, 0, 0, 0.45)",
                           backdropFilter: "blur(16px)",
                           overflow: "hidden",
-                          transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                          transition: "all 0.25s ease",
                           opacity: activeDropdown === link.label ? 1 : 0,
                           visibility: activeDropdown === link.label ? "visible" : "hidden",
-                          transform: activeDropdown === link.label ? "translateY(0)" : "translateY(10px)",
+                          transform: activeDropdown === link.label ? "translateY(0)" : "translateY(8px)",
                         }}
                         onMouseEnter={() => setActiveDropdown(link.label)}
                         onMouseLeave={() => setActiveDropdown(null)}
@@ -386,23 +328,23 @@ export default function Navbar() {
                               display: "flex",
                               alignItems: "center",
                               gap: "10px",
-                              padding: "12px 18px",
+                              padding: "11px 16px",
                               fontSize: "13px",
                               fontFamily: "var(--font-body)",
                               color: "rgba(255, 255, 255, 0.85)",
                               textDecoration: "none",
-                              borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
-                              transition: "all 0.25s ease",
+                              borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
+                              transition: "all 0.2s ease",
                             }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = "rgba(212, 169, 90, 0.15)";
                               e.currentTarget.style.color = "#D4A95A";
-                              e.currentTarget.style.paddingLeft = "22px";
+                              e.currentTarget.style.paddingLeft = "20px";
                             }}
                             onMouseLeave={(e) => {
                               e.currentTarget.style.background = "transparent";
                               e.currentTarget.style.color = "rgba(255, 255, 255, 0.85)";
-                              e.currentTarget.style.paddingLeft = "18px";
+                              e.currentTarget.style.paddingLeft = "16px";
                             }}
                           >
                             <Leaf size={12} style={{ color: "#D4A95A" }} />
@@ -424,8 +366,8 @@ export default function Navbar() {
                 type="button"
                 onClick={() => dispatch(setSearchOpen(true))}
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "50%",
                   background: "rgba(255, 255, 255, 0.08)",
                   border: "1px solid rgba(212, 169, 90, 0.3)",
@@ -434,22 +376,20 @@ export default function Navbar() {
                   justifyContent: "center",
                   color: "#FFFDF8",
                   cursor: "pointer",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.25s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(212, 169, 90, 0.2)";
                   e.currentTarget.style.borderColor = "#D4A95A";
                   e.currentTarget.style.color = "#D4A95A";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.3)";
                   e.currentTarget.style.color = "#FFFDF8";
                 }}
                 aria-label="Search"
                 suppressHydrationWarning
               >
-                <Search size={18} />
+                <Search size={17} />
               </button>
 
               {/* WhatsApp Quick Chat */}
@@ -459,8 +399,8 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="hidden md:flex"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "50%",
                   background: "rgba(16, 185, 129, 0.15)",
                   border: "1px solid rgba(16, 185, 129, 0.4)",
@@ -469,29 +409,27 @@ export default function Navbar() {
                   justifyContent: "center",
                   color: "#10B981",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.25s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "linear-gradient(135deg, #10B981, #059669)";
+                  e.currentTarget.style.background = "#10B981";
                   e.currentTarget.style.color = "#FFFFFF";
-                  e.currentTarget.style.transform = "scale(1.08)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = "rgba(16, 185, 129, 0.15)";
                   e.currentTarget.style.color = "#10B981";
-                  e.currentTarget.style.transform = "scale(1)";
                 }}
                 aria-label="WhatsApp Support"
               >
-                <MessageCircle size={18} />
+                <MessageCircle size={17} />
               </a>
 
               {/* Wishlist */}
               <Link
                 href="/wishlist"
                 style={{
-                  width: "38px",
-                  height: "38px",
+                  width: "36px",
+                  height: "36px",
                   borderRadius: "50%",
                   background: "rgba(255, 255, 255, 0.08)",
                   border: "1px solid rgba(212, 169, 90, 0.3)",
@@ -500,21 +438,19 @@ export default function Navbar() {
                   justifyContent: "center",
                   color: "#FFFDF8",
                   textDecoration: "none",
-                  transition: "all 0.3s ease",
+                  transition: "all 0.25s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(212, 169, 90, 0.2)";
                   e.currentTarget.style.borderColor = "#D4A95A";
                   e.currentTarget.style.color = "#D4A95A";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
                   e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.3)";
                   e.currentTarget.style.color = "#FFFDF8";
                 }}
                 aria-label="Wishlist"
               >
-                <Heart size={18} />
+                <Heart size={17} />
               </Link>
 
               {/* Cart Button */}
@@ -526,46 +462,39 @@ export default function Navbar() {
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: "40px",
-                  height: "40px",
+                  width: "38px",
+                  height: "38px",
                   borderRadius: "50%",
                   background: "linear-gradient(135deg, #D4A95A 0%, #F59E0B 100%)",
                   color: "#3D2314",
                   border: "none",
                   cursor: "pointer",
-                  boxShadow: "0 4px 14px rgba(212, 169, 90, 0.4)",
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  boxShadow: "0 4px 12px rgba(212, 169, 90, 0.4)",
+                  transition: "transform 0.25s ease",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.08)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(212, 169, 90, 0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(212, 169, 90, 0.4)";
-                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.06)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
                 aria-label={`Cart (${cartCount} items)`}
               >
-                <ShoppingBag size={19} />
+                <ShoppingBag size={18} />
                 {cartCount > 0 && (
                   <span
                     style={{
                       position: "absolute",
                       top: "-4px",
                       right: "-4px",
-                      width: "20px",
-                      height: "20px",
+                      width: "18px",
+                      height: "18px",
                       borderRadius: "50%",
                       background: "#EF4444",
                       color: "#FFFFFF",
-                      fontSize: "10px",
+                      fontSize: "9px",
                       fontWeight: 900,
                       fontFamily: "var(--font-button)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      border: "2px solid #3D2314",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                      border: "1.5px solid #3D2314",
                     }}
                   >
                     {cartCount > 9 ? "9+" : cartCount}
@@ -573,47 +502,45 @@ export default function Navbar() {
                 )}
               </button>
 
-              {/* Admin Panel Button */}
+              {/* Admin Panel Link */}
               {admin && (
                 <Link
                   href="/admin/dashboard"
-                  className="hidden lg:inline-flex"
+                  className="hidden xl:inline-flex"
                   style={{
                     alignItems: "center",
-                    gap: "8px",
-                    padding: "6px 14px",
+                    gap: "6px",
+                    padding: "5px 12px",
                     borderRadius: "100px",
-                    background: "rgba(255, 255, 255, 0.1)",
-                    border: "1.5px solid rgba(212, 169, 90, 0.45)",
+                    background: "rgba(255, 255, 255, 0.08)",
+                    border: "1px solid rgba(212, 169, 90, 0.4)",
                     color: "#FFFDF8",
-                    fontSize: "12px",
+                    fontSize: "11px",
                     fontWeight: 700,
                     fontFamily: "var(--font-button)",
                     textDecoration: "none",
-                    transition: "all 0.3s ease",
+                    transition: "all 0.25s ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "linear-gradient(135deg, #D4A95A, #F59E0B)";
+                    e.currentTarget.style.background = "#D4A95A";
                     e.currentTarget.style.color = "#3D2314";
-                    e.currentTarget.style.borderColor = "#D4A95A";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
                     e.currentTarget.style.color = "#FFFDF8";
-                    e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.45)";
                   }}
                 >
                   <div
                     style={{
-                      width: "20px",
-                      height: "20px",
+                      width: "18px",
+                      height: "18px",
                       borderRadius: "50%",
                       background: "#D4A95A",
                       color: "#3D2314",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: "10px",
+                      fontSize: "9px",
                       fontWeight: 900,
                     }}
                   >
@@ -623,16 +550,16 @@ export default function Navbar() {
                 </Link>
               )}
 
-              {/* Mobile Hamburger */}
+              {/* Mobile Menu Toggle */}
               <button
                 type="button"
                 onClick={() => dispatch(toggleMobileNav())}
                 className="lg:hidden"
                 style={{
-                  width: "40px",
-                  height: "40px",
+                  width: "38px",
+                  height: "38px",
                   borderRadius: "50%",
-                  background: "rgba(255, 255, 255, 0.1)",
+                  background: "rgba(255, 255, 255, 0.08)",
                   border: "1px solid rgba(212, 169, 90, 0.3)",
                   display: "flex",
                   alignItems: "center",
@@ -644,7 +571,7 @@ export default function Navbar() {
                 aria-expanded={isMobileNavOpen}
                 suppressHydrationWarning
               >
-                {isMobileNavOpen ? <X size={22} /> : <Menu size={22} />}
+                {isMobileNavOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
 
             </div>
