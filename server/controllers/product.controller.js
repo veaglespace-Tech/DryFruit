@@ -192,6 +192,15 @@ const createProduct = asyncHandler(async (req, res) => {
   // Ensure unique SKU
   const productSku = sku && sku.trim() !== '' ? sku.trim() : `SKU-${Date.now()}`;
 
+  const numPrice = parseFloat(price);
+  const numOriginalPrice = original_price ? parseFloat(original_price) : null;
+  let calcDiscount = 0;
+  if (numOriginalPrice && numOriginalPrice > numPrice) {
+    calcDiscount = Math.round(((numOriginalPrice - numPrice) / numOriginalPrice) * 100);
+  } else if (discount_percent) {
+    calcDiscount = parseInt(discount_percent) || 0;
+  }
+
   const product = await prisma.product.create({
     data: {
       category_id: category_id ? parseInt(category_id) : null,
@@ -199,9 +208,9 @@ const createProduct = asyncHandler(async (req, res) => {
       slug: productSlug,
       description: description || null,
       short_description: short_description || null,
-      price: parseFloat(price),
-      original_price: original_price ? parseFloat(original_price) : null,
-      discount_percent: discount_percent ? parseInt(discount_percent) : 0,
+      price: numPrice,
+      original_price: numOriginalPrice,
+      discount_percent: calcDiscount,
       weight: weight || null,
       sku: productSku,
       stock: stock ? parseInt(stock) : 0,
@@ -240,7 +249,16 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (updates.short_description !== undefined) data.short_description = updates.short_description || null;
   if (updates.price !== undefined) data.price = parseFloat(updates.price);
   if (updates.original_price !== undefined) data.original_price = updates.original_price ? parseFloat(updates.original_price) : null;
-  if (updates.discount_percent !== undefined) data.discount_percent = parseInt(updates.discount_percent);
+  
+  // Auto calculate discount percent if price or original_price changed
+  const effectivePrice = data.price !== undefined ? data.price : Number(product.price);
+  const effectiveOriginal = data.original_price !== undefined ? data.original_price : (product.original_price ? Number(product.original_price) : null);
+  if (effectiveOriginal && effectiveOriginal > effectivePrice) {
+    data.discount_percent = Math.round(((effectiveOriginal - effectivePrice) / effectiveOriginal) * 100);
+  } else if (updates.discount_percent !== undefined) {
+    data.discount_percent = parseInt(updates.discount_percent) || 0;
+  }
+
   if (updates.weight !== undefined) data.weight = updates.weight || null;
   if (updates.sku !== undefined) data.sku = updates.sku || null;
   if (updates.stock !== undefined) data.stock = parseInt(updates.stock);
