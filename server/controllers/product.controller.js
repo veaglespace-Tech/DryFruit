@@ -133,34 +133,79 @@ const createProduct = asyncHandler(async (req, res) => {
     meta_title, meta_description,
   } = req.body;
 
+  if (!name || !price) {
+    return res.status(400).json({ success: false, message: 'Name and Price are required' });
+  }
+
   const thumbnail = req.file ? `/uploads/${req.file.filename}` : null;
-  const parsedBenefits = benefits ? JSON.parse(benefits) : null;
-  const parsedNutrition = nutrition_facts ? JSON.parse(nutrition_facts) : null;
+
+  // Safe JSON parsing for benefits
+  let parsedBenefits = null;
+  if (benefits) {
+    if (typeof benefits === 'string') {
+      try {
+        parsedBenefits = JSON.parse(benefits);
+      } catch (err) {
+        parsedBenefits = [benefits];
+      }
+    } else {
+      parsedBenefits = benefits;
+    }
+  }
+
+  // Safe JSON parsing for nutrition_facts
+  let parsedNutrition = null;
+  if (nutrition_facts) {
+    if (typeof nutrition_facts === 'string') {
+      try {
+        parsedNutrition = JSON.parse(nutrition_facts);
+      } catch (err) {
+        parsedNutrition = null;
+      }
+    } else {
+      parsedNutrition = nutrition_facts;
+    }
+  }
+
+  // Auto-generate slug if not provided or empty
+  let productSlug = slug ? slug.trim() : '';
+  if (!productSlug && name) {
+    productSlug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+  if (!productSlug) {
+    productSlug = `product-${Date.now()}`;
+  }
+
+  // Ensure unique SKU
+  const productSku = sku && sku.trim() !== '' ? sku.trim() : `SKU-${Date.now()}`;
 
   const product = await prisma.product.create({
     data: {
       category_id: category_id ? parseInt(category_id) : null,
       name,
-      slug,
-      description,
-      short_description,
+      slug: productSlug,
+      description: description || null,
+      short_description: short_description || null,
       price: parseFloat(price),
       original_price: original_price ? parseFloat(original_price) : null,
       discount_percent: discount_percent ? parseInt(discount_percent) : 0,
-      weight,
-      sku,
+      weight: weight || null,
+      sku: productSku,
       stock: stock ? parseInt(stock) : 0,
       rating: rating ? parseFloat(rating) : 5.0,
       review_count: review_count ? parseInt(review_count) : 0,
       thumbnail,
       benefits: parsedBenefits,
       nutrition_facts: parsedNutrition,
-      storage_instructions,
+      storage_instructions: storage_instructions || null,
       is_featured: is_featured === 'true' || is_featured === true,
       is_best_seller: is_best_seller === 'true' || is_best_seller === true,
       is_active: is_active === undefined ? true : (is_active === 'true' || is_active === true),
-      meta_title,
-      meta_description,
+      meta_title: meta_title || null,
+      meta_description: meta_description || null,
     },
   });
 
@@ -181,25 +226,40 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (updates.category_id !== undefined) data.category_id = updates.category_id ? parseInt(updates.category_id) : null;
   if (updates.name !== undefined) data.name = updates.name;
   if (updates.slug !== undefined) data.slug = updates.slug;
-  if (updates.description !== undefined) data.description = updates.description;
-  if (updates.short_description !== undefined) data.short_description = updates.short_description;
+  if (updates.description !== undefined) data.description = updates.description || null;
+  if (updates.short_description !== undefined) data.short_description = updates.short_description || null;
   if (updates.price !== undefined) data.price = parseFloat(updates.price);
   if (updates.original_price !== undefined) data.original_price = updates.original_price ? parseFloat(updates.original_price) : null;
   if (updates.discount_percent !== undefined) data.discount_percent = parseInt(updates.discount_percent);
-  if (updates.weight !== undefined) data.weight = updates.weight;
-  if (updates.sku !== undefined) data.sku = updates.sku;
+  if (updates.weight !== undefined) data.weight = updates.weight || null;
+  if (updates.sku !== undefined) data.sku = updates.sku || null;
   if (updates.stock !== undefined) data.stock = parseInt(updates.stock);
   if (updates.rating !== undefined) data.rating = parseFloat(updates.rating);
   if (updates.review_count !== undefined) data.review_count = parseInt(updates.review_count);
   if (req.file) data.thumbnail = `/uploads/${req.file.filename}`;
-  if (updates.benefits !== undefined) data.benefits = typeof updates.benefits === 'string' ? JSON.parse(updates.benefits) : updates.benefits;
-  if (updates.nutrition_facts !== undefined) data.nutrition_facts = typeof updates.nutrition_facts === 'string' ? JSON.parse(updates.nutrition_facts) : updates.nutrition_facts;
-  if (updates.storage_instructions !== undefined) data.storage_instructions = updates.storage_instructions;
+  
+  if (updates.benefits !== undefined) {
+    if (typeof updates.benefits === 'string') {
+      try { data.benefits = JSON.parse(updates.benefits); } catch { data.benefits = [updates.benefits]; }
+    } else {
+      data.benefits = updates.benefits;
+    }
+  }
+
+  if (updates.nutrition_facts !== undefined) {
+    if (typeof updates.nutrition_facts === 'string') {
+      try { data.nutrition_facts = JSON.parse(updates.nutrition_facts); } catch { data.nutrition_facts = null; }
+    } else {
+      data.nutrition_facts = updates.nutrition_facts;
+    }
+  }
+
+  if (updates.storage_instructions !== undefined) data.storage_instructions = updates.storage_instructions || null;
   if (updates.is_featured !== undefined) data.is_featured = updates.is_featured === 'true' || updates.is_featured === true;
   if (updates.is_best_seller !== undefined) data.is_best_seller = updates.is_best_seller === 'true' || updates.is_best_seller === true;
   if (updates.is_active !== undefined) data.is_active = updates.is_active === 'true' || updates.is_active === true;
-  if (updates.meta_title !== undefined) data.meta_title = updates.meta_title;
-  if (updates.meta_description !== undefined) data.meta_description = updates.meta_description;
+  if (updates.meta_title !== undefined) data.meta_title = updates.meta_title || null;
+  if (updates.meta_description !== undefined) data.meta_description = updates.meta_description || null;
 
   const updatedProduct = await prisma.product.update({
     where: { id: productId },
