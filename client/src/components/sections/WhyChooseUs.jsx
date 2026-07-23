@@ -14,6 +14,7 @@ import {
   Sparkles,
   Zap,
   Star,
+  Package,
 } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -29,72 +30,74 @@ const features = [
     title: "100% Natural",
     badge: "Pure Nature",
     description:
-      "No artificial preservatives, synthetic colors, or added flavors. Pure unadulterated nature in every single bite.",
+      "Handpicked from organic orchards around the globe. No chemicals, additives, or artificial preservatives.",
     bgImage: "/images/why/natural.png",
     featured: true,
-    gridClass: "lg:col-span-2",
+    gridClass: "lg:col-span-2 lg:row-span-2",
   },
   {
     num: "02",
-    icon: Shield,
-    title: "Premium Quality",
-    badge: "Lab Tested",
+    icon: Award,
+    title: "Premium Grade A+",
+    badge: "Top 1% Quality",
     description:
-      "Hand-selected & multi-stage quality checked before reaching your doorstep.",
+      "Selected through a 5-step quality inspection for uniform size, rich color, and supreme crunch.",
     bgImage: "/images/why/quality.png",
-    featured: true,
+    featured: false,
     gridClass: "lg:col-span-2",
   },
   {
     num: "03",
-    icon: Sprout,
-    title: "Farm Fresh",
-    badge: "Direct Origin",
-    description: "Sourced directly from trusted sustainable orchards worldwide.",
-    bgImage: "/images/why/farm.png",
+    icon: Shield,
+    title: "Nitrogen Packed",
+    badge: "Fresh Sealed",
+    description:
+      "Vacuum-sealed with food-grade nitrogen flush to lock in original taste, crispiness & nutrition.",
+    bgImage: "/images/why/nitrogen.png",
     featured: false,
     gridClass: "lg:col-span-1",
   },
   {
     num: "04",
-    icon: CheckCircle,
-    title: "Chemical Free",
-    badge: "Zero Pesticides",
-    description: "Free from harmful pesticides and artificial chemical treatments.",
-    bgImage: "/images/why/chemical-free.png",
-    featured: false,
-    gridClass: "lg:col-span-1",
-  },
-  {
-    num: "05",
-    icon: Award,
-    title: "Airtight Lock",
-    badge: "Freshness Sealed",
-    description:
-      "Multi-layer food-grade packaging that retains crunch & aroma for months.",
-    bgImage: "/images/why/packaging.png",
-    featured: false,
-    gridClass: "lg:col-span-1",
-  },
-  {
-    num: "06",
     icon: Truck,
     title: "Express Delivery",
-    badge: "Pan-India",
+    badge: "Fast & Safe",
     description:
-      "Fast, climate-controlled shipping in 3-5 business days across India.",
+      "Dispatched within 24 hours with climate-controlled packaging across all pincodes in India.",
     bgImage: "/images/why/delivery.png",
     featured: false,
     gridClass: "lg:col-span-1",
   },
   {
-    num: "07",
-    icon: Clock,
-    title: "Long Shelf Life",
-    badge: "12 Months Fresh",
+    num: "05",
+    icon: Sprout,
+    title: "Direct Sourcing",
+    badge: "Farm to Table",
     description:
-      "Optimal moisture control ensuring prolonged natural shelf life.",
-    bgImage: "/images/why/shelf-life.png",
+      "Ethically sourced directly from partner farmers in California, Kashmir, Iran, and Afghanistan.",
+    bgImage: "/images/why/sourcing.png",
+    featured: false,
+    gridClass: "lg:col-span-1",
+  },
+  {
+    num: "06",
+    icon: Zap,
+    title: "Nutrient Rich",
+    badge: "Superfood",
+    description:
+      "Packed with essential Omega-3s, antioxidants, vitamins, and minerals for daily wellness.",
+    bgImage: "/images/why/nutrients.png",
+    featured: false,
+    gridClass: "lg:col-span-1",
+  },
+  {
+    num: "07",
+    icon: ShieldCheck,
+    title: "Zero Preservatives",
+    badge: "Pure Harvest",
+    description:
+      "Processed without sulfur dioxide bleaching or added sugars. 100% wholesome goodness.",
+    bgImage: "/images/why/zero-preservatives.png",
     featured: false,
     gridClass: "lg:col-span-2",
   },
@@ -112,9 +115,9 @@ const features = [
 ];
 
 const stats = [
-  { value: "50,000+", label: "Happy Families Served", icon: HeartHandshake },
-  { value: "100%", label: "Natural & Chemical-Free", icon: Leaf },
-  { value: "15+", label: "Years of Culinary Trust", icon: Award },
+  { value: "10,000+", label: "Happy Customers", icon: HeartHandshake },
+  { value: "250+", label: "Premium Products", icon: Package },
+  { value: "10+", label: "Years of Trust", icon: Award },
   { value: "4.9 ★", label: "Average Customer Rating", icon: Star },
 ];
 
