@@ -50,7 +50,7 @@ export default function ProductsPageClient() {
   const gridRef = useStagger(".product-card", { stagger: 0.06 });
   // Price and Rating filters
   const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1500);
+  const [maxPrice, setMaxPrice] = useState(10000);
   const [minRating, setMinRating] = useState(0);
 
   const { data: serverCategories, isSuccess: catsSuccess } = useGetPublicCategoriesQuery();
@@ -89,29 +89,34 @@ export default function ProductsPageClient() {
 
   const { data: serverProducts, isLoading: loading, isError: productsError } = useGetProductsQuery(productParams);
 
-  const categories = catsSuccess && serverCategories?.length > 0
-    ? ["All", ...serverCategories.map((cat) => cat.name)]
+  const categoryList = catsSuccess && Array.isArray(serverCategories?.data)
+    ? serverCategories.data
+    : (Array.isArray(serverCategories) ? serverCategories : []);
+
+  const categories = categoryList.length > 0
+    ? ["All", ...categoryList.map((cat) => cat.name)]
     : STATIC_CATEGORIES;
 
   const rawProducts = (() => {
-    if (Array.isArray(serverProducts)) {
-      return serverProducts.map((p) => ({
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-        price: Number(p.price),
-        original_price: p.original_price ? Number(p.original_price) : undefined,
-        discount_percent: p.discount_percent,
-        weight: p.weight,
-        thumbnail: p.thumbnail || "/images/categories/almonds.png",
-        rating: Number(p.rating),
-        review_count: p.review_count,
-        category: p.category
-          ? { name: p.category.name, slug: p.category.slug }
-          : { name: "Almonds", slug: "almonds" },
-      }));
-    }
-    return [];
+    const list = Array.isArray(serverProducts)
+      ? serverProducts
+      : (Array.isArray(serverProducts?.data) ? serverProducts.data : []);
+
+    return list.map((p) => ({
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      price: Number(p.price),
+      original_price: p.original_price ? Number(p.original_price) : undefined,
+      discount_percent: p.discount_percent,
+      weight: p.weight,
+      thumbnail: p.thumbnail || "/images/categories/almonds.png",
+      rating: Number(p.rating),
+      review_count: p.review_count,
+      category: p.category
+        ? { name: p.category.name, slug: p.category.slug }
+        : { name: "Almonds", slug: "almonds" },
+    }));
   })();
 
   // Compute final filtered results client-side for ultra-reactive updates on sliders

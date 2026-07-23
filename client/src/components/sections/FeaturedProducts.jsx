@@ -34,11 +34,14 @@ export default function FeaturedProducts({
     useGetBestSellersQuery(undefined, { skip: !isBestSeller });
 
   useEffect(() => {
-    const liveData = isBestSeller ? bestSellerData : featuredData;
+    const rawObj = isBestSeller ? bestSellerData : featuredData;
+    const liveData = Array.isArray(rawObj)
+      ? rawObj
+      : (Array.isArray(rawObj?.data) ? rawObj.data : []);
     const isSuccess = isBestSeller ? isBestSellerSuccess : isFeaturedSuccess;
     const isError = isBestSeller ? isBestSellerError : isFeaturedError;
 
-    if (isSuccess && Array.isArray(liveData) && liveData.length > 0) {
+    if (isSuccess && liveData.length > 0) {
       const formatted = liveData.map((p) => ({
         id: p.id,
         name: p.name,
@@ -57,7 +60,7 @@ export default function FeaturedProducts({
           : { name: "Almonds", slug: "almonds" },
       }));
       setProducts(formatted.slice(0, limit));
-    } else if (isSuccess && Array.isArray(liveData) && liveData.length === 0) {
+    } else if (isSuccess && liveData.length === 0) {
       setProducts([]);
     } else if (isError) {
       setProducts([]);
