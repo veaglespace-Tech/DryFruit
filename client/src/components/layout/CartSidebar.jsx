@@ -10,8 +10,11 @@ import {
   Minus,
   Trash2,
   ArrowRight,
-  Leaf,
+  Sparkles,
   ShieldCheck,
+  Truck,
+  Flame,
+  ChevronRight,
 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -42,12 +45,12 @@ export default function CartSidebar() {
       gsap.fromTo(
         backdropRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" },
+        { opacity: 1, duration: 0.35, ease: "power2.out" }
       );
       gsap.fromTo(
         sidebarRef.current,
         { x: "100%" },
-        { x: "0%", duration: 0.4, ease: "power3.out" },
+        { x: "0%", duration: 0.45, ease: "power3.out" }
       );
     } else {
       document.body.style.overflow = "";
@@ -83,9 +86,17 @@ export default function CartSidebar() {
   const freeShippingThreshold = 999;
   const progressPercent = Math.min(
     (cartTotal / freeShippingThreshold) * 100,
-    100,
+    100
   );
   const remainingForFreeShipping = freeShippingThreshold - cartTotal;
+
+  // Quick recommendations for empty state
+  const quickCategories = [
+    { label: "Jumbo Almonds", slug: "almonds" },
+    { label: "Kashmiri Saffron", slug: "saffron" },
+    { label: "Royal Pistachios", slug: "pistachios" },
+    { label: "Organic Figs", slug: "figs" },
+  ];
 
   if (!isOpen) return null;
 
@@ -95,84 +106,111 @@ export default function CartSidebar() {
       <div
         ref={backdropRef}
         onClick={handleClose}
-        className="absolute inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
+        className="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity"
       />
 
       {/* Sidebar Panel */}
       <div className="absolute inset-y-0 right-0 max-w-full flex">
         <div
           ref={sidebarRef}
-          className="w-screen max-w-md bg-white shadow-2xl flex flex-col"
+          className="w-screen max-w-md bg-[#FFFDF8] shadow-2xl flex flex-col border-l border-[#D4A95A]/30"
         >
-          {/* Header */}
-          <div className="px-6 py-5 border-b border-border-DEFAULT flex items-center justify-between bg-surface">
-            <div className="flex items-center gap-2">
-              <ShoppingBag size={20} className="text-primary-DEFAULT" />
-              <h2 className="font-heading text-lg font-bold text-primary-DEFAULT">
-                Your Shopping Bag ({cartCount})
-              </h2>
+          {/* ── Header ── */}
+          <div className="px-6 py-5 border-b border-[#D4A95A]/20 flex items-center justify-between bg-gradient-to-r from-[#25130A] via-[#3D2314] to-[#25130A] text-white relative overflow-hidden">
+            {/* Ambient Background Glow */}
+            <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#D4A95A]/20 rounded-full blur-2xl pointer-events-none" />
+
+            <div className="flex items-center gap-3 z-10">
+              <div className="relative p-2.5 rounded-xl bg-[#D4A95A]/15 border border-[#D4A95A]/30 text-[#D4A95A]">
+                <ShoppingBag size={20} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#D4A95A] text-[#25130A] rounded-full text-[10px] font-black flex items-center justify-center animate-pulse">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              <div>
+                <h2 className="font-heading text-lg font-bold tracking-wide text-[#FFFDF8] flex items-center gap-2">
+                  Shopping Bag
+                </h2>
+                <p className="text-xs text-[#D4A95A]/80 font-body">
+                  {cartCount === 0
+                    ? "Your bag is currently empty"
+                    : `${cartCount} premium ${cartCount === 1 ? "item" : "items"} selected`}
+                </p>
+              </div>
             </div>
+
             <button
               type="button"
               onClick={handleClose}
-              className="p-2 rounded-full hover:bg-background text-text-muted hover:text-primary-DEFAULT transition-all"
+              className="z-10 p-2 rounded-full bg-white/10 hover:bg-[#D4A95A] hover:text-[#25130A] text-white/80 transition-all duration-300 transform hover:rotate-90"
               aria-label="Close cart"
             >
               <X size={18} />
             </button>
           </div>
 
-          {/* Shipping Progress */}
+          {/* ── Free Shipping Progress Bar ── */}
           {cartItems.length > 0 && (
-            <div className="px-6 py-4 bg-primary-50/50 border-b border-border-light">
-              <div className="flex items-center gap-2 mb-2">
-                <Leaf size={14} className="text-accent-DEFAULT" />
-                <p className="text-xs font-body text-text-DEFAULT">
-                  {remainingForFreeShipping > 0 ? (
-                    <>
-                      Add{" "}
-                      <span className="font-bold text-primary-DEFAULT">
-                        ₹{remainingForFreeShipping.toLocaleString()}
-                      </span>{" "}
-                      more for{" "}
-                      <span className="font-bold text-green-600">
-                        FREE delivery!
+            <div className="px-6 py-3.5 bg-[#FDF9F3] border-b border-[#D4A95A]/20 shadow-inner">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <Truck size={15} className="text-[#D4A95A]" />
+                  <p className="text-xs font-body text-[#3D2314]">
+                    {remainingForFreeShipping > 0 ? (
+                      <>
+                        Add{" "}
+                        <span className="font-bold text-[#3D2314]">
+                          ₹{remainingForFreeShipping.toLocaleString()}
+                        </span>{" "}
+                        more for{" "}
+                        <span className="font-bold text-emerald-600 uppercase tracking-wider text-[11px]">
+                          FREE Express Delivery
+                        </span>
+                      </>
+                    ) : (
+                      <span className="font-bold text-emerald-600 flex items-center gap-1">
+                        <Sparkles size={13} className="text-[#D4A95A]" />
+                        You unlocked FREE Express Delivery!
                       </span>
-                    </>
-                  ) : (
-                    <span className="font-bold text-green-600">
-                      🎉 Congratulations! You qualify for FREE delivery.
-                    </span>
-                  )}
-                </p>
+                    )}
+                  </p>
+                </div>
+                <span className="text-[11px] font-bold text-[#D4A95A]">
+                  {Math.round(progressPercent)}%
+                </span>
               </div>
-              <div className="w-full h-1.5 bg-border-DEFAULT rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-[#25130A]/10 rounded-full overflow-hidden p-0.5">
                 <div
-                  className="h-full bg-gradient-to-r from-accent-DEFAULT to-green-500 transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-[#D4A95A] via-[#E8C88A] to-emerald-500 transition-all duration-500 shadow-sm"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
             </div>
           )}
 
-          {/* Items List */}
-          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+          {/* ── Items List / Empty State ── */}
+          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 p-3 rounded-2xl border border-border-light hover:border-border-DEFAULT hover:shadow-card transition-all"
+                  className="group relative flex gap-4 p-3.5 rounded-2xl bg-white border border-[#D4A95A]/20 shadow-sm hover:border-[#D4A95A]/60 hover:shadow-md transition-all duration-300"
                 >
                   {/* Thumbnail */}
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-background border border-border-light flex-shrink-0">
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-[#FDF9F3] border border-[#D4A95A]/15 flex-shrink-0">
                     <Image
                       src={
                         item.thumbnail || "/images/categories/mixed-nuts.png"
                       }
                       alt={item.name}
                       fill
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                    <span className="absolute bottom-1 right-1 bg-[#3D2314]/80 text-[#D4A95A] text-[9px] font-bold px-1.5 py-0.5 rounded backdrop-blur-xs">
+                      100% Organic
+                    </span>
                   </div>
 
                   {/* Details */}
@@ -181,7 +219,7 @@ export default function CartSidebar() {
                       <div className="flex justify-between items-start gap-2">
                         <Link
                           href={`/products/${item.slug}`}
-                          className="font-heading text-sm font-bold text-primary-DEFAULT hover:text-secondary-DEFAULT line-clamp-2 leading-tight"
+                          className="font-heading text-sm font-bold text-[#3D2314] hover:text-[#D4A95A] transition-colors line-clamp-2 leading-snug"
                           onClick={handleClose}
                         >
                           {item.name}
@@ -189,31 +227,32 @@ export default function CartSidebar() {
                         <button
                           type="button"
                           onClick={() => handleRemove(item.id)}
-                          className="text-text-muted hover:text-red-500 transition-colors p-1"
+                          className="text-gray-400 hover:text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-all"
                           aria-label="Remove item"
                         >
                           <Trash2 size={14} />
                         </button>
                       </div>
-                      <p className="text-xs text-text-muted font-body mt-0.5">
+                      <p className="text-xs text-[#6B5A4E] font-body mt-0.5 flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#D4A95A]" />
                         {item.weight}
                       </p>
                     </div>
 
-                    <div className="flex justify-between items-end mt-2">
+                    <div className="flex justify-between items-end mt-3">
                       {/* Qty Controls */}
-                      <div className="flex items-center border border-border-DEFAULT rounded-lg bg-background">
+                      <div className="flex items-center border border-[#D4A95A]/30 rounded-full bg-[#FDF9F3] p-0.5 shadow-inner">
                         <button
                           type="button"
                           onClick={() =>
                             handleUpdateQty(item.id, item.quantity, -1)
                           }
-                          className="p-1 px-2 text-text-muted hover:text-primary-DEFAULT hover:bg-surface rounded-l-lg transition-colors"
+                          className="p-1 px-2 text-[#6B5A4E] hover:text-[#3D2314] hover:bg-white rounded-full transition-all"
                           aria-label="Decrease quantity"
                         >
                           <Minus size={12} />
                         </button>
-                        <span className="px-2 text-xs font-button font-bold text-primary-DEFAULT">
+                        <span className="px-2 text-xs font-button font-bold text-[#3D2314] min-w-[20px] text-center">
                           {item.quantity}
                         </span>
                         <button
@@ -221,7 +260,7 @@ export default function CartSidebar() {
                           onClick={() =>
                             handleUpdateQty(item.id, item.quantity, 1)
                           }
-                          className="p-1 px-2 text-text-muted hover:text-primary-DEFAULT hover:bg-surface rounded-r-lg transition-colors"
+                          className="p-1 px-2 text-[#6B5A4E] hover:text-[#3D2314] hover:bg-white rounded-full transition-all"
                           aria-label="Increase quantity"
                         >
                           <Plus size={12} />
@@ -230,11 +269,11 @@ export default function CartSidebar() {
 
                       {/* Price */}
                       <div className="text-right">
-                        <span className="font-heading text-sm font-bold text-primary-DEFAULT">
+                        <span className="font-heading text-base font-bold text-[#3D2314]">
                           ₹{(item.price * item.quantity).toLocaleString()}
                         </span>
                         {item.original_price && (
-                          <p className="text-xxs text-text-muted line-through font-body leading-none mt-0.5">
+                          <p className="text-[10px] text-gray-400 line-through font-body leading-none mt-0.5">
                             ₹
                             {(
                               item.original_price * item.quantity
@@ -247,48 +286,86 @@ export default function CartSidebar() {
                 </div>
               ))
             ) : (
-              <div className="h-full flex flex-col items-center justify-center text-center py-20">
-                <div className="w-16 h-16 rounded-full bg-primary-50 flex items-center justify-center mb-4">
-                  <ShoppingBag size={28} className="text-text-muted" />
+              /* ── Unique Luxury Empty State ── */
+              <div className="h-full flex flex-col items-center justify-center text-center py-12 px-2">
+                {/* Decorative Glowing Icon Badge */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#D4A95A] to-[#3D2314] opacity-20 blur-xl animate-pulse" />
+                  <div className="relative w-24 h-24 rounded-full bg-gradient-to-b from-[#FDF9F3] to-[#FFFDF8] border-2 border-[#D4A95A]/40 flex items-center justify-center shadow-xl">
+                    <ShoppingBag
+                      size={36}
+                      className="text-[#D4A95A] transform group-hover:scale-110 transition-transform"
+                    />
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#3D2314] text-[#D4A95A] flex items-center justify-center border border-[#D4A95A]">
+                      <Sparkles size={14} />
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-heading text-lg font-bold text-primary-DEFAULT mb-2">
-                  Your bag is empty
+
+                <h3 className="font-heading text-xl font-extrabold text-[#3D2314] mb-2 tracking-tight">
+                  Your Shopping Bag is Empty
                 </h3>
-                <p className="text-text-muted font-body text-sm max-w-xs mb-8">
-                  Looks like you haven&apos;t added any premium dry fruits or
-                  nuts to your cart yet.
+                <p className="text-[#6B5A4E] font-body text-xs leading-relaxed max-w-xs mb-8">
+                  Discover our handpicked selection of fresh, organic royal nuts, exotic dried fruits, and gourmet gift boxes.
                 </p>
+
+                {/* Main CTA Button */}
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="btn-primary-luxury text-sm px-6 py-2.5"
+                  className="w-full max-w-xs py-3.5 px-6 rounded-xl font-button text-xs font-bold uppercase tracking-wider text-[#D4A95A] bg-gradient-to-r from-[#25130A] via-[#3D2314] to-[#25130A] border border-[#D4A95A]/40 shadow-lg hover:shadow-2xl hover:border-[#D4A95A] hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer mb-8"
                 >
-                  <span>Start Shopping</span>
+                  <span>Explore Royal Collection</span>
+                  <ArrowRight
+                    size={16}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </button>
+
+                {/* Quick Pick Recommendations */}
+                <div className="w-full pt-6 border-t border-[#D4A95A]/20">
+                  <div className="flex items-center justify-center gap-1.5 text-xxs font-bold uppercase tracking-wider text-[#D4A95A] mb-3">
+                    <Flame size={12} className="text-amber-500" />
+                    <span>Popular Right Now</span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    {quickCategories.map((cat) => (
+                      <Link
+                        key={cat.slug}
+                        href={`/categories`}
+                        onClick={handleClose}
+                        className="px-3 py-1.5 rounded-full bg-[#FDF9F3] border border-[#D4A95A]/25 text-xs text-[#3D2314] font-medium hover:bg-[#3D2314] hover:text-[#D4A95A] hover:border-[#D4A95A] transition-all duration-200 flex items-center gap-1"
+                      >
+                        {cat.label}
+                        <ChevronRight size={12} className="opacity-60" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Footer Billing */}
+          {/* ── Footer Billing Section ── */}
           {cartItems.length > 0 && (
-            <div className="border-t border-border-DEFAULT p-6 bg-surface space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm font-body text-text-muted">
+            <div className="border-t border-[#D4A95A]/20 p-6 bg-[#FDF9F3] space-y-4 shadow-2xl">
+              <div className="space-y-2.5">
+                <div className="flex justify-between text-xs font-body text-[#6B5A4E]">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-primary-DEFAULT">
+                  <span className="font-semibold text-[#3D2314]">
                     ₹{cartTotal.toLocaleString()}
                   </span>
                 </div>
-                <div className="flex justify-between text-sm font-body text-text-muted">
+                <div className="flex justify-between text-xs font-body text-[#6B5A4E]">
                   <span>Estimated Delivery</span>
-                  <span className="font-semibold text-green-600">
+                  <span className="font-semibold text-emerald-600">
                     {cartTotal >= freeShippingThreshold ? "FREE" : "₹99"}
                   </span>
                 </div>
-                <div className="h-px bg-border-light my-2" />
-                <div className="flex justify-between text-base font-heading font-bold text-primary-DEFAULT">
+                <div className="h-px bg-[#D4A95A]/20 my-2" />
+                <div className="flex justify-between text-base font-heading font-extrabold text-[#3D2314]">
                   <span>Total Amount</span>
-                  <span>
+                  <span className="text-[#3D2314] font-bold text-lg">
                     ₹
                     {(cartTotal >= freeShippingThreshold
                       ? cartTotal
@@ -299,13 +376,13 @@ export default function CartSidebar() {
               </div>
 
               {/* Checkout CTA */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-2.5 pt-1">
                 <Link
                   href="/checkout"
                   onClick={handleClose}
-                  className="btn-primary-luxury w-full justify-center py-3.5 group"
+                  className="w-full py-4 rounded-xl font-button text-xs font-bold uppercase tracking-wider text-[#D4A95A] bg-gradient-to-r from-[#25130A] via-[#3D2314] to-[#25130A] border border-[#D4A95A]/40 shadow-lg hover:shadow-2xl hover:border-[#D4A95A] transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
-                  <span className="flex items-center gap-2 text-sm">
+                  <span className="flex items-center gap-2">
                     Proceed to Checkout
                     <ArrowRight
                       size={16}
@@ -314,18 +391,19 @@ export default function CartSidebar() {
                   </span>
                 </Link>
                 <button
+                  type="button"
                   onClick={handleClose}
-                  className="w-full text-center text-xs font-button font-semibold text-text-muted hover:text-primary-DEFAULT transition-colors py-1"
+                  className="w-full text-center text-xs font-button font-semibold text-[#6B5A4E] hover:text-[#3D2314] transition-colors py-1 cursor-pointer"
                 >
                   Continue Shopping
                 </button>
               </div>
 
               {/* Secure Checkout Badge */}
-              <div className="flex items-center justify-center gap-1.5 text-xxs text-text-muted font-body pt-2">
-                <ShieldCheck size={12} className="text-green-600" />
+              <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#6B5A4E] font-body pt-1">
+                <ShieldCheck size={14} className="text-emerald-600" />
                 <span>
-                  Secure 256-bit SSL checkout. 100% satisfaction guarantee.
+                  Secure 256-Bit SSL Checkout • 100% Freshness Guarantee
                 </span>
               </div>
             </div>
