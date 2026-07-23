@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Leaf,
   User,
+  ShieldCheck,
 } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -88,8 +89,6 @@ export default function Navbar() {
     if (adminData) setAdmin(JSON.parse(adminData));
   }, []);
 
-  const isDarkHeader = pathname === "/" && !isScrolled;
-
   const navRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const lastScrollY = useRef(0);
@@ -102,10 +101,8 @@ export default function Navbar() {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 50);
 
-      // Only trigger after 200px scroll
       if (currentScrollY > 200) {
         if (currentScrollY > lastScrollY.current && !isHidden.current) {
-          // Scrolling DOWN → hide navbar
           gsap.to(navRef.current, {
             y: "-100%",
             duration: 0.3,
@@ -114,7 +111,6 @@ export default function Navbar() {
           });
           isHidden.current = true;
         } else if (currentScrollY < lastScrollY.current && isHidden.current) {
-          // Scrolling UP → show navbar
           gsap.to(navRef.current, {
             y: "0%",
             duration: 0.4,
@@ -124,7 +120,6 @@ export default function Navbar() {
           isHidden.current = false;
         }
       } else {
-        // Near top — always show
         if (isHidden.current) {
           gsap.to(navRef.current, { y: "0%", duration: 0.3, overwrite: true });
           isHidden.current = false;
@@ -149,11 +144,11 @@ export default function Navbar() {
           opacity: 1,
           duration: 0.8,
           ease: "power3.out",
-          delay: 0.2,
-        },
+          delay: 0.1,
+        }
       );
     },
-    { scope: navRef },
+    { scope: navRef }
   );
 
   // Mobile menu animation
@@ -163,7 +158,7 @@ export default function Navbar() {
       gsap.fromTo(
         mobileMenuRef.current,
         { x: "100%", opacity: 0 },
-        { x: "0%", opacity: 1, duration: 0.4, ease: "power3.out" },
+        { x: "0%", opacity: 1, duration: 0.4, ease: "power3.out" }
       );
       document.body.style.overflow = "hidden";
     } else {
@@ -184,41 +179,82 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`fixed left-0 right-0 z-40 transition-all duration-500 ${
-          isMobileNavOpen
-            ? "bg-white border-b border-border-DEFAULT shadow-luxury"
-            : isScrolled
-              ? "navbar-glass shadow-luxury"
-              : "bg-transparent"
-        }`}
-        style={{ top: isScrolled ? "0px" : "34px" }}
+        className="fixed left-0 right-0 z-40 transition-all duration-500"
+        style={{
+          top: "0px",
+          background: "linear-gradient(135deg, rgba(45, 24, 14, 0.96) 0%, rgba(25, 13, 7, 0.98) 100%)",
+          borderBottom: "1.5px solid rgba(212, 169, 90, 0.35)",
+          boxShadow: "0 10px 35px rgba(0, 0, 0, 0.35)",
+          backdropFilter: "blur(16px)",
+        }}
       >
+        {/* Top Metallic Gold Accent Line */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "2.5px",
+            background: "linear-gradient(90deg, #6B3E26 0%, #D4A95A 50%, #F59E0B 100%)",
+          }}
+        />
+
         <div className="container-luxury">
           <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Logo */}
+
+            {/* ── Brand Logo ── */}
             <Link
               href="/"
-              className="flex items-center gap-2 sm:gap-3 group"
+              style={{ display: "inline-flex", alignItems: "center", gap: "10px", textDecoration: "none" }}
               aria-label="Shreepad Enterprises Home"
             >
-              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-white flex items-center justify-center shadow-luxury group-hover:shadow-luxury-lg transition-all duration-300 border border-border-DEFAULT/30">
+              <div
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: "#FFFDF8",
+                  padding: "2px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "2px solid #D4A95A",
+                  boxShadow: "0 0 16px rgba(212, 169, 90, 0.45)",
+                  overflow: "hidden",
+                  flexShrink: 0,
+                }}
+              >
                 <img
                   src="/images/logo.png"
                   alt="Shreepad Enterprises Logo"
-                  className="w-full h-full object-cover scale-110"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.1)" }}
                 />
               </div>
-              <div className="flex flex-col">
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <span
-                  className="font-heading text-base sm:text-xl font-bold leading-none tracking-tight"
-                  style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "#fff" }}
+                  style={{
+                    fontFamily: "var(--font-heading)",
+                    fontSize: "1.25rem",
+                    fontWeight: 800,
+                    background: "linear-gradient(135deg, #FFFDF8 0%, #D4A95A 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    lineHeight: 1.1,
+                  }}
                 >
                   Shreepad
                 </span>
                 <span
-                  className="font-body text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5"
                   style={{
-                    color: isMobileNavOpen || !isDarkHeader ? "#A97142" : "rgba(255,255,255,0.85)",
+                    fontFamily: "var(--font-button)",
+                    fontSize: "9px",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.14em",
+                    color: "#D4A95A",
+                    marginTop: "2px",
                   }}
                 >
                   Enterprises
@@ -226,151 +262,361 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <ul className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <li key={link.label} className="relative group">
-                  {link.submenu ? (
-                    <button
-                      type="button"
-                      className="flex items-center gap-1 px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200"
-                      style={{
-                        color: isActive(link.href)
-                          ? "#D4A95A"
-                          : !isDarkHeader
-                            ? "#3D2314"
-                            : "rgba(255, 255, 255, 0.95)",
-                      }}
-                      onMouseEnter={() => setActiveDropdown(link.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                      aria-expanded={activeDropdown === link.label}
-                      suppressHydrationWarning
-                    >
-                      {link.label}
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform ${activeDropdown === link.label ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="flex items-center px-4 py-2 rounded-full text-sm font-button font-medium transition-all duration-200 animated-underline"
-                      style={{
-                        color: isActive(link.href)
-                          ? "#D4A95A"
-                          : !isDarkHeader
-                            ? "#3D2314"
-                            : "rgba(255, 255, 255, 0.95)",
-                      }}
-                    >
-                      {link.label}
-                    </Link>
-                  )}
+            {/* ── Desktop Navigation Links ── */}
+            <ul className="hidden lg:flex items-center gap-1.5" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {navLinks.map((link) => {
+                const active = isActive(link.href);
+                return (
+                  <li key={link.label} className="relative group">
+                    {link.submenu ? (
+                      <button
+                        type="button"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "5px",
+                          padding: "8px 18px",
+                          borderRadius: "100px",
+                          fontSize: "13px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-button)",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          background: active
+                            ? "linear-gradient(135deg, rgba(212,169,90,0.22) 0%, rgba(107,62,38,0.3) 100%)"
+                            : "transparent",
+                          border: active
+                            ? "1px solid rgba(212,169,90,0.45)"
+                            : "1px solid transparent",
+                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.9)",
+                        }}
+                        onMouseEnter={(e) => {
+                          setActiveDropdown(link.label);
+                          if (!active) {
+                            e.currentTarget.style.color = "#D4A95A";
+                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          setActiveDropdown(null);
+                          if (!active) {
+                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                            e.currentTarget.style.background = "transparent";
+                          }
+                        }}
+                        aria-expanded={activeDropdown === link.label}
+                        suppressHydrationWarning
+                      >
+                        <span>{link.label}</span>
+                        <ChevronDown
+                          size={14}
+                          style={{
+                            transition: "transform 0.3s ease",
+                            transform: activeDropdown === link.label ? "rotate(180deg)" : "rotate(0deg)",
+                            color: "#D4A95A",
+                          }}
+                        />
+                      </button>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          padding: "8px 18px",
+                          borderRadius: "100px",
+                          fontSize: "13px",
+                          fontWeight: 700,
+                          fontFamily: "var(--font-button)",
+                          textDecoration: "none",
+                          transition: "all 0.3s ease",
+                          background: active
+                            ? "linear-gradient(135deg, rgba(212,169,90,0.22) 0%, rgba(107,62,38,0.3) 100%)"
+                            : "transparent",
+                          border: active
+                            ? "1px solid rgba(212,169,90,0.45)"
+                            : "1px solid transparent",
+                          color: active ? "#D4A95A" : "rgba(255, 255, 255, 0.9)",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!active) {
+                            e.currentTarget.style.color = "#D4A95A";
+                            e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!active) {
+                            e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                            e.currentTarget.style.background = "transparent";
+                          }
+                        }}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
 
-                  {/* Dropdown */}
-                  {link.submenu && (
-                    <div
-                      className={`absolute top-full left-0 mt-2 w-52 bg-white rounded-2xl shadow-luxury-lg border border-border-DEFAULT overflow-hidden transition-all duration-200 ${
-                        activeDropdown === link.label
-                          ? "opacity-100 visible translate-y-0"
-                          : "opacity-0 invisible translate-y-2"
-                      }`}
-                      onMouseEnter={() => setActiveDropdown(link.label)}
-                      onMouseLeave={() => setActiveDropdown(null)}
-                    >
-                      {link.submenu.map((sub) => (
-                        <Link
-                          key={sub.label}
-                          href={sub.href}
-                          className="flex items-center gap-2 px-4 py-3 text-sm font-body text-text-DEFAULT hover:bg-background hover:text-primary-DEFAULT transition-colors border-b border-border-light last:border-b-0"
-                        >
-                          <Leaf size={12} className="text-accent-DEFAULT" />
-                          {sub.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </li>
-              ))}
+                    {/* Submenu Dropdown Panel */}
+                    {link.submenu && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "100%",
+                          left: 0,
+                          marginTop: "8px",
+                          width: "230px",
+                          background: "linear-gradient(145deg, #2D180E 0%, #190D07 100%)",
+                          borderRadius: "20px",
+                          border: "1.5px solid rgba(212, 169, 90, 0.4)",
+                          boxShadow: "0 18px 45px rgba(0, 0, 0, 0.45)",
+                          backdropFilter: "blur(16px)",
+                          overflow: "hidden",
+                          transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                          opacity: activeDropdown === link.label ? 1 : 0,
+                          visibility: activeDropdown === link.label ? "visible" : "hidden",
+                          transform: activeDropdown === link.label ? "translateY(0)" : "translateY(10px)",
+                        }}
+                        onMouseEnter={() => setActiveDropdown(link.label)}
+                        onMouseLeave={() => setActiveDropdown(null)}
+                      >
+                        {link.submenu.map((sub) => (
+                          <Link
+                            key={sub.label}
+                            href={sub.href}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                              padding: "12px 18px",
+                              fontSize: "13px",
+                              fontFamily: "var(--font-body)",
+                              color: "rgba(255, 255, 255, 0.85)",
+                              textDecoration: "none",
+                              borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
+                              transition: "all 0.25s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = "rgba(212, 169, 90, 0.15)";
+                              e.currentTarget.style.color = "#D4A95A";
+                              e.currentTarget.style.paddingLeft = "22px";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = "transparent";
+                              e.currentTarget.style.color = "rgba(255, 255, 255, 0.85)";
+                              e.currentTarget.style.paddingLeft = "18px";
+                            }}
+                          >
+                            <Leaf size={12} style={{ color: "#D4A95A" }} />
+                            <span>{sub.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* ── Action Buttons ── */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+
               {/* Search */}
               <button
                 type="button"
                 onClick={() => dispatch(setSearchOpen(true))}
-                className={`p-2 rounded-full transition-all duration-200 ${
-                  isMobileNavOpen || !isDarkHeader
-                    ? "hover:bg-background"
-                    : "hover:text-white"
-                }`}
-                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  background: "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(212, 169, 90, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FFFDF8",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(212, 169, 90, 0.2)";
+                  e.currentTarget.style.borderColor = "#D4A95A";
+                  e.currentTarget.style.color = "#D4A95A";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.3)";
+                  e.currentTarget.style.color = "#FFFDF8";
+                }}
                 aria-label="Search"
                 suppressHydrationWarning
               >
-                <Search size={20} />
+                <Search size={18} />
               </button>
 
-              {/* WhatsApp */}
+              {/* WhatsApp Quick Chat */}
               <a
                 href="https://wa.me/917709747803"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`hidden md:flex items-center gap-1 p-2 rounded-full transition-all duration-200 ${
-                  isMobileNavOpen || !isDarkHeader
-                    ? "hover:bg-green-50"
-                    : "hover:bg-white/10"
-                }`}
-                style={{ color: isMobileNavOpen || !isDarkHeader ? "#16a34a" : "rgba(255,255,255,0.95)" }}
-                aria-label="WhatsApp"
+                className="hidden md:flex"
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  background: "rgba(16, 185, 129, 0.15)",
+                  border: "1px solid rgba(16, 185, 129, 0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#10B981",
+                  textDecoration: "none",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "linear-gradient(135deg, #10B981, #059669)";
+                  e.currentTarget.style.color = "#FFFFFF";
+                  e.currentTarget.style.transform = "scale(1.08)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(16, 185, 129, 0.15)";
+                  e.currentTarget.style.color = "#10B981";
+                  e.currentTarget.style.transform = "scale(1)";
+                }}
+                aria-label="WhatsApp Support"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={18} />
               </a>
 
               {/* Wishlist */}
               <Link
                 href="/wishlist"
-                className={`flex p-2 rounded-full transition-all duration-200 ${
-                  isMobileNavOpen || !isDarkHeader
-                    ? "hover:bg-background"
-                    : "hover:text-white"
-                }`}
-                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                style={{
+                  width: "38px",
+                  height: "38px",
+                  borderRadius: "50%",
+                  background: "rgba(255, 255, 255, 0.08)",
+                  border: "1px solid rgba(212, 169, 90, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FFFDF8",
+                  textDecoration: "none",
+                  transition: "all 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(212, 169, 90, 0.2)";
+                  e.currentTarget.style.borderColor = "#D4A95A";
+                  e.currentTarget.style.color = "#D4A95A";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.3)";
+                  e.currentTarget.style.color = "#FFFDF8";
+                }}
                 aria-label="Wishlist"
               >
-                <Heart size={20} />
+                <Heart size={18} />
               </Link>
 
-              {/* Cart */}
+              {/* Cart Button */}
               <button
                 type="button"
                 onClick={() => dispatch(toggleCart())}
-                className="relative p-2 rounded-full transition-all duration-200 bg-[#3D2314] text-white hover:bg-accent shadow-luxury overflow-visible"
+                style={{
+                  position: "relative",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  background: "linear-gradient(135deg, #D4A95A 0%, #F59E0B 100%)",
+                  color: "#3D2314",
+                  border: "none",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(212, 169, 90, 0.4)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "scale(1.08)";
+                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(212, 169, 90, 0.6)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(212, 169, 90, 0.4)";
+                }}
                 aria-label={`Cart (${cartCount} items)`}
               >
-                <ShoppingBag size={20} />
+                <ShoppingBag size={19} />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 z-10 w-5 h-5 bg-[#D4A95A] text-[#3D2314] text-[10px] font-bold rounded-full flex items-center justify-center font-button border border-white">
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-4px",
+                      right: "-4px",
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      background: "#EF4444",
+                      color: "#FFFFFF",
+                      fontSize: "10px",
+                      fontWeight: 900,
+                      fontFamily: "var(--font-button)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      border: "2px solid #3D2314",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                    }}
+                  >
                     {cartCount > 9 ? "9+" : cartCount}
                   </span>
                 )}
               </button>
 
-              {/* Admin Panel Link */}
+              {/* Admin Panel Button */}
               {admin && (
                 <Link
                   href="/admin/dashboard"
-                  className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-button font-semibold border transition-all duration-200"
+                  className="hidden lg:inline-flex"
                   style={{
-                    color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)",
-                    borderColor: isMobileNavOpen || !isDarkHeader
-                      ? "#3D2314"
-                      : "rgba(255,255,255,0.4)",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "6px 14px",
+                    borderRadius: "100px",
+                    background: "rgba(255, 255, 255, 0.1)",
+                    border: "1.5px solid rgba(212, 169, 90, 0.45)",
+                    color: "#FFFDF8",
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    fontFamily: "var(--font-button)",
+                    textDecoration: "none",
+                    transition: "all 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, #D4A95A, #F59E0B)";
+                    e.currentTarget.style.color = "#3D2314";
+                    e.currentTarget.style.borderColor = "#D4A95A";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+                    e.currentTarget.style.color = "#FFFDF8";
+                    e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.45)";
                   }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-[#3D2314] text-white flex items-center justify-center text-[10px] font-bold">
+                  <div
+                    style={{
+                      width: "20px",
+                      height: "20px",
+                      borderRadius: "50%",
+                      background: "#D4A95A",
+                      color: "#3D2314",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "10px",
+                      fontWeight: 900,
+                    }}
+                  >
                     A
                   </div>
                   <span>Admin Panel</span>
@@ -381,76 +627,121 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => dispatch(toggleMobileNav())}
-                className={`lg:hidden p-2 rounded-full transition-all duration-200 ${
-                  isMobileNavOpen || !isDarkHeader
-                    ? "hover:bg-background"
-                    : "hover:bg-white/10"
-                }`}
-                style={{ color: isMobileNavOpen || !isDarkHeader ? "#3D2314" : "rgba(255,255,255,0.95)" }}
+                className="lg:hidden"
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  border: "1px solid rgba(212, 169, 90, 0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#FFFDF8",
+                  cursor: "pointer",
+                }}
                 aria-label={isMobileNavOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileNavOpen}
                 suppressHydrationWarning
               >
                 {isMobileNavOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
+
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Drawer Overlay */}
       <div
         ref={mobileMenuRef}
-        className={`fixed inset-0 z-30 bg-white flex flex-col ${isMobileNavOpen ? "" : "pointer-events-none"}`}
-        style={{ paddingTop: "96px", transform: "translateX(100%)" }}
+        className={`fixed inset-0 z-30 bg-[#25130A] flex flex-col ${isMobileNavOpen ? "" : "pointer-events-none"}`}
+        style={{
+          paddingTop: "90px",
+          transform: "translateX(100%)",
+          borderLeft: "2px solid rgba(212, 169, 90, 0.4)",
+        }}
       >
-        <div className="overflow-y-auto px-5 py-4">
-          {/* Nav Links */}
-          <ul className="space-y-0.5">
+        <div className="overflow-y-auto px-6 py-6">
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
             {navLinks.map((link) => (
               <li key={link.label}>
                 <Link
                   href={link.href}
-                  className={`flex items-center justify-between px-4 py-2.5 rounded-xl text-base font-body transition-all ${
-                    isActive(link.href)
-                      ? "bg-orange-50 text-[#3D2314] font-semibold"
-                      : "text-text-DEFAULT hover:bg-background hover:text-[#3D2314]"
-                  }`}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "12px 18px",
+                    borderRadius: "14px",
+                    fontSize: "1rem",
+                    fontFamily: "var(--font-heading)",
+                    fontWeight: 700,
+                    color: isActive(link.href) ? "#D4A95A" : "#FFFDF8",
+                    background: isActive(link.href) ? "rgba(212,169,90,0.15)" : "transparent",
+                    border: isActive(link.href) ? "1px solid rgba(212,169,90,0.3)" : "1px solid transparent",
+                    textDecoration: "none",
+                  }}
                   onClick={() => dispatch(setMobileNavOpen(false))}
                 >
-                  {link.label}
-                  {link.submenu && <ChevronDown size={16} />}
+                  <span>{link.label}</span>
+                  {link.submenu && <ChevronDown size={16} style={{ color: "#D4A95A" }} />}
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/* Contact Actions */}
-          <div className="mt-4 pt-4 border-t border-border-DEFAULT space-y-2">
+          <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", gap: "12px" }}>
             <a
               href="https://wa.me/917709747803"
-              className="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 rounded-xl font-body font-medium"
               target="_blank"
               rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "12px 18px",
+                borderRadius: "14px",
+                background: "rgba(16, 185, 129, 0.15)",
+                border: "1px solid rgba(16, 185, 129, 0.4)",
+                color: "#10B981",
+                fontFamily: "var(--font-button)",
+                fontSize: "14px",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
             >
               <MessageCircle size={20} />
-              WhatsApp Us
+              <span>WhatsApp Direct Support</span>
             </a>
+
             <a
               href="tel:+919860941171"
-              className="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-DEFAULT rounded-xl font-body font-medium"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "12px 18px",
+                borderRadius: "14px",
+                background: "rgba(212, 169, 90, 0.15)",
+                border: "1px solid rgba(212, 169, 90, 0.4)",
+                color: "#D4A95A",
+                fontFamily: "var(--font-button)",
+                fontSize: "14px",
+                fontWeight: 700,
+                textDecoration: "none",
+              }}
             >
               <Phone size={20} />
-              +91 98609 41171
+              <span>Call Us: +91 98609 41171</span>
             </a>
           </div>
         </div>
       </div>
 
-      {/* Mobile overlay backdrop */}
       {isMobileNavOpen && (
         <div
-          className="fixed inset-0 bg-black/20 z-20 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
           onClick={() => dispatch(setMobileNavOpen(false))}
         />
       )}
