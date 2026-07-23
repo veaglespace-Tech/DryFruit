@@ -249,7 +249,7 @@ export default function Navbar() {
                           setActiveDropdown(link.label);
                           e.currentTarget.style.color = "#D4A95A";
                         }}
-                        onMouseLeave={() => {
+                        onMouseLeave={(e) => {
                           setActiveDropdown(null);
                           if (!active) {
                             e.currentTarget.style.color = "rgba(255, 255, 255, 0.92)";
