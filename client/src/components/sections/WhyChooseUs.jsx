@@ -415,19 +415,8 @@ export default function WhyChooseUs() {
                     <Icon size={22} style={{ color: "#D4A95A" }} />
                   </div>
 
-                  {/* Watermark Number & Badge */}
+                  {/* Badge */}
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px" }}>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-heading)",
-                        fontSize: "20px",
-                        fontWeight: 800,
-                        color: "rgba(212, 169, 90, 0.35)",
-                        letterSpacing: "0.05em",
-                      }}
-                    >
-                      {item.num}
-                    </span>
                     {item.badge && (
                       <span
                         style={{
