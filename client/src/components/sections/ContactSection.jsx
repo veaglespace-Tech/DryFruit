@@ -10,18 +10,60 @@ import {
   CheckCircle,
   Clock,
   Zap,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useFadeLeft, useFadeRight } from "@/lib/gsap";
+import { useFadeLeft, useFadeRight, useFadeUp } from "@/lib/gsap";
 import { useSubmitContactMutation } from "@/store/api/apiSlice";
 import toast from "react-hot-toast";
 import { contactFormSchema } from "@/lib/validation";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const contactItems = [
+  {
+    icon: Phone,
+    title: "Call Us Direct",
+    value: "+91 98609 41171",
+    desc: "Tue-Sun: 10:30 AM - 9:30 PM",
+    href: "tel:+919860941171",
+    color: "#6B3E26",
+    badge: "Fast Phone Support",
+  },
+  {
+    icon: MessageCircle,
+    title: "WhatsApp Chat",
+    value: "Chat with Us",
+    desc: "Instant replies, 7 days a week",
+    href: "https://wa.me/917709747803",
+    color: "#10B981",
+    badge: "Instant 24/7",
+  },
+  {
+    icon: Mail,
+    title: "Email Support",
+    value: "Info@shreepadenterprisespune.com",
+    desc: "Guaranteed reply within 24 hours",
+    href: "mailto:Info@shreepadenterprisespune.com",
+    color: "#D4A95A",
+    badge: "Email Response",
+  },
+  {
+    icon: MapPin,
+    title: "Visit Store",
+    value: "Shop No 4, Datta Nagar, Dighi, Pune 411015",
+    desc: "Tap to open in Google Maps",
+    href: "https://maps.google.com/?q=Shop+No+4+Near+Datta+Nagar+Bus+Stop+Pune+Alandi+Rd+Dighi+PCMC+Pune+Maharashtra+411015",
+    color: "#A97142",
+    badge: "Dighi Store",
+  },
+];
+
 export default function ContactSection() {
   const sectionRef = useRef(null);
+  const titleRef = useFadeUp({ delay: 0.1 });
   const leftRef = useFadeLeft({ delay: 0.2 });
   const rightRef = useFadeRight({ delay: 0.2 });
 
@@ -56,11 +98,11 @@ export default function ContactSection() {
       gsap.fromTo(
         ".contact-success",
         { scale: 0.9, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }
       );
     } catch (err) {
       toast.error(
-        err.data?.message || "Something went wrong. Please try WhatsApp or call us directly.",
+        err.data?.message || "Something went wrong. Please try WhatsApp or call us directly."
       );
     }
   };
@@ -69,11 +111,49 @@ export default function ContactSection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="section-padding bg-surface overflow-hidden"
+      style={{
+        position: "relative",
+        paddingTop: "5.5rem",
+        paddingBottom: "6rem",
+        background: "linear-gradient(180deg, #FFFDF8 0%, #F5EDE0 100%)",
+        overflow: "hidden",
+      }}
     >
-      <div className="container-luxury">
-        <div className="text-center mb-8 md:mb-14">
-          {/* Ultra-Modern Glassmorphic Badge Chip */}
+      {/* Ambient background lighting */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "15%",
+          left: "5%",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(212,169,90,0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+          filter: "blur(65px)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          bottom: "10%",
+          right: "5%",
+          width: "450px",
+          height: "450px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(107,62,38,0.08) 0%, transparent 70%)",
+          pointerEvents: "none",
+          filter: "blur(70px)",
+        }}
+      />
+
+      <div className="container-luxury" style={{ position: "relative", zIndex: 1 }}>
+
+        {/* ── Section Header ── */}
+        <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
+          {/* Ultra-Modern Glassmorphic Capsule Badge */}
           <div
             style={{
               display: "inline-flex",
@@ -81,18 +161,18 @@ export default function ContactSection() {
               gap: "10px",
               padding: "7px 22px",
               borderRadius: "100px",
-              background: "linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(245,237,224,0.88) 100%)",
-              border: "1.5px solid rgba(212,169,90,0.35)",
-              boxShadow: "0 4px 20px rgba(212,169,90,0.15), inset 0 1px 2px rgba(255,255,255,0.8)",
+              background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(251,245,235,0.9) 100%)",
+              border: "1.5px solid rgba(212,169,90,0.4)",
+              boxShadow: "0 6px 24px rgba(212,169,90,0.18), inset 0 1px 2px rgba(255,255,255,0.9)",
               backdropFilter: "blur(12px)",
               marginBottom: "1.25rem",
             }}
           >
             <span style={{ position: "relative", display: "inline-flex", width: "8px", height: "8px" }}>
-              <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.75, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
+              <span style={{ position: "absolute", width: "100%", height: "100%", borderRadius: "50%", background: "#D4A95A", opacity: 0.8, animation: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite" }} />
               <span style={{ position: "relative", width: "8px", height: "8px", borderRadius: "50%", background: "#6B3E26" }} />
             </span>
-            <Mail size={13} style={{ color: "#A97142" }} />
+            <Mail size={14} style={{ color: "#A97142" }} />
             <span
               style={{
                 fontFamily: "var(--font-button)",
@@ -106,115 +186,202 @@ export default function ContactSection() {
               Get in Touch
             </span>
           </div>
+
           <h2
-            className="font-heading text-primary-DEFAULT mb-4"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700 }}
+            ref={titleRef}
+            style={{
+              fontFamily: "var(--font-heading)",
+              fontSize: "clamp(2rem, 4vw, 3.25rem)",
+              fontWeight: 800,
+              color: "#3D2314",
+              marginBottom: "1rem",
+              lineHeight: 1.25,
+            }}
           >
-            We&apos;d Love to Hear From You
+            We&apos;d Love to{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #6B3E26 0%, #A97142 50%, #D4A95A 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Hear From You
+            </span>
           </h2>
-          <div className="section-divider mx-auto" />
-          <p className="body-lead max-w-2xl mx-auto mt-4">
-            Have a question, want to place a bulk order, or just want to say
-            hello? We&apos;re here for you.
+
+          {/* Ornamental Divider */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", margin: "0 auto 1.25rem", maxWidth: "160px" }}>
+            <div style={{ flex: 1, height: "1px", background: "linear-gradient(to right, transparent, #D4A95A)" }} />
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#D4A95A" }} />
+            <div style={{ flex: 1, height: "1px", background: "linear-gradient(to left, transparent, #D4A95A)" }} />
+          </div>
+
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "clamp(0.95rem, 1.8vw, 1.1rem)",
+              color: "#6B5B4E",
+              maxWidth: "580px",
+              margin: "0 auto",
+              lineHeight: 1.7,
+            }}
+          >
+            Have a question, want to place a bulk order, or just want to say hello? We&apos;re always here for you.
           </p>
         </div>
 
+        {/* ── Grid Showcase ── */}
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Left: Info */}
+
+          {/* Left Column: Glass Contact Cards, Hours & Map */}
           <div ref={leftRef}>
-            {/* Contact Cards */}
-            <div className="space-y-4 mb-8">
-              {[
-                {
-                  icon: Phone,
-                  title: "Call Us",
-                  value: "+91 98609 41171",
-                  desc: "Tue-Sun, Closed Mon",
-                  href: "tel:+919860941171",
-                  color: "#6B3E26",
-                },
-                {
-                  icon: MessageCircle,
-                  title: "WhatsApp",
-                  value: "Chat with Us",
-                  desc: "Instant replies, 7 days a week",
-                  href: "https://wa.me/917709747803",
-                  color: "#4CAF50",
-                },
-                {
-                  icon: Mail,
-                  title: "Email Us",
-                  value: "Info@shreepadenterprisespune.com",
-                  desc: "We reply within 24 hours",
-                  href: "mailto:Info@shreepadenterprisespune.com",
-                  color: "#D4A95A",
-                },
-                {
-                  icon: MapPin,
-                  title: "Visit Us",
-                  value: "Shop No 4, Datta Nagar, Dighi, Pune 411015",
-                  desc: "Click to open live map location",
-                  href: "https://maps.google.com/?q=Shop+No+4+Near+Datta+Nagar+Bus+Stop+Pune+Alandi+Rd+Dighi+PCMC+Pune+Maharashtra+411015",
-                  color: "#A97142",
-                },
-              ].map(({ icon: Icon, title, value, desc, href, color }) => (
+            {/* Quick Contact Cards */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "24px" }}>
+              {contactItems.map(({ icon: Icon, title, value, desc, href, color, badge }) => (
                 <a
                   key={title}
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex items-center gap-3 sm:gap-4 p-3.5 sm:p-5 rounded-2xl border border-border-DEFAULT bg-background hover:shadow-luxury hover:border-accent-DEFAULT/30 transition-all duration-300 group overflow-hidden w-full"
+                  className="group"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "16px",
+                    padding: "16px 20px",
+                    borderRadius: "20px",
+                    background: "linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(251,245,235,0.85) 100%)",
+                    border: "1.5px solid rgba(212, 169, 90, 0.3)",
+                    boxShadow: "0 8px 24px rgba(107,62,38,0.06)",
+                    backdropFilter: "blur(12px)",
+                    textDecoration: "none",
+                    transition: "all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.65)";
+                    e.currentTarget.style.boxShadow = "0 16px 36px rgba(107,62,38,0.14)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.borderColor = "rgba(212, 169, 90, 0.3)";
+                    e.currentTarget.style.boxShadow = "0 8px 24px rgba(107,62,38,0.06)";
+                  }}
                 >
+                  {/* Icon Sphere */}
                   <div
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
-                    style={{ backgroundColor: `${color}15` }}
+                    style={{
+                      width: "48px",
+                      height: "48px",
+                      borderRadius: "16px",
+                      background: `linear-gradient(135deg, ${color}20 0%, ${color}35 100%)`,
+                      border: `1px solid ${color}40`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                      transition: "transform 0.3s ease",
+                    }}
+                    className="group-hover:scale-110"
                   >
-                    <Icon size={20} style={{ color }} />
+                    <Icon size={22} style={{ color }} />
                   </div>
-                  <div className="min-w-0 flex-1 overflow-hidden">
-                    <p className="font-button font-semibold text-xs sm:text-sm text-text-DEFAULT">
-                      {title}
-                    </p>
-                    <p className="font-heading font-semibold text-xs sm:text-base text-primary-DEFAULT break-all leading-snug">
+
+                  {/* Info Text */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+                      <p style={{ fontFamily: "var(--font-button)", fontWeight: 700, fontSize: "11px", color: "#A97142", textTransform: "uppercase", letterSpacing: "0.06em", margin: 0 }}>
+                        {title}
+                      </p>
+                      {badge && (
+                        <span
+                          style={{
+                            fontSize: "9px",
+                            fontWeight: 800,
+                            fontFamily: "var(--font-button)",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.06em",
+                            color: color,
+                            background: `${color}15`,
+                            border: `1px solid ${color}30`,
+                            padding: "2px 7px",
+                            borderRadius: "100px",
+                          }}
+                        >
+                          {badge}
+                        </span>
+                      )}
+                    </div>
+                    <p style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "1rem", color: "#3D2314", margin: "2px 0 0", wordBreak: "break-all", lineHeight: 1.3 }}>
                       {value}
                     </p>
-                    <p className="text-[11px] sm:text-xs text-text-muted font-body truncate">{desc}</p>
+                    <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "#6B5B4E", margin: "2px 0 0" }}>
+                      {desc}
+                    </p>
                   </div>
                 </a>
               ))}
             </div>
 
-            {/* Hours */}
-            <div className="p-4 sm:p-5 rounded-2xl border border-border-DEFAULT bg-primary-50">
-              <div className="flex items-center gap-2 mb-3">
-                <Clock size={18} className="text-primary-DEFAULT flex-shrink-0" />
-                <span className="font-heading font-semibold text-sm sm:text-base text-primary-DEFAULT">
-                  Business Hours
+            {/* Business Hours Card */}
+            <div
+              style={{
+                padding: "20px 22px",
+                borderRadius: "20px",
+                background: "linear-gradient(135deg, #3D2314 0%, #25130A 100%)",
+                border: "1.5px solid rgba(212, 169, 90, 0.4)",
+                boxShadow: "0 10px 30px rgba(61, 35, 20, 0.15)",
+                color: "#FFFDF8",
+                marginBottom: "24px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Clock size={18} style={{ color: "#D4A95A" }} />
+                  <span style={{ fontFamily: "var(--font-heading)", fontWeight: 700, fontSize: "0.95rem", color: "#FFFDF8" }}>
+                    Store Business Hours
+                  </span>
+                </div>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 800,
+                    fontFamily: "var(--font-button)",
+                    color: "#10B981",
+                    background: "rgba(16,185,129,0.15)",
+                    border: "1px solid rgba(16,185,129,0.4)",
+                    padding: "3px 10px",
+                    borderRadius: "100px",
+                  }}
+                >
+                  🟢 Open Today
                 </span>
               </div>
-              <div className="space-y-2 text-xs sm:text-sm font-body">
-                {[
-                  { day: "Tuesday - Sunday", time: "10:30 AM - 1:30 PM | 5:30 PM - 9:30 PM" },
-                  { day: "Monday", time: "Closed" },
-                ].map(({ day, time }) => (
-                  <div
-                    key={day}
-                    className="flex flex-col sm:flex-row sm:justify-between text-text-muted gap-0.5"
-                  >
-                    <span className="font-medium">{day}</span>
-                    <span className="font-semibold text-primary-DEFAULT text-[11px] sm:text-sm">
-                      {time}
-                    </span>
-                  </div>
-                ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.82rem", fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.8)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "4px" }}>
+                  <span>Tuesday - Sunday</span>
+                  <span style={{ fontWeight: 700, color: "#D4A95A" }}>10:30 AM - 1:30 PM | 5:30 PM - 9:30 PM</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingTop: "2px" }}>
+                  <span>Monday</span>
+                  <span style={{ fontWeight: 700, color: "#EF4444" }}>Weekly Closed</span>
+                </div>
               </div>
             </div>
 
-            {/* Map */}
+            {/* Live Google Map Container */}
             <div
               id="map"
-              className="mt-6 rounded-2xl overflow-hidden border border-border-DEFAULT shadow-card"
-              style={{ height: "240px" }}
+              style={{
+                borderRadius: "20px",
+                overflow: "hidden",
+                border: "1.5px solid rgba(212, 169, 90, 0.35)",
+                boxShadow: "0 10px 30px rgba(61, 35, 20, 0.1)",
+                height: "220px",
+              }}
             >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.178!2d73.8711!3d18.6178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9e5f5b3c5d3%3A0x1!2sShop+No+4%2C+Near+Datta+Nagar+Bus+Stop%2C+Pune-Alandi+Rd%2C+Dighi%2C+PCMC%2C+Pune%2C+Maharashtra+411015!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
@@ -231,24 +398,64 @@ export default function ContactSection() {
               href="https://maps.google.com/?q=Shop+No+4+Near+Datta+Nagar+Bus+Stop+Pune+Alandi+Rd+Dighi+PCMC+Pune+Maharashtra+411015"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-primary-50 border border-border-DEFAULT hover:bg-accent-DEFAULT/10 hover:border-accent-DEFAULT/40 transition-all text-sm font-button font-semibold text-primary-DEFAULT"
+              style={{
+                marginTop: "12px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                width: "100%",
+                padding: "11px 20px",
+                borderRadius: "14px",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(251,245,235,0.9))",
+                border: "1.5px solid rgba(212, 169, 90, 0.4)",
+                color: "#3D2314",
+                fontSize: "12px",
+                fontWeight: 800,
+                fontFamily: "var(--font-button)",
+                textDecoration: "none",
+                boxShadow: "0 4px 16px rgba(107,62,38,0.08)",
+                transition: "all 0.3s ease",
+              }}
             >
-              <MapPin size={15} className="text-accent-DEFAULT" />
-              Open Live Location in Google Maps ↗
+              <MapPin size={15} style={{ color: "#A97142" }} />
+              <span>Open Live Location in Google Maps</span>
+              <ExternalLink size={13} style={{ color: "#A97142" }} />
             </a>
           </div>
 
-          {/* Right: Form */}
+          {/* Right Column: Ultra-Modern Glass Form */}
           <div ref={rightRef}>
             {!submitted ? (
               <form
                 onSubmit={handleSubmit}
-                className="p-5 sm:p-6 md:p-8 rounded-3xl border border-border-DEFAULT bg-white shadow-luxury"
+                style={{
+                  padding: "clamp(24px, 4vw, 40px)",
+                  borderRadius: "28px",
+                  background: "linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(251,245,235,0.92) 100%)",
+                  border: "1.5px solid rgba(212, 169, 90, 0.4)",
+                  boxShadow: "0 20px 45px rgba(61, 35, 20, 0.12)",
+                  backdropFilter: "blur(16px)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <Zap size={20} className="text-accent-DEFAULT" />
-                  <h3 className="font-heading text-xl font-semibold text-primary-DEFAULT">
-                    Send a Message
+                {/* Glowing Metallic Top Accent Line */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: "3px",
+                    background: "linear-gradient(90deg, #6B3E26 0%, #D4A95A 50%, #A97142 100%)",
+                  }}
+                />
+
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
+                  <Zap size={22} style={{ color: "#D4A95A" }} />
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.35rem", fontWeight: 800, color: "#3D2314", margin: 0 }}>
+                    Send Us a Message
                   </h3>
                 </div>
 
@@ -266,6 +473,7 @@ export default function ContactSection() {
                     />
                     <label htmlFor="contact-name">Full Name *</label>
                   </div>
+
                   <div className="form-floating col-span-2 md:col-span-1">
                     <input
                       type="email"
@@ -278,6 +486,7 @@ export default function ContactSection() {
                     />
                     <label htmlFor="contact-email">Email Address</label>
                   </div>
+
                   <div className="form-floating col-span-2 md:col-span-1">
                     <input
                       type="tel"
@@ -290,6 +499,7 @@ export default function ContactSection() {
                     />
                     <label htmlFor="contact-phone">Phone Number</label>
                   </div>
+
                   <div className="form-floating col-span-2 md:col-span-1">
                     <input
                       type="text"
@@ -300,8 +510,9 @@ export default function ContactSection() {
                       id="contact-subject"
                       suppressHydrationWarning
                     />
-                    <label htmlFor="contact-subject">Subject</label>
+                    <label htmlFor="contact-subject">Subject / Product Inquiry</label>
                   </div>
+
                   <div className="form-floating col-span-2">
                     <textarea
                       name="message"
@@ -321,6 +532,12 @@ export default function ContactSection() {
                   type="submit"
                   disabled={submitting}
                   className="btn-primary-luxury w-full justify-center"
+                  style={{
+                    padding: "14px 28px",
+                    borderRadius: "100px",
+                    fontSize: "14px",
+                    fontWeight: 800,
+                  }}
                   suppressHydrationWarning
                 >
                   <span className="flex items-center gap-2">
@@ -329,40 +546,59 @@ export default function ContactSection() {
                     ) : (
                       <Send size={18} />
                     )}
-                    {submitting ? "Sending..." : "Send Message"}
+                    {submitting ? "Sending Message..." : "Send Message Now"}
                   </span>
                 </button>
 
-                <p className="text-xs text-text-muted font-body text-center mt-4">
-                  We typically respond within 2-4 hours during business hours.
+                <p style={{ fontFamily: "var(--font-body)", fontSize: "11px", color: "#6B5B4E", textAlign: "center", marginTop: "14px", margin: "14px 0 0" }}>
+                  We typically respond within 2-4 business hours.
                 </p>
               </form>
             ) : (
-              <div className="contact-success p-8 rounded-3xl border border-border-DEFAULT bg-white shadow-luxury flex flex-col items-center text-center gap-4">
-                <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center">
-                  <CheckCircle size={40} className="text-green-600" />
+              <div
+                className="contact-success"
+                style={{
+                  padding: "40px 28px",
+                  borderRadius: "28px",
+                  background: "linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(251,245,235,0.92) 100%)",
+                  border: "1.5px solid rgba(16, 185, 129, 0.5)",
+                  boxShadow: "0 20px 45px rgba(61, 35, 20, 0.12)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                  gap: "16px",
+                }}
+              >
+                <div style={{ width: "68px", height: "68px", borderRadius: "50%", background: "rgba(16, 185, 129, 0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <CheckCircle size={36} style={{ color: "#10B981" }} />
                 </div>
                 <div>
-                  <h3 className="font-heading text-2xl font-bold text-primary-DEFAULT mb-2">
+                  <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.5rem", fontWeight: 800, color: "#3D2314", marginBottom: "6px" }}>
                     Message Sent! 🎉
                   </h3>
-                  <p className="text-text-muted font-body">
-                    Thank you for reaching out! Our team will get back to you
-                    within 24 hours.
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.92rem", color: "#6B5B4E", margin: 0 }}>
+                    Thank you for reaching out to Shreepad Enterprises! Our team will get back to you within 24 hours.
                   </p>
                 </div>
                 <a
                   href="https://wa.me/917709747803"
-                  className="btn-primary-luxury"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="btn-primary-luxury"
+                  style={{ marginTop: "10px", padding: "12px 24px", borderRadius: "100px", fontSize: "13px" }}
                 >
-                  <span>Need faster response? WhatsApp us</span>
+                  <span className="flex items-center gap-2">
+                    <MessageCircle size={16} />
+                    Need faster response? WhatsApp Us
+                  </span>
                 </a>
               </div>
             )}
           </div>
+
         </div>
+
       </div>
     </section>
   );
