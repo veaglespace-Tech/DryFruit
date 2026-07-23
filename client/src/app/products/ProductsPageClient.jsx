@@ -87,7 +87,6 @@ export default function ProductsPageClient() {
   if (sortBy === "rating") productParams.sort = "-rating";
   if (sortBy === "popularity") productParams.sort = "-popularity";
 
-  const { data: serverCategories, isSuccess: catsSuccess } = useGetPublicCategoriesQuery();
   const { data: serverProducts, isLoading: loading, isError: productsError } = useGetProductsQuery(productParams);
 
   const categories = catsSuccess && serverCategories?.length > 0
